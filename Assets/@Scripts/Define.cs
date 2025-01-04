@@ -8,4 +8,13 @@ public class Define
         Red,
         Black
     }
+    
+    public enum CoinType
+    {
+        White,
+        Blue,
+        Green,
+        Red,
+        Black
+    }
 }
