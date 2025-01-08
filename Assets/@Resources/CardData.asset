@@ -13,16 +13,6 @@ MonoBehaviour:
   m_Name: CardData
   m_EditorClassIdentifier: 
   cardInfos:
-  - CardType: 0
-    CardLevel: 0
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: Illustration
   - CardType: 4
     CardLevel: 1
     Points: 0

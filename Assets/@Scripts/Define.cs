@@ -1,3 +1,5 @@
+using Fusion;
+
 public class Define
 {
     public enum CardType
@@ -17,4 +19,6 @@ public class Define
         Red,
         Black
     }
+    
+    public int MaxCoinAmount = 7;
 }

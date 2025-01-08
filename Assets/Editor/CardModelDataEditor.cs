@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Fusion;
 using UnityEditor;
 using UnityEngine;
 using static Define;
@@ -43,11 +44,11 @@ public class CardModelDataEditor : Editor
                     {
                         CardInfo cardInfo = new CardInfo
                         {
-                            CardLevel = SafeParseInt(values[0], "CardLevel", i + 1),
-                            CardType = SafeParseEnum<CardType>(values[1], "CardType", i + 1),
-                            Points = SafeParseInt(values[2], "Points", i + 1),
-                            Cost = ParsePrice(values[3], i + 1),
-                            Illustration = values.Length > 4 ? values[4].Trim() : ""
+                            cardLevel = SafeParseInt(values[0], "CardLevel", i + 1),
+                            cardType = SafeParseInt(values[1], "CardType", i + 1),
+                            points = SafeParseInt(values[2], "Points", i + 1),
+                            cost = ParsePrice(values[3], i + 1),
+                            illustration = values.Length > 4 ? values[4].Trim() : ""
                         };
 
                         newCardInfos[i - 1] = cardInfo;
@@ -95,28 +96,53 @@ public class CardModelDataEditor : Editor
         return default;
     }
 
-    private CardCost ParsePrice(string price, int lineIndex)
+    private int[] ParsePrice(string price, int lineIndex)
     {
         try
         {
-            var cost = new CardCost();
+            int[] cost = new int[5];
             string[] parts = price.Split('+');
 
             foreach (string part in parts)
             {
                 string trimmedPart = part.Trim();
-                if (trimmedPart.EndsWith("w"))
-                    cost.White = SafeParseInt(trimmedPart.TrimEnd('w'), "Cost_White", lineIndex);
-                else if (trimmedPart.EndsWith("u"))
-                    cost.Blue = SafeParseInt(trimmedPart.TrimEnd('u'), "Cost_Blue", lineIndex);
-                else if (trimmedPart.EndsWith("g"))
-                    cost.Green = SafeParseInt(trimmedPart.TrimEnd('g'), "Cost_Green", lineIndex);
-                else if (trimmedPart.EndsWith("r"))
-                    cost.Red = SafeParseInt(trimmedPart.TrimEnd('r'), "Cost_Red", lineIndex);
-                else if (trimmedPart.EndsWith("k"))
-                    cost.Black = SafeParseInt(trimmedPart.TrimEnd('k'), "Cost_Black", lineIndex);
-                else
-                    Debug.LogWarning($"Unrecognized cost format '{trimmedPart}' on line {lineIndex}");
+
+                if (string.IsNullOrEmpty(trimmedPart))
+                {
+                    Debug.LogWarning($"Empty cost segment on line {lineIndex}.");
+                    continue;
+                }
+
+                char costType = trimmedPart[^1]; // Get the last character
+                string costValueStr = trimmedPart[..^1]; // Get everything except the last character
+
+                if (!int.TryParse(costValueStr, out int costValue))
+                {
+                    Debug.LogWarning($"Invalid cost value '{trimmedPart}' on line {lineIndex}. Defaulting to 0.");
+                    costValue = 0;
+                }
+
+                switch (costType)
+                {
+                    case 'w':
+                        cost[0] += costValue; // White
+                        break;
+                    case 'u':
+                        cost[1] += costValue; // Blue
+                        break;
+                    case 'g':
+                        cost[2] += costValue; // Green
+                        break;
+                    case 'r':
+                        cost[3] += costValue; // Red
+                        break;
+                    case 'k':
+                        cost[4] += costValue; // Black
+                        break;
+                    default:
+                        Debug.LogWarning($"Unrecognized cost type '{costType}' on line {lineIndex}.");
+                        break;
+                }
             }
 
             return cost;
@@ -124,7 +150,7 @@ public class CardModelDataEditor : Editor
         catch (Exception ex)
         {
             Debug.LogError($"Failed to parse Price on line {lineIndex}: {ex.Message}");
-            return new CardCost();
+            return new int[5]; // Default empty cost
         }
     }
 }

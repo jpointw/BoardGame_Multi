@@ -3,22 +3,15 @@ using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner _runner;
-    
+
     public static NetworkSystem Instance { get; private set; }
-    
-    public NetworkRunner Runner { get; private set; }
-    
-    string _roomCode = null;
-    
-    public Transform[] playersTransforms;
-    public Transform[] cardsTransforms;
-    public Transform[] gemTransforms;
-    
+    [SerializeField] private string sessionName = "DefaultRoom";
+    [SerializeField] private int maxPlayers = 4;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -31,37 +24,64 @@ public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
             DontDestroyOnLoad(gameObject);
         }
     }
-    public enum ConnectionStatus
-    {
-        Disconnected,
-        Connecting,
-        Failed,
-        Connected,
-        Joined,
-        Migrating,
-    }
 
-
-    async void StartGame(GameMode mode)
+    public void StartMatchmaking()
     {
         _runner = gameObject.AddComponent<NetworkRunner>();
         _runner.ProvideInput = true;
 
-        var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-        var sceneInfo = new NetworkSceneInfo();
-        if (scene.IsValid) {
-            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-        }
-
-        await _runner.StartGame(new StartGameArgs()
+        Debug.Log("Looking for existing sessions...");
+        _runner.StartGame(new StartGameArgs
         {
-            GameMode = mode,
-            SessionName = "TestRoom",
-            Scene = scene,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+            GameMode = GameMode.Client,
+            PlayerCount = maxPlayers,
+        }).ContinueWith(task =>
+        {
+            if (!task.IsCompletedSuccessfully)
+            {
+                Debug.LogWarning("No sessions found. Creating a new session...");
+                CreateRoom();
+            }
         });
     }
-    
+
+    public void CreateRoom()
+    {
+        _runner.StartGame(new StartGameArgs
+        {
+            GameMode = GameMode.Host,
+            SessionName = sessionName,
+            PlayerCount = maxPlayers,
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+        }).ContinueWith(task =>
+        {
+            if (task.IsCompletedSuccessfully)
+                Debug.Log("New session created.");
+            else
+                Debug.LogError("Failed to create session.");
+        });
+    }
+
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
+    {
+        if (sessionList.Count > 0)
+        {
+            Debug.Log($"Found {sessionList.Count} sessions. Joining the first session...");
+            _runner.JoinSessionLobby(SessionLobby.ClientServer).ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully)
+                    Debug.Log("Joined session successfully.");
+                else
+                    Debug.LogError("Failed to join session.");
+            });
+        }
+        else
+        {
+            Debug.Log("No sessions found. Creating a new session...");
+            CreateRoom();
+        }
+    }
+
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
     {
         throw new NotImplementedException();
@@ -74,51 +94,28 @@ public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"Player joined with PlayerRef ID : {player.PlayerId}");
+        Debug.Log($"Player joined with PlayerRef ID: {player.PlayerId}");
+        // GameSystem.Instance?.InitializePlayer(player);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"Player left with PlayerRef ID : {player.PlayerId}");
+        Debug.Log($"Player left with PlayerRef ID: {player.PlayerId}");
     }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
         Debug.Log($"Game shutdown: {shutdownReason}");
     }
-
-    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
-    {
-        throw new NotImplementedException();
-    }
-    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
-    {
-        throw new NotImplementedException();
-    }
-    public void OnConnectedToServer(NetworkRunner runner)
-    {
-        throw new NotImplementedException();
-    }
-    
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
+    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
+    public void OnConnectedToServer(NetworkRunner runner) { }
     public void OnInput(NetworkRunner runner, NetworkInput input) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnSceneLoadDone(NetworkRunner runner) { }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Fusion;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class TurnManager : NetworkBehaviour
         if (Object.HasStateAuthority)
         {
             // CurrentPlayer = Runner.ActivePlayers[0];
-            Runner.ActivePlayers[0];
+            Runner.ActivePlayers.First();
         }
     }
 

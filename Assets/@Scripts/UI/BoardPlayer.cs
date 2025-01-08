@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using Fusion;
 using static Define;
 
-public class Player : NetworkBehaviour
+public class BoardPlayer : NetworkBehaviour
 {
     [Networked] public int Score { get; private set; }
     [Networked] public int MaxTokens { get; private set; } = 10;
+    
+    public PlayerRef PlayerRef;
 
     public List<Card> OwnedCards { get; private set; } = new List<Card>();
     public Dictionary<CoinType, int> Gems { get; private set; } = new Dictionary<CoinType, int>();
