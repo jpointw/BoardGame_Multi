@@ -10,27 +10,31 @@ using static Define;
 [CreateAssetMenu(fileName = "CardModelData", menuName = "Scriptable Objects/CardModelData")]
 public class CardModelData : ScriptableObject
 {
+    public static CardModelData instance;
+    
     public CardInfo[] cardInfos;
     public SpecialCardInfo[] specialCardInfos;
 
-    public CardInfo GetCardInfo(int id)
+    public CardInfo GetCardInfoById(int id)
     {
         return cardInfos.FirstOrDefault(p => p.uniqueId == id);
     }
 
-    public CardInfo[] Get1LevelCardInfos()
+    public CardInfo[] GetCardsArrayByLevel(int cardLevel)
     {
-        return cardInfos.Where(p => p.cardLevel == 0).ToArray();
+        return cardInfos.Where(p => p.cardLevel == cardLevel).ToArray();
     }
-    
-    public CardInfo[] Get2LevelCardInfos()
+
+    private void OnEnable()
     {
-        return cardInfos.Where(p => p.cardLevel == 1).ToArray();
-    }
-    
-    public CardInfo[] Get3LevelCardInfos()
-    {
-        return cardInfos.Where(p => p.cardLevel == 2).ToArray();
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
 }
 

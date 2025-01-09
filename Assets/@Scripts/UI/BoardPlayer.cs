@@ -4,32 +4,41 @@ using static Define;
 
 public class BoardPlayer : NetworkBehaviour
 {
+    public PlayerRef PlayerRef {get; private set; }
     [Networked] public int Score { get; private set; }
-    [Networked] public int MaxTokens { get; private set; } = 10;
+
+    [Networked][Capacity(6)]
+    public NetworkArray<int> OwnedCoins { get; }
+        = MakeInitializer(new int[6]);
+
+    [Networked][Capacity(6)]
+    public NetworkArray<int> OwnedCards { get; }
+        = MakeInitializer(new int[6]);
     
-    public PlayerRef PlayerRef;
+    /// <summary>
+    /// New UI Element
+    /// </summary>
+    public string PlayerName;
 
-    public List<Card> OwnedCards { get; private set; } = new List<Card>();
-    public Dictionary<CoinType, int> Gems { get; private set; } = new Dictionary<CoinType, int>();
-
-    public void TakeGems(Dictionary<CoinType, int> gems)
+    public void TakeGems(int[] coins)
     {
-        foreach (var gem in gems)
+        for (int i = 0; i < 6; i++)
         {
-            if (Gems.ContainsKey(gem.Key))
-                Gems[gem.Key] += gem.Value;
+            OwnedCoins.Set(i, i+coins[i]);
         }
     }
 
-    public void BuyCard(Card card)
+    public void BuyCard(CardInfo card)
     {
-        // 카드 구매 로직
-        foreach (var cost in card.Cost)
+        for (int i = 0; i < UPPER; i++)
         {
-            if (Gems[cost.Key] >= cost.Value)
-                Gems[cost.Key] -= cost.Value;
+            foreach (var cost in card.cost)
+            {
+                if (Gems[cost.Key] >= cost.Value)
+                    Gems[cost.Key] -= cost.Value;
+            }
         }
-        OwnedCards.Add(card);
+        OwnedCards.Set()
         Score += card.Points;
     }
 }

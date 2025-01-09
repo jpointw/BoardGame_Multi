@@ -1,74 +1,49 @@
-// using Fusion;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using static Define;
-//
-// public class CoinSystem : NetworkBehaviour
-// {
-//     // 코인의 종류와 개수를 동기화
-//     [Networked] public NetworkDictionary<CoinType, int> Coins { get; private set; }
-//
-//     private void Awake()
-//     {
-//     }
-//
-//     public void InitializeCoins()
-//     {
-//         if (Object.HasStateAuthority)
-//         {
-//             Coins.Clear();
-//
-//             // 초기 코인 설정 (예: 7개씩)
-//             foreach (CoinType type in System.Enum.GetValues(typeof(CoinType)))
-//             {
-//                 Coins.Add(type, 7);
-//             }
-//
-//             Debug.Log("Coins initialized.");
-//         }
-//     }
-//
-//     public void TakeCoins(PlayerSystem player, Dictionary<CoinType, int> requestedCoins)
-//     {
-//         if (!Object.HasStateAuthority) return;
-//
-//         foreach (var coin in requestedCoins)
-//         {
-//             if (!Coins.ContainsKey(coin.Key)) continue;
-//
-//             int currentAmount = Coins[coin.Key];
-//             if (currentAmount >= coin.Value)
-//             {
-//                 // 코인 개수 감소
-//                 Coins[coin.Key] = currentAmount - coin.Value;
-//
-//                 // 플레이어에게 코인 추가
-//                 player.AddCoins(coin.Key, coin.Value);
-//
-//                 Debug.Log($"Player {player.PlayerRef.PlayerId} took {coin.Value} {coin.Key} coins.");
-//             }
-//             else
-//             {
-//                 Debug.LogWarning($"Not enough {coin.Key} coins available.");
-//             }
-//         }
-//     }
-//
-//     public void ReturnCoins(PlayerSystem player, Dictionary<CoinType, int> returnedCoins)
-//     {
-//         if (!Object.HasStateAuthority) return;
-//
-//         foreach (var coin in returnedCoins)
-//         {
-//             if (!Coins.ContainsKey(coin.Key)) continue;
-//
-//             // 코인 개수 증가
-//             Coins[coin.Key] += coin.Value;
-//
-//             // 플레이어에게서 코인 제거
-//             player.RemoveCoins(coin.Key, coin.Value);
-//
-//             Debug.Log($"Player {player.PlayerRef.PlayerId} returned {coin.Value} {coin.Key} coins.");
-//         }
-//     }
-// }
+using Fusion;
+using UnityEngine;
+
+public class CoinSystem : NetworkBehaviour
+{
+    [Networked][Capacity(6)] public NetworkArray<int> CentralCoins { get; }
+        = MakeInitializer(new int[6]);
+
+    public override void Spawned()
+    {
+        if (Object.HasStateAuthority)
+        {
+            InitializeCentralCoins();
+            Debug.Log("CoinSystem initialized.");
+        }
+    }
+    public void InitializeCentralCoins()
+    {
+        for (int i = 0; i < CentralCoins.Length; i++)
+        {
+            CentralCoins.Set(i, 10);
+        }
+        Debug.Log("Central Coins initialized.");
+    }
+
+    public void ModifyCentralCoins(int coinType, int amount)
+    {
+        if (!Object.HasStateAuthority) return;
+
+        int currentAmount = CentralCoins[coinType];
+        int newAmount = Mathf.Max(0, currentAmount + amount);
+        CentralCoins.Set(coinType, newAmount);
+
+        Debug.Log($"CentralCoin updated: Type {coinType}, New Amount {newAmount}");
+        RPC_UpdateCoin(coinType, newAmount);
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestModifyCoins(int coinType, int amount)
+    {
+        ModifyCentralCoins(coinType, amount);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_UpdateCoin(int coinType, int newAmount)
+    {
+        Debug.Log($"[Client] Coin type {coinType} updated to {newAmount}.");
+    }
+}

@@ -1,27 +1,52 @@
-using System.Linq;
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-public class TurnManager : NetworkBehaviour
+public class TurnSystem : NetworkBehaviour
 {
-    [Networked] public PlayerRef CurrentPlayer { get; private set; }
+    public static TurnSystem Instance;
 
-    public void StartGame()
+    [Networked][Capacity(1)] public PlayerRef CurrentPlayer { get; private set; }
+    private List<PlayerRef> PlayerOrder = new List<PlayerRef>();
+
+    public void InitializeTurns(List<RemoteBoardPlayer> remotePlayers)
     {
-        if (Object.HasStateAuthority)
+        if (!Object.HasStateAuthority) return;
+
+        PlayerOrder.Clear();
+
+        foreach (var player in remotePlayers)
         {
-            // CurrentPlayer = Runner.ActivePlayers[0];
-            Runner.ActivePlayers.First();
+            PlayerOrder.Add(player.PlayerRef);
         }
+
+        if (PlayerOrder.Count > 0)
+        {
+            CurrentPlayer = PlayerOrder[0];
+        }
+
+        Debug.Log("Turns initialized.");
     }
 
-    // public void EndTurn()
-    // {
-    //     if (Object.HasStateAuthority)
-    //     {
-    //         int currentIndex = Runner.ActivePlayers.IndexOf(CurrentPlayer);
-    //         CurrentPlayer = Runner.ActivePlayers[(currentIndex + 1) % Runner.ActivePlayers.Count];
-    //         Debug.Log($"Next turn: Player {CurrentPlayer.PlayerId}");
-    //     }
-    // }
+    public void EndTurn()
+    {
+        if (!Object.HasStateAuthority) return;
+
+        GameSystem.Instance.CheckForVictory(CurrentPlayer);
+
+        int currentIndex = PlayerOrder.IndexOf(CurrentPlayer);
+        int nextIndex = (currentIndex + 1) % PlayerOrder.Count;
+
+        CurrentPlayer = PlayerOrder[nextIndex];
+    }
+
+    public void MarkFinalRound()
+    {
+        Debug.Log("Final round marked.");
+    }
+
+    public bool IsFinalRoundComplete()
+    {
+        return true;
+    }
 }

@@ -4,64 +4,91 @@ using UnityEngine;
 
 public class CardSystem : NetworkBehaviour
 {
-    private CardModelData _cardDatas;
-    
-    [Networked]
-    [Capacity(16)]
-    public NetworkLinkedList<int> FieldCards { get; }
+    [SerializeField] private CardModelData cardModelData;
+    [Networked][Capacity(16)] public NetworkLinkedList<int> FieldCards { get; }
         = MakeInitializer(new int[16]);
-    [Networked]
-    [Capacity(40)]
-    public NetworkLinkedList<int> Level1Heap { get; }
+
+    [Networked][Capacity(40)] public NetworkLinkedList<int> Level1Deck { get; }
         = MakeInitializer(new int[40]);
-    
-    [Networked]
-    [Capacity(30)]
-    public NetworkLinkedList<int> Level2Heap { get; }
+
+    [Networked][Capacity(30)] public NetworkLinkedList<int> Level2Deck { get; }
         = MakeInitializer(new int[30]);
-    [Networked]
-    [Capacity(20)]
-    public NetworkLinkedList<int> Level3Heap { get; }
+
+    [Networked][Capacity(20)] public NetworkLinkedList<int> Level3Deck { get; }
         = MakeInitializer(new int[20]);
-    
-    
-    public void InitializeCards()
+
+    public override void Spawned()
     {
-        foreach (var cardInfo in _cardDatas.Get1LevelCardInfos())
-            Level1Heap.Add(cardInfo.uniqueId);
-
-        foreach (var cardInfo in _cardDatas.Get2LevelCardInfos())
-            Level2Heap.Add(cardInfo.uniqueId);
-
-        foreach (var cardInfo in _cardDatas.Get3LevelCardInfos())
-            Level3Heap.Add(cardInfo.uniqueId);
-
-        Shuffle(Level1Heap);
-        Shuffle(Level2Heap);
-        Shuffle(Level3Heap);
-
-        for (int i = 0; i < 4; i++)
+        if (Object.HasStateAuthority)
         {
-            AddFirstCardToField(Level1Heap);
-            AddFirstCardToField(Level2Heap);
-            AddFirstCardToField(Level3Heap);
-        }
-
-        void AddFirstCardToField(NetworkLinkedList<int> heap)
-        {
-            foreach (var id in heap)
-            {
-                FieldCards.Add(id);
-                heap.Remove(id);
-                break;
-            }
+            InitializeDecks();
+            InitializeField();
         }
     }
-    
-    private void Shuffle(NetworkLinkedList<int> cards)
+
+    public void InitializeDecks()
     {
-        var list = new List<int>(cards);
-        cards.Clear();
+        foreach (var card in cardModelData.GetCardsArrayByLevel(0))
+        {
+            Level1Deck.Add(card.uniqueId);
+        }
+        foreach (var card in cardModelData.GetCardsArrayByLevel(0))
+        {
+            Level2Deck.Add(card.uniqueId);
+        }
+        foreach (var card in cardModelData.GetCardsArrayByLevel(0))
+        {
+            Level3Deck.Add(card.uniqueId);
+        }
+
+        ShuffleDeck(Level1Deck);
+        ShuffleDeck(Level2Deck);
+        ShuffleDeck(Level3Deck);
+
+        Debug.Log("Decks initialized and shuffled.");
+    }
+
+    public void InitializeField()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            AddCardToField(Level1Deck);
+            AddCardToField(Level2Deck);
+            AddCardToField(Level3Deck);
+        }
+    }
+
+    public void AddCardToField(NetworkLinkedList<int> deck)
+    {
+        if (deck.Count > 0)
+        {
+            FieldCards.Add(deck[0]);
+            deck.Remove(deck[0]);
+        }
+    }
+
+    public CardInfo GetCardInfo(int cardId)
+    {
+        return cardModelData.GetCardInfoById(cardId);
+    }
+
+    public bool PurchaseCard(int cardId)
+    {
+        if (!Object.HasStateAuthority) return false;
+
+        if (FieldCards.Contains(cardId))
+        {
+            FieldCards.Remove(cardId);
+            return true;
+        }
+
+        return false;
+    }
+
+    public void ShuffleDeck(NetworkLinkedList<int> deck)
+    {
+        var list = new List<int>(deck);
+        deck.Clear();
 
         for (int i = list.Count - 1; i > 0; i--)
         {
@@ -71,7 +98,7 @@ public class CardSystem : NetworkBehaviour
 
         foreach (var card in list)
         {
-            cards.Add(card);
+            deck.Add(card);
         }
     }
 }

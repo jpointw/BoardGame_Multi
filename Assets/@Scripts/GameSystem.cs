@@ -1,185 +1,110 @@
-using System;
-using Fusion;
 using System.Collections.Generic;
-using Unity.Collections;
+using Fusion;
 using UnityEngine;
-using static Define;
-using Random = UnityEngine.Random;
 
 public class GameSystem : NetworkBehaviour
 {
-    private CardModelData _cardDatas;
+    public static GameSystem Instance;
 
-    [Networked]
-    [Capacity(4)]
-    public NetworkDictionary<int, int> PlayerPoint { get; }
-        = MakeInitializer(new Dictionary<int, int>()
-        {
-            { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 },
-        });
-    
-    [Networked]
-    [Capacity(16)]
-    public NetworkLinkedList<int> FieldCards { get; }
-        = MakeInitializer(new int[16]);
-    [Networked]
-    [Capacity(40)]
-    public NetworkLinkedList<int> Level1Heap { get; }
-        = MakeInitializer(new int[40]);
-    
-    [Networked]
-    [Capacity(30)]
-    public NetworkLinkedList<int> Level2Heap { get; }
-        = MakeInitializer(new int[30]);
-    [Networked]
-    [Capacity(20)]
-    public NetworkLinkedList<int> Level3Heap { get; }
-        = MakeInitializer(new int[20]);
+    [SerializeField] private NetworkObject remoteBoardPlayerPrefab;
 
-    [Networked] [Capacity(6)] public NetworkDictionary<int, int> CentralCoins { get; }
-    = MakeInitializer(new Dictionary<int, int>(6));
-    
-    public PlayerRef CurrentPlayer;
+    public List<RemoteBoardPlayer> RemoteBoardPlayers { get; private set; } = new List<RemoteBoardPlayer>();
+    public TurnSystem TurnSystem { get; private set; }
+    public CoinSystem CoinSystem { get; private set; }
+    public CardSystem CardSystem { get; private set; }
+
+    private bool isGameEnding = false;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
 
     public override void Spawned()
     {
-        if (!Object.HasStateAuthority) return;
+        if (Object.HasStateAuthority)
+        {
+            // 하위 시스템 초기화
+            TurnSystem = GetComponentInChildren<TurnSystem>();
+            CoinSystem = GetComponentInChildren<CoinSystem>();
+            CardSystem = GetComponentInChildren<CardSystem>();
 
-        var A = new NetworkLinkedList<int>();
+            Debug.Log("GameSystem spawned as Host.");
+        }
     }
 
     public void InitializeGame(List<PlayerRef> activePlayers)
     {
         if (!Object.HasStateAuthority) return;
 
-        InitializeCards();
+        foreach (var playerRef in activePlayers)
+        {
+            SpawnRemoteBoardPlayer(playerRef);
+        }
+
+        TurnSystem.InitializeTurns(RemoteBoardPlayers); // TurnSystem 초기화
+        CoinSystem.InitializeCentralCoins(); // CoinSystem 초기화
+        Debug.Log("Game initialized.");
     }
 
-    private void InitializeCards()
+    private void SpawnRemoteBoardPlayer(PlayerRef playerRef)
     {
-        foreach (var cardInfo in _cardDatas.Get1LevelCardInfos())
-            Level1Heap.Add(cardInfo.uniqueId);
+        var playerObject = Runner.Spawn(remoteBoardPlayerPrefab, transform.position, Quaternion.identity, playerRef);
+        var remotePlayer = playerObject.GetComponent<RemoteBoardPlayer>();
 
-        foreach (var cardInfo in _cardDatas.Get2LevelCardInfos())
-            Level2Heap.Add(cardInfo.uniqueId);
-
-        foreach (var cardInfo in _cardDatas.Get3LevelCardInfos())
-            Level3Heap.Add(cardInfo.uniqueId);
-
-        Shuffle(Level1Heap);
-        Shuffle(Level2Heap);
-        Shuffle(Level3Heap);
-
-        for (int i = 0; i < 4; i++)
-        {
-            AddFirstCardToField(Level1Heap);
-            AddFirstCardToField(Level2Heap);
-            AddFirstCardToField(Level3Heap);
-        }
+        remotePlayer.Initialize(playerRef);
+        RemoteBoardPlayers.Add(remotePlayer);
     }
 
-    private void AddFirstCardToField(NetworkLinkedList<int> heap)
-    {
-        foreach (var id in heap)
-        {
-            FieldCards.Add(id);
-            heap.Remove(id);
-            break;
-        }
-    }
-
-    private void Shuffle(NetworkLinkedList<int> cards)
-    {
-        var list = new List<int>(cards);
-        cards.Clear();
-
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            int randomIndex = Random.Range(0, i + 1);
-            (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
-        }
-
-        foreach (var card in list)
-        {
-            cards.Add(card);
-        }
-    }
-
-    // public void AddCardToPlayer(PlayerRef playerRef, int cardId, bool isOwned)
-    // {
-    //     if (!Object.HasStateAuthority) return;
-    //
-    //     if (isOwned)
-    //     {
-    //         PlayerOwnedCards[playerRef].Add(cardId);
-    //     }
-    //     else
-    //     {
-    //         ReservedCards[playerRef].Add(cardId);
-    //     }
-    // }
-
-    public void PurchaseCard(PlayerRef playerRef, int cardUniqueId, int level)
+    public void CheckForVictory(PlayerRef currentPlayer)
     {
         if (!Object.HasStateAuthority) return;
 
-        FieldCards.Remove(cardUniqueId);
+        var player = RemoteBoardPlayers.Find(p => p.PlayerRef == currentPlayer);
+        if (player == null) return;
 
-        int newCardId = 0;
-        switch (level)
+        // 승리 조건 확인
+        if (player.Score >= 15 && !isGameEnding)
         {
-            case 1:
-                foreach (var id in Level1Heap)
-                {
-                    newCardId = id;
-                    Level1Heap.Remove(id);
-                    break;
-                }
-                break;
-            case 2:
-                foreach (var id in Level2Heap)
-                {
-                    newCardId = id;
-                    Level2Heap.Remove(id);
-                    break;
-                }
-                break;
-            case 3:
-                foreach (var id in Level3Heap)
-                {
-                    newCardId = id;
-                    Level3Heap.Remove(id);
-                    break;
-                }
-                break;
+            isGameEnding = true;
+            Debug.Log($"Player {currentPlayer.PlayerId} triggered final round!");
+            TurnSystem.MarkFinalRound();
         }
 
-        if (newCardId != 0)
+        if (isGameEnding && TurnSystem.IsFinalRoundComplete())
         {
-            FieldCards.Add(newCardId);
+            DetermineWinner();
         }
-
-        // AddCardToPlayer(playerRef, cardUniqueId, true);
-        //
-        // PlayerPoint.Set(playerRef, _cardDatas.GetCardInfo(cardUniqueId).Points);
     }
 
-    public void ModifyCoin(PlayerRef playerRef, CardInfo cardInfo)
+    private void DetermineWinner()
     {
-        if (!Object.HasStateAuthority) return;
-    
-        foreach (var cost in cardInfo.cost)
+        RemoteBoardPlayer winner = null;
+        int maxScore = 0;
+        int minCards = int.MaxValue;
+
+        foreach (var player in RemoteBoardPlayers)
         {
-            int type = cost;
-            int requiredAmount = cardInfo.cost[cost];
-    
-            if (CentralCoins[type] < requiredAmount)
+            if (player.Score > maxScore || (player.Score == maxScore && player.OwnedCards.Length < minCards))
             {
-                Debug.LogWarning($"Not enough coins of type {type}.");
-                return;
+                winner = player;
+                maxScore = player.Score;
+                minCards = player.OwnedCards.Length;
             }
-    
-            CentralCoins.Set(type, CentralCoins[type] - requiredAmount);
         }
+
+        if (winner != null)
+        {
+            Debug.Log($"Player {winner.PlayerRef.PlayerId} wins with {maxScore} points!");
+            RPC_AnnounceWinner(winner.PlayerRef, maxScore);
+        }
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_AnnounceWinner(PlayerRef winner, int score)
+    {
+        Debug.Log($"Player {winner.PlayerId} is the winner with {score} points!");
+        // 클라이언트에서 승리 UI 표시
     }
 }

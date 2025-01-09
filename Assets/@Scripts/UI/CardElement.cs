@@ -2,16 +2,15 @@ using System.Collections.Generic;
 using Fusion;
 using static Define;
 
-public class Card : NetworkBehaviour
+public class CardElement : NetworkBehaviour
 {
-    public int CardID { get; private set; }
-    public int Points { get; private set; }
+    public CardInfo CardInfo { get; private set; }
     public bool IsPurchased { get; private set; }
     public Dictionary<CoinType, int> Cost { get; private set; }
 
     public void InitializeCard(CardInfo cardInfo)
     {
-        CardID = cardInfo.uniqueId;
+        CardInfo = cardInfo;
         IsPurchased = false;
     }
 
@@ -29,7 +28,7 @@ public class Card : NetworkBehaviour
     {
         if (CanBePurchased(player))
         {
-            player.BuyCard(this);
+            player.BuyCard(global::CardInfo);
             IsPurchased = true;
         }
     }
