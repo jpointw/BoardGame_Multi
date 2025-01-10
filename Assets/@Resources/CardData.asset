@@ -13,903 +13,544 @@ MonoBehaviour:
   m_Name: CardData
   m_EditorClassIdentifier: 
   cardInfos:
-  - CardType: 4
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 1
-      Green: 1
-      Red: 1
-      Black: 0
-    Illustration: mine (black)
-  - CardType: 4
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 2
-      Green: 1
-      Red: 1
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 2
-      Blue: 2
-      Green: 0
-      Red: 1
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 1
-      Red: 3
-      Black: 1
-    Illustration: 
-  - CardType: 4
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 2
-      Red: 1
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 2
-      Blue: 0
-      Green: 2
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 3
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 1
-    Points: 1
-    Cost:
-      White: 0
-      Blue: 4
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 1
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 0
-      Green: 1
-      Red: 1
-      Black: 1
-    Illustration: mine (blue)
-  - CardType: 1
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 0
-      Green: 1
-      Red: 2
-      Black: 1
-    Illustration: 
-  - CardType: 1
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 0
-      Green: 2
-      Red: 2
-      Black: 0
-    Illustration: 
-  - CardType: 1
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 1
-      Green: 3
-      Red: 1
-      Black: 0
-    Illustration: 
-  - CardType: 1
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 2
-    Illustration: 
-  - CardType: 1
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 2
-      Red: 0
-      Black: 2
-    Illustration: 
-  - CardType: 1
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 3
-    Illustration: 
-  - CardType: 0
-    CardLevel: 1
-    Points: 1
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 4
-      Black: 0
-    Illustration: 
-  - CardType: 0
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 1
-      Green: 1
-      Red: 1
-      Black: 1
-    Illustration: mine (white)
-  - CardType: 0
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 1
-      Green: 2
-      Red: 1
-      Black: 1
-    Illustration: 
-  - CardType: 0
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 2
-      Green: 2
-      Red: 0
-      Black: 1
-    Illustration: 
-  - CardType: 0
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 3
-      Blue: 1
-      Green: 0
-      Red: 0
-      Black: 1
-    Illustration: 
-  - CardType: 0
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 2
-      Black: 1
-    Illustration: 
-  - CardType: 0
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 2
-      Green: 0
-      Red: 0
-      Black: 2
-    Illustration: 
-  - CardType: 0
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 3
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 0
-    CardLevel: 1
-    Points: 1
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 4
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 2
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 1
-      Green: 0
-      Red: 1
-      Black: 1
-    Illustration: mine (green)
-  - CardType: 2
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 1
-      Green: 0
-      Red: 1
-      Black: 2
-    Illustration: 
-  - CardType: 2
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 1
-      Green: 0
-      Red: 2
-      Black: 2
-    Illustration: 
-  - CardType: 2
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 3
-      Green: 1
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 2
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 2
-      Blue: 1
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 2
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 2
-      Green: 0
-      Red: 2
-      Black: 0
-    Illustration: 
-  - CardType: 2
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 3
-      Black: 0
-    Illustration: 
-  - CardType: 2
-    CardLevel: 1
-    Points: 1
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 4
-    Illustration: 
-  - CardType: 3
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 1
-      Green: 1
-      Red: 0
-      Black: 1
-    Illustration: mine (red)
-  - CardType: 3
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 2
-      Blue: 1
-      Green: 1
-      Red: 0
-      Black: 1
-    Illustration: 
-  - CardType: 3
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 2
-      Blue: 0
-      Green: 1
-      Red: 0
-      Black: 2
-    Illustration: 
-  - CardType: 3
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 1
-      Blue: 0
-      Green: 0
-      Red: 1
-      Black: 3
-    Illustration: 
-  - CardType: 3
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 0
-      Blue: 2
-      Green: 1
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 3
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 2
-      Blue: 0
-      Green: 0
-      Red: 2
-      Black: 0
-    Illustration: 
-  - CardType: 3
-    CardLevel: 1
-    Points: 0
-    Cost:
-      White: 3
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 3
-    CardLevel: 1
-    Points: 1
-    Cost:
-      White: 4
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 3
-      Blue: 2
-      Green: 2
-      Red: 0
-      Black: 0
-    Illustration: camels
-  - CardType: 4
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 3
-      Blue: 0
-      Green: 3
-      Red: 0
-      Black: 2
-    Illustration: 
-  - CardType: 4
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 1
-      Green: 4
-      Red: 2
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 5
-      Red: 3
-      Black: 0
-    Illustration: lapidary (black)
-  - CardType: 4
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 5
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 2
-    Points: 3
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 6
-    Illustration: 
-  - CardType: 1
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 0
-      Blue: 2
-      Green: 2
-      Red: 3
-      Black: 0
-    Illustration: elephants
-  - CardType: 1
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 0
-      Blue: 2
-      Green: 3
-      Red: 0
-      Black: 3
-    Illustration: 
-  - CardType: 1
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 5
-      Blue: 3
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 1
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 2
-      Blue: 0
-      Green: 0
-      Red: 1
-      Black: 4
-    Illustration: lapidary (blue)
-  - CardType: 1
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 5
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 1
-    CardLevel: 2
-    Points: 3
-    Cost:
-      White: 0
-      Blue: 6
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 0
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 3
-      Red: 2
-      Black: 2
-    Illustration: people in snow
-  - CardType: 0
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 2
-      Blue: 3
-      Green: 0
-      Red: 3
-      Black: 0
-    Illustration: 
-  - CardType: 0
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 1
-      Red: 4
-      Black: 2
-    Illustration: 
-  - CardType: 0
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 5
-      Black: 3
-    Illustration: lapidary (white)
-  - CardType: 0
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 5
-      Black: 0
-    Illustration: 
-  - CardType: 0
-    CardLevel: 2
-    Points: 3
-    Cost:
-      White: 6
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 2
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 3
-      Blue: 0
-      Green: 2
-      Red: 3
-      Black: 0
-    Illustration: guy (green)
-  - CardType: 2
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 2
-      Blue: 3
-      Green: 0
-      Red: 0
-      Black: 2
-    Illustration: 
-  - CardType: 2
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 4
-      Blue: 2
-      Green: 0
-      Red: 0
-      Black: 1
-    Illustration: 
-  - CardType: 2
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 5
-      Green: 3
-      Red: 0
-      Black: 0
-    Illustration: carrack
-  - CardType: 2
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 5
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 2
-    CardLevel: 2
-    Points: 3
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 6
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 3
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 2
-      Blue: 0
-      Green: 0
-      Red: 2
-      Black: 3
-    Illustration: felucca
-  - CardType: 3
-    CardLevel: 2
-    Points: 1
-    Cost:
-      White: 0
-      Blue: 3
-      Green: 0
-      Red: 2
-      Black: 3
-    Illustration: 
-  - CardType: 3
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 1
-      Blue: 4
-      Green: 2
-      Red: 0
-      Black: 0
-    Illustration: 
-  - CardType: 3
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 3
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 5
-    Illustration: lapidary (red)
-  - CardType: 3
-    CardLevel: 2
-    Points: 2
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 5
-    Illustration: 
-  - CardType: 3
-    CardLevel: 2
-    Points: 3
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 6
-      Black: 0
-    Illustration: 
-  - CardType: 4
-    CardLevel: 3
-    Points: 3
-    Cost:
-      White: 3
-      Blue: 3
-      Green: 5
-      Red: 3
-      Black: 0
-    Illustration: street1
-  - CardType: 4
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 7
-      Black: 0
-    Illustration: street2
-  - CardType: 4
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 3
-      Red: 6
-      Black: 3
-    Illustration: street2
-  - CardType: 4
-    CardLevel: 3
-    Points: 5
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 7
-      Black: 3
-    Illustration: street1
-  - CardType: 1
-    CardLevel: 3
-    Points: 3
-    Cost:
-      White: 3
-      Blue: 0
-      Green: 3
-      Red: 3
-      Black: 5
-    Illustration: Venice
-  - CardType: 1
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 7
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: Venice
-  - CardType: 1
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 6
-      Blue: 3
-      Green: 0
-      Red: 0
-      Black: 3
-    Illustration: diamant shop
-  - CardType: 1
-    CardLevel: 3
-    Points: 5
-    Cost:
-      White: 7
-      Blue: 3
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: diamant shop
-  - CardType: 0
-    CardLevel: 3
-    Points: 3
-    Cost:
-      White: 0
-      Blue: 3
-      Green: 3
-      Red: 5
-      Black: 3
-    Illustration: building (white)
-  - CardType: 0
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 7
-    Illustration: '"""Gioielleria"""'
-  - CardType: 0
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 3
-      Blue: 0
-      Green: 0
-      Red: 3
-      Black: 6
-    Illustration: '"""Gioielleria"""'
-  - CardType: 0
-    CardLevel: 3
-    Points: 5
-    Cost:
-      White: 3
-      Blue: 0
-      Green: 0
-      Red: 0
-      Black: 7
-    Illustration: building (white)
-  - CardType: 2
-    CardLevel: 3
-    Points: 3
-    Cost:
-      White: 5
-      Blue: 3
-      Green: 0
-      Red: 3
-      Black: 3
-    Illustration: timbered house
-  - CardType: 2
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 0
-      Blue: 7
-      Green: 0
-      Red: 0
-      Black: 0
-    Illustration: bridge
-  - CardType: 2
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 3
-      Blue: 6
-      Green: 3
-      Red: 0
-      Black: 0
-    Illustration: bridge
-  - CardType: 2
-    CardLevel: 3
-    Points: 5
-    Cost:
-      White: 0
-      Blue: 7
-      Green: 3
-      Red: 0
-      Black: 0
-    Illustration: timbered house
-  - CardType: 3
-    CardLevel: 3
-    Points: 3
-    Cost:
-      White: 3
-      Blue: 5
-      Green: 3
-      Red: 0
-      Black: 3
-    Illustration: equestrian statue
-  - CardType: 3
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 7
-      Red: 0
-      Black: 0
-    Illustration: equestrian statue
-  - CardType: 3
-    CardLevel: 3
-    Points: 4
-    Cost:
-      White: 0
-      Blue: 3
-      Green: 6
-      Red: 3
-      Black: 0
-    Illustration: building (red)
-  - CardType: 3
-    CardLevel: 3
-    Points: 5
-    Cost:
-      White: 0
-      Blue: 0
-      Green: 7
-      Red: 3
-      Black: 0
-    Illustration: building (red)
+  - uniqueId: 1
+    cardType: 0
+    cardLevel: 0
+    points: 0
+    cost: 0000000000000000000000000000000000000000
+    illustration: Illustration
+  - uniqueId: 2
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000001000000010000000100000000000000
+    illustration: mine (black)
+  - uniqueId: 3
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000002000000010000000100000000000000
+    illustration: 
+  - uniqueId: 4
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0200000002000000000000000100000000000000
+    illustration: 
+  - uniqueId: 5
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000000000000010000000300000001000000
+    illustration: 
+  - uniqueId: 6
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000000000000020000000100000000000000
+    illustration: 
+  - uniqueId: 7
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0200000000000000020000000000000000000000
+    illustration: 
+  - uniqueId: 8
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000000000000030000000000000000000000
+    illustration: 
+  - uniqueId: 9
+    cardType: 1
+    cardLevel: 0
+    points: 1
+    cost: 0000000004000000000000000000000000000000
+    illustration: 
+  - uniqueId: 10
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000000000000010000000100000001000000
+    illustration: mine (blue)
+  - uniqueId: 11
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000000000000010000000200000001000000
+    illustration: 
+  - uniqueId: 12
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000000000000020000000200000000000000
+    illustration: 
+  - uniqueId: 13
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000001000000030000000100000000000000
+    illustration: 
+  - uniqueId: 14
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000000000000000000000000000002000000
+    illustration: 
+  - uniqueId: 15
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000000000000020000000000000002000000
+    illustration: 
+  - uniqueId: 16
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000000000000000000000000000003000000
+    illustration: 
+  - uniqueId: 17
+    cardType: 1
+    cardLevel: 0
+    points: 1
+    cost: 0000000000000000000000000400000000000000
+    illustration: 
+  - uniqueId: 18
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000001000000010000000100000001000000
+    illustration: mine (white)
+  - uniqueId: 19
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000001000000020000000100000001000000
+    illustration: 
+  - uniqueId: 20
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000002000000020000000000000001000000
+    illustration: 
+  - uniqueId: 21
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0300000001000000000000000000000001000000
+    illustration: 
+  - uniqueId: 22
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000000000000000000000200000001000000
+    illustration: 
+  - uniqueId: 23
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000002000000000000000000000002000000
+    illustration: 
+  - uniqueId: 24
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000003000000000000000000000000000000
+    illustration: 
+  - uniqueId: 25
+    cardType: 1
+    cardLevel: 0
+    points: 1
+    cost: 0000000000000000040000000000000000000000
+    illustration: 
+  - uniqueId: 26
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000001000000000000000100000001000000
+    illustration: mine (green)
+  - uniqueId: 27
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000001000000000000000100000002000000
+    illustration: 
+  - uniqueId: 28
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000001000000000000000200000002000000
+    illustration: 
+  - uniqueId: 29
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000003000000010000000000000000000000
+    illustration: 
+  - uniqueId: 30
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0200000001000000000000000000000000000000
+    illustration: 
+  - uniqueId: 31
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000002000000000000000200000000000000
+    illustration: 
+  - uniqueId: 32
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000000000000000000000300000000000000
+    illustration: 
+  - uniqueId: 33
+    cardType: 1
+    cardLevel: 0
+    points: 1
+    cost: 0000000000000000000000000000000004000000
+    illustration: 
+  - uniqueId: 34
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000001000000010000000000000001000000
+    illustration: mine (red)
+  - uniqueId: 35
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0200000001000000010000000000000001000000
+    illustration: 
+  - uniqueId: 36
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0200000000000000010000000000000002000000
+    illustration: 
+  - uniqueId: 37
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0100000000000000000000000100000003000000
+    illustration: 
+  - uniqueId: 38
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0000000002000000010000000000000000000000
+    illustration: 
+  - uniqueId: 39
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0200000000000000000000000200000000000000
+    illustration: 
+  - uniqueId: 40
+    cardType: 1
+    cardLevel: 0
+    points: 0
+    cost: 0300000000000000000000000000000000000000
+    illustration: 
+  - uniqueId: 41
+    cardType: 1
+    cardLevel: 0
+    points: 1
+    cost: 0400000000000000000000000000000000000000
+    illustration: 
+  - uniqueId: 42
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0300000002000000020000000000000000000000
+    illustration: camels
+  - uniqueId: 43
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0300000000000000030000000000000002000000
+    illustration: 
+  - uniqueId: 44
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000001000000040000000200000000000000
+    illustration: 
+  - uniqueId: 45
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000000000000050000000300000000000000
+    illustration: lapidary (black)
+  - uniqueId: 46
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0500000000000000000000000000000000000000
+    illustration: 
+  - uniqueId: 47
+    cardType: 2
+    cardLevel: 0
+    points: 3
+    cost: 0000000000000000000000000000000006000000
+    illustration: 
+  - uniqueId: 48
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0000000002000000020000000300000000000000
+    illustration: elephants
+  - uniqueId: 49
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0000000002000000030000000000000003000000
+    illustration: 
+  - uniqueId: 50
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0500000003000000000000000000000000000000
+    illustration: 
+  - uniqueId: 51
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0200000000000000000000000100000004000000
+    illustration: lapidary (blue)
+  - uniqueId: 52
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000005000000000000000000000000000000
+    illustration: 
+  - uniqueId: 53
+    cardType: 2
+    cardLevel: 0
+    points: 3
+    cost: 0000000006000000000000000000000000000000
+    illustration: 
+  - uniqueId: 54
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0000000000000000030000000200000002000000
+    illustration: people in snow
+  - uniqueId: 55
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0200000003000000000000000300000000000000
+    illustration: 
+  - uniqueId: 56
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000000000000010000000400000002000000
+    illustration: 
+  - uniqueId: 57
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000000000000000000000500000003000000
+    illustration: lapidary (white)
+  - uniqueId: 58
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000000000000000000000500000000000000
+    illustration: 
+  - uniqueId: 59
+    cardType: 2
+    cardLevel: 0
+    points: 3
+    cost: 0600000000000000000000000000000000000000
+    illustration: 
+  - uniqueId: 60
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0300000000000000020000000300000000000000
+    illustration: guy (green)
+  - uniqueId: 61
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0200000003000000000000000000000002000000
+    illustration: 
+  - uniqueId: 62
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0400000002000000000000000000000001000000
+    illustration: 
+  - uniqueId: 63
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000005000000030000000000000000000000
+    illustration: carrack
+  - uniqueId: 64
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000000000000050000000000000000000000
+    illustration: 
+  - uniqueId: 65
+    cardType: 2
+    cardLevel: 0
+    points: 3
+    cost: 0000000000000000060000000000000000000000
+    illustration: 
+  - uniqueId: 66
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0200000000000000000000000200000003000000
+    illustration: felucca
+  - uniqueId: 67
+    cardType: 2
+    cardLevel: 0
+    points: 1
+    cost: 0000000003000000000000000200000003000000
+    illustration: 
+  - uniqueId: 68
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0100000004000000020000000000000000000000
+    illustration: 
+  - uniqueId: 69
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0300000000000000000000000000000005000000
+    illustration: lapidary (red)
+  - uniqueId: 70
+    cardType: 2
+    cardLevel: 0
+    points: 2
+    cost: 0000000000000000000000000000000005000000
+    illustration: 
+  - uniqueId: 71
+    cardType: 2
+    cardLevel: 0
+    points: 3
+    cost: 0000000000000000000000000600000000000000
+    illustration: 
+  - uniqueId: 72
+    cardType: 3
+    cardLevel: 0
+    points: 3
+    cost: 0300000003000000050000000300000000000000
+    illustration: street1
+  - uniqueId: 73
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0000000000000000000000000700000000000000
+    illustration: street2
+  - uniqueId: 74
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0000000000000000030000000600000003000000
+    illustration: street2
+  - uniqueId: 75
+    cardType: 3
+    cardLevel: 0
+    points: 5
+    cost: 0000000000000000000000000700000003000000
+    illustration: street1
+  - uniqueId: 76
+    cardType: 3
+    cardLevel: 0
+    points: 3
+    cost: 0300000000000000030000000300000005000000
+    illustration: Venice
+  - uniqueId: 77
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0700000000000000000000000000000000000000
+    illustration: Venice
+  - uniqueId: 78
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0600000003000000000000000000000003000000
+    illustration: diamant shop
+  - uniqueId: 79
+    cardType: 3
+    cardLevel: 0
+    points: 5
+    cost: 0700000003000000000000000000000000000000
+    illustration: diamant shop
+  - uniqueId: 80
+    cardType: 3
+    cardLevel: 0
+    points: 3
+    cost: 0000000003000000030000000500000003000000
+    illustration: building (white)
+  - uniqueId: 81
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0000000000000000000000000000000007000000
+    illustration: '"""Gioielleria"""'
+  - uniqueId: 82
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0300000000000000000000000300000006000000
+    illustration: '"""Gioielleria"""'
+  - uniqueId: 83
+    cardType: 3
+    cardLevel: 0
+    points: 5
+    cost: 0300000000000000000000000000000007000000
+    illustration: building (white)
+  - uniqueId: 84
+    cardType: 3
+    cardLevel: 0
+    points: 3
+    cost: 0500000003000000000000000300000003000000
+    illustration: timbered house
+  - uniqueId: 85
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0000000007000000000000000000000000000000
+    illustration: bridge
+  - uniqueId: 86
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0300000006000000030000000000000000000000
+    illustration: bridge
+  - uniqueId: 87
+    cardType: 3
+    cardLevel: 0
+    points: 5
+    cost: 0000000007000000030000000000000000000000
+    illustration: timbered house
+  - uniqueId: 88
+    cardType: 3
+    cardLevel: 0
+    points: 3
+    cost: 0300000005000000030000000000000003000000
+    illustration: equestrian statue
+  - uniqueId: 89
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0000000000000000070000000000000000000000
+    illustration: equestrian statue
+  - uniqueId: 90
+    cardType: 3
+    cardLevel: 0
+    points: 4
+    cost: 0000000003000000060000000300000000000000
+    illustration: building (red)
+  specialCardInfos: []

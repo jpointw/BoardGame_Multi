@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using Fusion;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 using static Define;
 
 public class BoardPlayer : NetworkBehaviour
 {
-    public PlayerRef PlayerRef {get; private set; }
+    public PlayerRef PlayerRef { get; private set; }
+
     [Networked] public int Score { get; private set; }
 
     [Networked][Capacity(6)]
@@ -14,31 +18,32 @@ public class BoardPlayer : NetworkBehaviour
     [Networked][Capacity(6)]
     public NetworkArray<int> OwnedCards { get; }
         = MakeInitializer(new int[6]);
-    
-    /// <summary>
-    /// New UI Element
-    /// </summary>
+
     public string PlayerName;
 
-    public void TakeGems(int[] coins)
+    public void Initialize(PlayerRef playerRef, string playerName)
     {
-        for (int i = 0; i < 6; i++)
-        {
-            OwnedCoins.Set(i, i+coins[i]);
-        }
+        PlayerRef = playerRef;
+        PlayerName = playerName;
     }
 
-    public void BuyCard(CardInfo card)
+    public void TakeCoins(int[] coins)
     {
-        for (int i = 0; i < UPPER; i++)
+        if (!HasInputAuthority) return;
+
+        for (int i = 0; i < coins.Length; i++)
         {
-            foreach (var cost in card.cost)
-            {
-                if (Gems[cost.Key] >= cost.Value)
-                    Gems[cost.Key] -= cost.Value;
-            }
+            OwnedCoins.Set(i, OwnedCoins[i] + coins[i]);
         }
-        OwnedCards.Set()
-        Score += card.Points;
+
+        GameSystem.Instance.ModifyCentralCoins(coins);
+    }
+
+    public void RequestPurchaseCard(int cardId)
+    {
+        if (!HasInputAuthority) return;
+
+        GameSystem.Instance.RPC_RequestPurchaseCard(Object.InputAuthority, cardId);
+        Debug.Log($"Requested to purchase card {cardId}.");
     }
 }

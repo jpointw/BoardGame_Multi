@@ -1,8 +1,10 @@
+using System;
 using Fusion;
 using UnityEngine;
 
 public class CoinSystem : NetworkBehaviour
 {
+    
     [Networked][Capacity(6)] public NetworkArray<int> CentralCoins { get; }
         = MakeInitializer(new int[6]);
 

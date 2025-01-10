@@ -87,7 +87,7 @@ public class RemoteBoardPlayer : NetworkBehaviour
         UpdateCoinsUI();
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         UpdateScoreUI();
         UpdateCoinsUI();

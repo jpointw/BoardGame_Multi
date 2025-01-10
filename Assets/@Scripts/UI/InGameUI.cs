@@ -8,20 +8,24 @@ public class InGameUI : MonoBehaviour
 {
     public Transform remotePlayersConatiner;
 
+    [Header("CardUI")]
     public Transform[] fieldCardTransforms;
     public Dictionary<int, Transform[]> FieldCardLevelContainer = new();
 
     public Transform[] dummyCardObjects;
     public Dictionary<int, Transform> DummyCardLevelContainer = new();
     
+    public Transform[] specialCardsContainer;
+    [Header("CoinUI")]
     public Transform[] coinsTransforms;
     public Dictionary<int, Transform> CoinsContainer = new();
     
-    public Transform[] specialCardsContainer;
 
+    [Header("LocalSelectedAsset")]
     public Transform localSelectedCoinHolder;
     public GameObject[] localSelectedCards;
     
+    [Header("MenuSide")]
     public TMP_Text victoryPointsText;
     
     public Button endTurnButton;
@@ -48,5 +52,16 @@ public class InGameUI : MonoBehaviour
         {
             CoinsContainer.TryAdd(i, coinsTransforms[i]);
         }
+    }
+
+    public void InitializeUI()
+    {
+        endTurnButton.onClick.AddListener(GameSystem.Instance.TurnSystem.EndTurn);
+        GameSystem.Instance.OnCoinChanged += DetectCoinChanges;
+    }
+
+    public void DetectCoinChanges(int[] coinChanges)
+    {
+
     }
 }

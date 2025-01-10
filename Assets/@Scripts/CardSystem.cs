@@ -1,10 +1,22 @@
 using System.Collections.Generic;
 using Fusion;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class CardSystem : NetworkBehaviour
 {
-    [SerializeField] private CardModelData cardModelData;
+    /// <summary>
+    /// LocalUI
+    /// </summary>
+    public SpecialCardElement specialCardElementPrefab;
+    public ObjectPool<SpecialCardElement> SpecialCardElementPool;
+    
+    public CardElement cardElementPrefab;
+    public ObjectPool<CardElement> CardElementPool;
+    
+    [Networked][Capacity(5)] public NetworkLinkedList<int> FieldSpecialCards { get; }
+        = MakeInitializer(new int[5]);
     [Networked][Capacity(16)] public NetworkLinkedList<int> FieldCards { get; }
         = MakeInitializer(new int[16]);
 
@@ -19,6 +31,7 @@ public class CardSystem : NetworkBehaviour
 
     public override void Spawned()
     {
+        
         if (Object.HasStateAuthority)
         {
             InitializeDecks();
@@ -28,17 +41,22 @@ public class CardSystem : NetworkBehaviour
 
     public void InitializeDecks()
     {
-        foreach (var card in cardModelData.GetCardsArrayByLevel(0))
+        foreach (var card in CardModelData.instance.GetCardsArrayByLevel(0))
         {
             Level1Deck.Add(card.uniqueId);
         }
-        foreach (var card in cardModelData.GetCardsArrayByLevel(0))
+        foreach (var card in CardModelData.instance.GetCardsArrayByLevel(0))
         {
             Level2Deck.Add(card.uniqueId);
         }
-        foreach (var card in cardModelData.GetCardsArrayByLevel(0))
+        foreach (var card in CardModelData.instance.GetCardsArrayByLevel(0))
         {
             Level3Deck.Add(card.uniqueId);
+        }
+
+        foreach (var specialCard in CardModelData.instance.specialCardInfos)
+        {
+            FieldSpecialCards.Add(specialCard.uniqueId);
         }
 
         ShuffleDeck(Level1Deck);
@@ -69,22 +87,9 @@ public class CardSystem : NetworkBehaviour
 
     public CardInfo GetCardInfo(int cardId)
     {
-        return cardModelData.GetCardInfoById(cardId);
+        return CardModelData.GetCardInfoById(cardId);
     }
-
-    public bool PurchaseCard(int cardId)
-    {
-        if (!Object.HasStateAuthority) return false;
-
-        if (FieldCards.Contains(cardId))
-        {
-            FieldCards.Remove(cardId);
-            return true;
-        }
-
-        return false;
-    }
-
+    
     public void ShuffleDeck(NetworkLinkedList<int> deck)
     {
         var list = new List<int>(deck);
