@@ -39,23 +39,18 @@ public class CardSystem : NetworkBehaviour
         }
     }
 
+
+    private int playerAmount;
+
     public void InitializeDecks()
     {
-        foreach (var card in CardModelData.instance.GetCardsArrayByLevel(0))
-        {
-            Level1Deck.Add(card.uniqueId);
-        }
-        foreach (var card in CardModelData.instance.GetCardsArrayByLevel(0))
-        {
-            Level2Deck.Add(card.uniqueId);
-        }
-        foreach (var card in CardModelData.instance.GetCardsArrayByLevel(0))
-        {
-            Level3Deck.Add(card.uniqueId);
-        }
+        InitializeDeck(Level1Deck, 0);
+        InitializeDeck(Level2Deck, 1);
+        InitializeDeck(Level3Deck, 2);
 
-        foreach (var specialCard in CardModelData.instance.specialCardInfos)
+        for (var index = 0; index < CardModelData.instance.specialCardInfos.Length; index++)
         {
+            var specialCard = CardModelData.instance.specialCardInfos[index];
             FieldSpecialCards.Add(specialCard.uniqueId);
         }
 
@@ -64,6 +59,17 @@ public class CardSystem : NetworkBehaviour
         ShuffleDeck(Level3Deck);
 
         Debug.Log("Decks initialized and shuffled.");
+    }
+
+    
+    
+    private void InitializeDeck(NetworkLinkedList<int> deck, int level)
+    {
+        var cards = CardModelData.instance.GetCardsArrayByLevel(level);
+        for (int index = 0; index < cards.Length; index++)
+        {
+            deck.Set(index, cards[index].uniqueId);
+        }
     }
 
     public void InitializeField()
@@ -87,7 +93,7 @@ public class CardSystem : NetworkBehaviour
 
     public CardInfo GetCardInfo(int cardId)
     {
-        return CardModelData.GetCardInfoById(cardId);
+        return CardModelData.instance.GetCardInfoById(cardId);
     }
     
     public void ShuffleDeck(NetworkLinkedList<int> deck)
