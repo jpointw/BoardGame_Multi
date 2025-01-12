@@ -17,13 +17,15 @@ public class GameSystem : NetworkBehaviour
     public InGameUI InGameUI { get; private set; }
 
     private bool isGameEnding = false;
-    
+
+
     /// <summary>
     /// Actions
     /// </summary>
-    public Action<int[]> OnCoinChanged;
-    public Action OnGameEnd;
+    public Action OngameStarted;
+    public Action OnGameEnded;
     public Action OnCardChanged;
+    public Action<int[]> OnCoinChanged;
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -175,6 +177,8 @@ public class GameSystem : NetworkBehaviour
             player.ModifyScore(points);
             player.UpdateUI();
         }
+        
+        OnCardChanged?.Invoke();
 
         Debug.Log($"[Client] Player {playerRef.PlayerId} purchased card {cardId}.");
     }
@@ -188,7 +192,8 @@ public class GameSystem : NetworkBehaviour
             CoinSystem.CentralCoins.Set(i, newAmount);
         }
 
+        OnCoinChanged?.Invoke(coinChanges);
+
         Debug.Log($"[Client] Central Coins updated: {string.Join(", ", CoinSystem.CentralCoins)}");
-        // Update client-side UI
     }
 }

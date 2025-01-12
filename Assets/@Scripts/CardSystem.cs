@@ -1,19 +1,13 @@
+using System;
 using System.Collections.Generic;
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using Random = UnityEngine.Random;
 
 public class CardSystem : NetworkBehaviour
 {
-    /// <summary>
-    /// LocalUI
-    /// </summary>
-    public SpecialCardElement specialCardElementPrefab;
-    public ObjectPool<SpecialCardElement> SpecialCardElementPool;
-    
-    public CardElement cardElementPrefab;
-    public ObjectPool<CardElement> CardElementPool;
     
     [Networked][Capacity(5)] public NetworkLinkedList<int> FieldSpecialCards { get; }
         = MakeInitializer(new int[5]);
@@ -47,7 +41,10 @@ public class CardSystem : NetworkBehaviour
         InitializeDeck(Level1Deck, 0);
         InitializeDeck(Level2Deck, 1);
         InitializeDeck(Level3Deck, 2);
+        
+        InitializeSpecialCards(FieldSpecialCards);
 
+        
         for (var index = 0; index < CardModelData.instance.specialCardInfos.Length; index++)
         {
             var specialCard = CardModelData.instance.specialCardInfos[index];
@@ -72,6 +69,16 @@ public class CardSystem : NetworkBehaviour
         }
     }
 
+    private void InitializeSpecialCards(NetworkLinkedList<int> specialCards)
+    {
+        var cards = CardModelData.instance.specialCardInfos;
+        for (int index = 0; index < cards.Length; index++)
+        {
+            specialCards.Set(index, cards[index].uniqueId);
+        }
+        ShuffleDeck(specialCards);
+    }
+
     public void InitializeField()
     {
         for (int i = 0; i < 4; i++)
@@ -89,6 +96,10 @@ public class CardSystem : NetworkBehaviour
             FieldCards.Add(deck[0]);
             deck.Remove(deck[0]);
         }
+    }
+
+    public void AddSpecialCardToField(NetworkLinkedList<int> specialCards, int playerCount)
+    {
     }
 
     public CardInfo GetCardInfo(int cardId)
