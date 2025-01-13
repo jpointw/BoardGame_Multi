@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class RemoteBoardPlayer : NetworkBehaviour
 {
-    public PlayerRef PlayerRef {get; private set; }
+    public PlayerRef PlayerRef { get; private set; }
     [Networked] public int Score { get; private set; }
 
     [Networked][Capacity(6)]
@@ -27,7 +27,7 @@ public class RemoteBoardPlayer : NetworkBehaviour
     {
         PlayerRef = playerRef;
     }
-    
+
     public override void Spawned()
     {
         UpdateUI();
@@ -55,16 +55,19 @@ public class RemoteBoardPlayer : NetworkBehaviour
             }
         }
 
-        RPC_UpdateCard(cardId);
+        RPC_UpdateCards(OwnedCards.ToArray());
     }
 
-    public void ModifyCoins(int coinType, int amount)
+    public void ModifyCoins(int[] coinChanges)
     {
         if (!Object.HasStateAuthority) return;
 
-        OwnedCoins.Set(coinType, OwnedCoins[coinType] + amount);
+        for (int i = 0; i < coinChanges.Length; i++)
+        {
+            OwnedCoins.Set(i, Mathf.Max(0, OwnedCoins[i] + coinChanges[i]));
+        }
 
-        RPC_UpdateCoins(coinType, OwnedCoins[coinType]);
+        RPC_UpdateCoins(OwnedCoins.ToArray());
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -75,16 +78,25 @@ public class RemoteBoardPlayer : NetworkBehaviour
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_UpdateCard(int cardId)
+    private void RPC_UpdateCoins(int[] newCoinValues)
     {
-        UpdateCardsUI();
+        for (int i = 0; i < newCoinValues.Length; i++)
+        {
+            OwnedCoins.Set(i, newCoinValues[i]);
+        }
+
+        UpdateCoinsUI();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_UpdateCoins(int coinType, int newAmount)
+    private void RPC_UpdateCards(int[] newCardValues)
     {
-        OwnedCoins.Set(coinType, newAmount);
-        UpdateCoinsUI();
+        for (int i = 0; i < newCardValues.Length; i++)
+        {
+            OwnedCards.Set(i, newCardValues[i]);
+        }
+
+        UpdateCardsUI();
     }
 
     public void UpdateUI()
@@ -98,7 +110,7 @@ public class RemoteBoardPlayer : NetworkBehaviour
     {
         if (playerScoreText != null)
         {
-            playerScoreText.text = $"Score: {Score}";
+            playerScoreText.text = Score.ToString();
             Debug.Log($"[UI] Score updated: {Score}");
         }
     }
@@ -119,7 +131,7 @@ public class RemoteBoardPlayer : NetworkBehaviour
             }
         }
 
-        Debug.Log($"[UI] Coins updated: {string.Join(", ", OwnedCoins)}");
+        Debug.Log($"[UI] Coins updated: {string.Join(", ", OwnedCoins.ToArray())}");
     }
 
     private void UpdateCardsUI()
@@ -128,7 +140,7 @@ public class RemoteBoardPlayer : NetworkBehaviour
         {
             if (i < OwnedCards.Length && OwnedCards[i] != 0)
             {
-                playerCardsTexts[i].text = $"Card {OwnedCards[i]}";
+                playerCardsTexts[i].text = OwnedCards[i].ToString();
                 playerCardsImages[i].enabled = true;
             }
             else
@@ -138,8 +150,6 @@ public class RemoteBoardPlayer : NetworkBehaviour
             }
         }
 
-        Debug.Log($"[UI] Cards updated: {OwnedCards.Length}");
+        Debug.Log($"[UI] Cards updated: {string.Join(", ", OwnedCards.ToArray())}");
     }
-
-    
 }

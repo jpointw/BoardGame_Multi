@@ -79,7 +79,7 @@ public class GameSystem : NetworkBehaviour
 
         Debug.Log($"CentralCoins updated: {string.Join(", ", CoinSystem.CentralCoins)}");
         RPC_UpdateCentralCoins(coinChanges);
-        OnCoinChanged.Invoke(coinChanges);
+        OnCoinChanged?.Invoke(coinChanges);
     }
 
     public void HandlePurchaseRequest(PlayerRef playerRef, CardInfo card)
@@ -99,6 +99,7 @@ public class GameSystem : NetworkBehaviour
         if (player != null)
         {
             player.AddCard(card.uniqueId);
+            player.ModifyCoins(coinChanges);
             player.ModifyScore(card.points);
         }
 
