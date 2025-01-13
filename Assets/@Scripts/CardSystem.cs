@@ -8,20 +8,22 @@ using Random = UnityEngine.Random;
 
 public class CardSystem : NetworkBehaviour
 {
-    
-    [Networked][Capacity(5)] public NetworkLinkedList<int> FieldSpecialCards { get; }
-        = MakeInitializer(new int[5]);
-    [Networked][Capacity(16)] public NetworkLinkedList<int> FieldCards { get; }
-        = MakeInitializer(new int[16]);
+
+    [Networked]
+    [Capacity(5)]
+    public NetworkLinkedList<int> FieldSpecialCards { get; } 
+        = default;
+    [Networked][Capacity(12)] public NetworkLinkedList<int> FieldCards { get; }
+        = default;
 
     [Networked][Capacity(40)] public NetworkLinkedList<int> Level1Deck { get; }
-        = MakeInitializer(new int[40]);
+        = default;
 
     [Networked][Capacity(30)] public NetworkLinkedList<int> Level2Deck { get; }
-        = MakeInitializer(new int[30]);
+        = default;
 
     [Networked][Capacity(20)] public NetworkLinkedList<int> Level3Deck { get; }
-        = MakeInitializer(new int[20]);
+        = default;
 
     public override void Spawned()
     {
@@ -96,10 +98,6 @@ public class CardSystem : NetworkBehaviour
             FieldCards.Add(deck[0]);
             deck.Remove(deck[0]);
         }
-    }
-
-    public void AddSpecialCardToField(NetworkLinkedList<int> specialCards, int playerCount)
-    {
     }
 
     public CardInfo GetCardInfo(int cardId)

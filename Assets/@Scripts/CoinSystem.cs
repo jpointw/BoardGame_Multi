@@ -4,48 +4,28 @@ using UnityEngine;
 
 public class CoinSystem : NetworkBehaviour
 {
-    
-    [Networked][Capacity(6)] public NetworkArray<int> CentralCoins { get; }
+    [Networked][Capacity(6)] public NetworkArray<int> CentralCoins { get; } 
         = MakeInitializer(new int[6]);
 
-    public override void Spawned()
-    {
-        if (Object.HasStateAuthority)
-        {
-            InitializeCentralCoins();
-            Debug.Log("CoinSystem initialized.");
-        }
-    }
-    public void InitializeCentralCoins()
+    public void InitializeCentralCoins(int playerCount = 2)
     {
         for (int i = 0; i < CentralCoins.Length; i++)
         {
-            CentralCoins.Set(i, 10);
+            CentralCoins.Set(i, 10); // 초기 코인 설정
         }
         Debug.Log("Central Coins initialized.");
     }
 
-    public void ModifyCentralCoins(int coinType, int amount)
+    public void ModifyCentralCoins(int[] coinChanges)
     {
         if (!Object.HasStateAuthority) return;
 
-        int currentAmount = CentralCoins[coinType];
-        int newAmount = Mathf.Max(0, currentAmount + amount);
-        CentralCoins.Set(coinType, newAmount);
+        for (int i = 0; i < coinChanges.Length; i++)
+        {
+            int newAmount = Mathf.Max(0, CentralCoins[i] + coinChanges[i]);
+            CentralCoins.Set(i, newAmount);
+        }
 
-        Debug.Log($"CentralCoin updated: Type {coinType}, New Amount {newAmount}");
-        RPC_UpdateCoin(coinType, newAmount);
-    }
-
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_RequestModifyCoins(int coinType, int amount)
-    {
-        ModifyCentralCoins(coinType, amount);
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_UpdateCoin(int coinType, int newAmount)
-    {
-        Debug.Log($"[Client] Coin type {coinType} updated to {newAmount}.");
+        Debug.Log($"CentralCoins updated: {string.Join(", ", CentralCoins.ToArray())}");
     }
 }

@@ -1,52 +1,65 @@
 using System.Collections.Generic;
-using Fusion;
 using UnityEngine;
 
-public class TurnSystem : NetworkBehaviour
+public class TurnSystem : MonoBehaviour
 {
-    public static TurnSystem Instance;
+    private List<BasePlayer> players;
+    private int currentPlayerIndex = 0;
+    private bool isFinalRound = false;
 
-    [Networked][Capacity(1)] public PlayerRef CurrentPlayer { get; private set; }
-    private List<PlayerRef> PlayerOrder = new List<PlayerRef>();
-
-    public void InitializeTurns(List<RemoteBoardPlayer> remotePlayers)
+    public void InitializeTurns(List<BasePlayer> gamePlayers)
     {
-        if (!Object.HasStateAuthority) return;
+        players = gamePlayers;
+        currentPlayerIndex = 0;
+        Debug.Log("TurnSystem initialized with players.");
+    }
 
-        PlayerOrder.Clear();
+    public void StartTurn()
+    {
+        if (players == null || players.Count == 0) return;
 
-        foreach (var player in remotePlayers)
+        var currentPlayer = players[currentPlayerIndex];
+        Debug.Log($"Starting turn for Player {currentPlayer.PlayerRef.PlayerId}");
+
+        if (currentPlayer is LocalBoardPlayer localPlayer)
         {
-            PlayerOrder.Add(player.PlayerRef);
+            localPlayer.HandleInput();
         }
-
-        if (PlayerOrder.Count > 0)
-        {
-            CurrentPlayer = PlayerOrder[0];
-        }
-
-        Debug.Log("Turns initialized.");
     }
 
     public void EndTurn()
     {
-        if (!Object.HasStateAuthority) return;
+        Debug.Log($"Ending turn for Player {players[currentPlayerIndex].PlayerRef.PlayerId}");
 
-        GameSystem.Instance.CheckForVictory(CurrentPlayer);
+        if (isFinalRound && IsFinalRoundComplete())
+        {
+            Debug.Log("Final round complete.");
+            return;
+        }
 
-        int currentIndex = PlayerOrder.IndexOf(CurrentPlayer);
-        int nextIndex = (currentIndex + 1) % PlayerOrder.Count;
+        NextPlayer();
+    }
 
-        CurrentPlayer = PlayerOrder[nextIndex];
+    private void NextPlayer()
+    {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+
+        if (currentPlayerIndex == 0 && isFinalRound)
+        {
+            Debug.Log("Final round ended.");
+        }
+
+        StartTurn();
     }
 
     public void MarkFinalRound()
     {
+        isFinalRound = true;
         Debug.Log("Final round marked.");
     }
 
     public bool IsFinalRoundComplete()
     {
-        return true;
+        return isFinalRound && currentPlayerIndex == 0;
     }
 }

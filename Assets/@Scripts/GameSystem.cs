@@ -2,30 +2,28 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using UnityEngine.tvOS;
 
 public class GameSystem : NetworkBehaviour
 {
     public static GameSystem Instance;
 
-    [SerializeField] private NetworkObject remoteBoardPlayerPrefab;
+    [SerializeField] private LocalBoardPlayer localPlayerPrefab;
+    [SerializeField] private RemoteBoardPlayer remotePlayerPrefab;
 
-    public List<RemoteBoardPlayer> RemoteBoardPlayers { get; private set; } = new List<RemoteBoardPlayer>();
+    public List<BasePlayer> Players { get; private set; } = new List<BasePlayer>();
     public TurnSystem TurnSystem { get; private set; }
     public CoinSystem CoinSystem { get; private set; }
     public CardSystem CardSystem { get; private set; }
-    
     public InGameUI InGameUI { get; private set; }
 
     private bool isGameEnding = false;
 
-
-    /// <summary>
-    /// Actions
-    /// </summary>
-    public Action OngameStarted;
+    public Action OnGameStarted;
     public Action OnGameEnded;
-    public Action OnCardChanged;
+    public Action<PlayerRef, int> OnCardChanged;
     public Action<int[]> OnCoinChanged;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -51,22 +49,33 @@ public class GameSystem : NetworkBehaviour
 
         foreach (var playerRef in activePlayers)
         {
-            SpawnRemoteBoardPlayer(playerRef);
+            if (Runner.LocalPlayer == playerRef)
+                SpawnLocalPlayer(playerRef);
+            else
+                SpawnRemotePlayer(playerRef);
         }
 
-        TurnSystem.InitializeTurns(RemoteBoardPlayers);
+        TurnSystem.InitializeTurns(Players);
         CoinSystem.InitializeCentralCoins();
         InGameUI.InitializeUI();
+        OnGameStarted?.Invoke();
         Debug.Log("Game initialized.");
     }
 
-    private void SpawnRemoteBoardPlayer(PlayerRef playerRef)
+    private void SpawnLocalPlayer(PlayerRef playerRef)
     {
-        var playerObject = Runner.Spawn(remoteBoardPlayerPrefab, transform.position, Quaternion.identity, playerRef);
-        var remotePlayer = playerObject.GetComponent<RemoteBoardPlayer>();
+        var playerObject = Runner.Spawn(localPlayerPrefab, transform.position, Quaternion.identity, playerRef);
+        var player = playerObject.GetComponent<LocalBoardPlayer>();
+        player.Initialize(playerRef);
+        Players.Add(player);
+    }
 
-        remotePlayer.Initialize(playerRef);
-        RemoteBoardPlayers.Add(remotePlayer);
+    private void SpawnRemotePlayer(PlayerRef playerRef)
+    {
+        var playerObject = Runner.Spawn(remotePlayerPrefab, transform.position, Quaternion.identity, playerRef);
+        var player = playerObject.GetComponent<RemoteBoardPlayer>();
+        player.Initialize(playerRef);
+        Players.Add(player);
     }
 
     public void ModifyCentralCoins(int[] coinChanges)
@@ -76,9 +85,6 @@ public class GameSystem : NetworkBehaviour
             int newAmount = Mathf.Max(0, CoinSystem.CentralCoins[i] + coinChanges[i]);
             CoinSystem.CentralCoins.Set(i, newAmount);
         }
-
-        Debug.Log($"CentralCoins updated: {string.Join(", ", CoinSystem.CentralCoins)}");
-        RPC_UpdateCentralCoins(coinChanges);
         OnCoinChanged?.Invoke(coinChanges);
     }
 
@@ -86,36 +92,24 @@ public class GameSystem : NetworkBehaviour
     {
         if (!Object.HasStateAuthority) return;
 
-        int[] coinChanges = new int[6];
-        for (int i = 0; i < coinChanges.Length; i++)
-        {
-            coinChanges[i] = -card.cost[i];
-        }
-
-        ModifyCentralCoins(coinChanges);
-
-        // Update player state
-        var player = RemoteBoardPlayers.Find(p => p.PlayerRef == playerRef);
+        var player = Players.Find(p => p.PlayerRef == playerRef);
         if (player != null)
         {
-            player.AddCard(card.uniqueId);
-            player.ModifyCoins(coinChanges);
+            player.AddCard(card.cardType);
             player.ModifyScore(card.points);
         }
 
         Debug.Log($"Player {playerRef.PlayerId} purchased card {card.uniqueId}.");
-
-        RPC_SyncCardPurchase(playerRef, card.uniqueId, card.points);
+        OnCardChanged?.Invoke(playerRef, card.cardType);
     }
 
     public void CheckForVictory(PlayerRef currentPlayer)
     {
         if (!Object.HasStateAuthority) return;
 
-        var player = RemoteBoardPlayers.Find(p => p.PlayerRef == currentPlayer);
+        var player = Players.Find(p => p.PlayerRef == currentPlayer);
         if (player == null) return;
 
-        // Check victory conditions
         if (player.Score >= 15 && !isGameEnding)
         {
             isGameEnding = true;
@@ -131,11 +125,11 @@ public class GameSystem : NetworkBehaviour
 
     private void DetermineWinner()
     {
-        RemoteBoardPlayer winner = null;
+        BasePlayer winner = null;
         int maxScore = 0;
         int minCards = int.MaxValue;
 
-        foreach (var player in RemoteBoardPlayers)
+        foreach (var player in Players)
         {
             if (player.Score > maxScore || (player.Score == maxScore && player.OwnedCards.Length < minCards))
             {
@@ -148,53 +142,51 @@ public class GameSystem : NetworkBehaviour
         if (winner != null)
         {
             Debug.Log($"Player {winner.PlayerRef.PlayerId} wins with {maxScore} points!");
-            RPC_AnnounceWinner(winner.PlayerRef, maxScore);
+            OnGameEnded?.Invoke();
         }
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_AnnounceWinner(PlayerRef winner, int score)
-    {
-        Debug.Log($"Player {winner.PlayerId} is the winner with {score} points!");
-        // Display victory UI on clients
-    }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_RequestPurchaseCard(PlayerRef playerRef, int cardId)
-    {
-        if (!Object.HasStateAuthority) return;
-
-        var card = CardSystem.GetCardInfo(cardId);
-        HandlePurchaseRequest(playerRef, card);
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_SyncCardPurchase(PlayerRef playerRef, int cardId, int points)
-    {
-        var player = RemoteBoardPlayers.Find(p => p.PlayerRef == playerRef);
-        if (player != null)
-        {
-            player.AddCard(cardId);
-            player.ModifyScore(points);
-            player.UpdateUI();
-        }
-        
-        OnCardChanged?.Invoke();
-
-        Debug.Log($"[Client] Player {playerRef.PlayerId} purchased card {cardId}.");
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_UpdateCentralCoins(int[] coinChanges)
-    {
-        for (int i = 0; i < coinChanges.Length; i++)
-        {
-            int newAmount = Mathf.Max(0, CoinSystem.CentralCoins[i] + coinChanges[i]);
-            CoinSystem.CentralCoins.Set(i, newAmount);
-        }
-
-        OnCoinChanged?.Invoke(coinChanges);
-
-        Debug.Log($"[Client] Central Coins updated: {string.Join(", ", CoinSystem.CentralCoins)}");
-    }
+    // #region RPC Method
+    //
+    // [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    // public void RPC_RequestPurchaseCard(PlayerRef playerRef, int cardId)
+    // {
+    //     if (!Object.HasStateAuthority) return;
+    //
+    //     var card = CardSystem.GetCardInfo(cardId);
+    //     HandlePurchaseRequest(playerRef, card);
+    // }
+    //
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // private void RPC_SyncCardPurchase(PlayerRef playerRef, int cardId, int points)
+    // {
+    //     var player = Players.Find(p => p.PlayerRef == playerRef);
+    //     if (player != null)
+    //     {
+    //         player.AddCard(cardId);
+    //         player.ModifyScore(points);
+    //         player.UpdateUI();
+    //     }
+    //
+    //     OnCardChanged?.Invoke();
+    //
+    //     Debug.Log($"[Client] Player {playerRef.PlayerId} purchased card {cardId}.");
+    // }
+    //
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // private void RPC_UpdateCentralCoins(int[] coinChanges)
+    // {
+    //     for (int i = 0; i < coinChanges.Length; i++)
+    //     {
+    //         int newAmount = Mathf.Max(0, CoinSystem.CentralCoins[i] + coinChanges[i]);
+    //         CoinSystem.CentralCoins.Set(i, newAmount);
+    //     }
+    //
+    //     OnCoinChanged?.Invoke(coinChanges);
+    //
+    //     Debug.Log($"[Client] Central Coins updated: {string.Join(", ", CoinSystem.CentralCoins.ToArray())}");
+    // }
+    //
+    // #endregion
 }
