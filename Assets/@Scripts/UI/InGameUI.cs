@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.UI;
 
 public class InGameUI : MonoBehaviour
 {
-    public Transform remotePlayersConatiner;
+
+    #region Transform Holders
+
+    public Transform remotePlayersHolder;
 
     [Header("CardUI")]
     public Transform[] fieldCardTransforms;
@@ -20,6 +24,23 @@ public class InGameUI : MonoBehaviour
     public Transform[] coinsTransforms;
     public Dictionary<int, Transform> CoinsContainer = new();
     
+    #endregion
+
+    #region Prefabs
+
+    public CoinElement coinPrefab;
+    public CardElement cardPrefab;
+    public SpecialCardElement specialCardPrefab;
+
+    #endregion
+
+    #region ObjectPools
+
+    public ObjectPool<CoinElement> CoinPool;
+    public ObjectPool<CoinElement> CardPool;
+    public ObjectPool<CoinElement> SpecialPool;
+
+    #endregion
 
     [Header("LocalSelectedAsset")]
     public Transform localSelectedCoinHolder;
@@ -58,6 +79,7 @@ public class InGameUI : MonoBehaviour
     {
         endTurnButton.onClick.AddListener(GameSystem.Instance.TurnSystem.EndTurn);
         GameSystem.Instance.OnCoinChanged += DetectCoinChanges;
+        victoryPointsText.text = GameSystem.Instance.VictoryPoint.ToString();
     }
 
     public void DetectCoinChanges(int[] coinChanges)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using UnityEngine;
 using UnityEngine.tvOS;
@@ -16,10 +17,14 @@ public class GameSystem : NetworkBehaviour
     public CoinSystem CoinSystem { get; private set; }
     public CardSystem CardSystem { get; private set; }
     public InGameUI InGameUI { get; private set; }
+    
+    
+    public int VictoryPoint { get; private set; }
 
     private bool isGameEnding = false;
 
     public Action OnGameStarted;
+    public Action<PlayerRef> OnTurnEnded;
     public Action OnGameEnded;
     public Action<PlayerRef, int> OnCardChanged;
     public Action<int[]> OnCoinChanged;
@@ -88,19 +93,77 @@ public class GameSystem : NetworkBehaviour
         OnCoinChanged?.Invoke(coinChanges);
     }
 
+    public int CanPlayerPurchaseCard(PlayerRef playerRef, CardInfo card)
+    {
+        var player = Players.Find(p => p.PlayerRef == playerRef);
+        if (player == null)
+        {
+            Debug.LogError($"Player {playerRef.PlayerId} not found.");
+            return -1;
+        }
+
+        int requiredSpecialCoins = 0;
+
+        for (int i = 0; i < card.cost.Length; i++)
+        {
+            requiredSpecialCoins += Math.Max(0, card.cost[i] - player.OwnedCoins[i]);
+        }
+
+        return requiredSpecialCoins;
+    }
+
     public void HandlePurchaseRequest(PlayerRef playerRef, CardInfo card)
     {
         if (!Object.HasStateAuthority) return;
 
+        int requiredSpecialCoins = CanPlayerPurchaseCard(playerRef, card);
+        if (requiredSpecialCoins < 0)
+        {
+            Debug.Log($"Player {playerRef.PlayerId} cannot purchase card {card.uniqueId}: Validation failed.");
+            return;
+        }
+
         var player = Players.Find(p => p.PlayerRef == playerRef);
         if (player != null)
         {
+            if (requiredSpecialCoins > player.OwnedCoins.Last())
+            {
+                Debug.Log($"Player {playerRef.PlayerId} does not have enough SpecialCoins to purchase card {card.uniqueId}.");
+                return;
+            }
+
             player.AddCard(card.cardType);
             player.ModifyScore(card.points);
+
+            var coinChanges = new int[6];
+            for (int i = 0; i < card.cost.Length; i++)
+            {
+                coinChanges[i] = -card.cost[i];
+            }
+            coinChanges[5] -= requiredSpecialCoins;
+            player.ModifyCoins(coinChanges);
+            ModifyCentralCoins(coinChanges);
         }
 
         Debug.Log($"Player {playerRef.PlayerId} purchased card {card.uniqueId}.");
         OnCardChanged?.Invoke(playerRef, card.cardType);
+    }
+
+    public void HandleRserveCardRequest(PlayerRef playerRef, CardInfo card)
+    {
+        if (!Object.HasStateAuthority) return;
+        
+        var player = Players.Find(p => p.PlayerRef == playerRef);
+        if (player != null)
+        {
+            player.AddReservedeCard(card.uniqueId);
+        }
+    }
+
+    public void EndTurn(PlayerRef playerRef)
+    {
+        CheckForVictory(playerRef);
+        TurnSystem.EndTurn();
     }
 
     public void CheckForVictory(PlayerRef currentPlayer)
@@ -110,7 +173,7 @@ public class GameSystem : NetworkBehaviour
         var player = Players.Find(p => p.PlayerRef == currentPlayer);
         if (player == null) return;
 
-        if (player.Score >= 15 && !isGameEnding)
+        if (player.Score >= VictoryPoint && !isGameEnding)
         {
             isGameEnding = true;
             Debug.Log($"Player {currentPlayer.PlayerId} triggered final round!");
@@ -126,22 +189,21 @@ public class GameSystem : NetworkBehaviour
     private void DetermineWinner()
     {
         BasePlayer winner = null;
-        int maxScore = 0;
         int minCards = int.MaxValue;
 
         foreach (var player in Players)
         {
-            if (player.Score > maxScore || (player.Score == maxScore && player.OwnedCards.Length < minCards))
+            if (player.Score > VictoryPoint || (player.Score == VictoryPoint && player.OwnedCards.Length < minCards))
             {
                 winner = player;
-                maxScore = player.Score;
+                VictoryPoint = player.Score;
                 minCards = player.OwnedCards.Length;
             }
         }
 
         if (winner != null)
         {
-            Debug.Log($"Player {winner.PlayerRef.PlayerId} wins with {maxScore} points!");
+            Debug.Log($"Player {winner.PlayerRef.PlayerId} wins with {VictoryPoint} points!");
             OnGameEnded?.Invoke();
         }
     }
