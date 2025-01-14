@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -100,9 +101,36 @@ public class CardSystem : NetworkBehaviour
         }
     }
 
+    public void RemoveCardFromField(int cardId)
+    {
+        
+        var cardInfo = GetCardInfo(cardId);
+        var targetDeck = GetDecks(cardInfo.cardLevel);
+
+        for (int i = 0; i < FieldCards.Count; i++)
+        {
+            if (FieldCards[i] == cardId)
+            {
+                FieldCards.Set(i, targetDeck[0]);
+                targetDeck.Remove(targetDeck[0]);
+            }
+        }
+    }
+
     public CardInfo GetCardInfo(int cardId)
     {
         return CardModelData.instance.GetCardInfoById(cardId);
+    }
+
+    public NetworkLinkedList<int> GetDecks(int cardLevel)
+    {
+        return cardLevel switch
+        {
+            1 => Level1Deck,
+            2 => Level2Deck,
+            3 => Level3Deck,
+            _ => Level1Deck
+        };
     }
     
     public void ShuffleDeck(NetworkLinkedList<int> deck)

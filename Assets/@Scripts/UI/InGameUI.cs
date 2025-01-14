@@ -37,8 +37,8 @@ public class InGameUI : MonoBehaviour
     #region ObjectPools
 
     public ObjectPool<CoinElement> CoinPool;
-    public ObjectPool<CoinElement> CardPool;
-    public ObjectPool<CoinElement> SpecialPool;
+    public ObjectPool<CardElement> CardPool;
+    public ObjectPool<SpecialCardElement> SpecialPool;
 
     #endregion
 
@@ -52,6 +52,20 @@ public class InGameUI : MonoBehaviour
     public Button endTurnButton;
 
     private void Awake()
+    {
+        InitializeTransformContainers();
+
+        InitializeObjectPools();
+    }
+
+    public void InitializeUI()
+    {
+        endTurnButton.onClick.AddListener(GameSystem.Instance.TurnSystem.EndTurn);
+        victoryPointsText.text = GameSystem.Instance.VictoryPoint.ToString();
+        GameSystem.Instance.OnCoinChanged += DetectCoinChanges;
+    }
+
+    private void InitializeTransformContainers()
     {
         for (int i = 0; i < 3; i++)
         {
@@ -74,16 +88,39 @@ public class InGameUI : MonoBehaviour
             CoinsContainer.TryAdd(i, coinsTransforms[i]);
         }
     }
-
-    public void InitializeUI()
+    
+    private void InitializeObjectPools()
     {
-        endTurnButton.onClick.AddListener(GameSystem.Instance.TurnSystem.EndTurn);
-        GameSystem.Instance.OnCoinChanged += DetectCoinChanges;
-        victoryPointsText.text = GameSystem.Instance.VictoryPoint.ToString();
-    }
+        CoinPool = new ObjectPool<CoinElement>(
+            createFunc: () => Instantiate(coinPrefab),
+            actionOnGet: obj => obj.gameObject.SetActive(true),
+            actionOnRelease: obj => obj.gameObject.SetActive(false),
+            actionOnDestroy: Destroy,
+            defaultCapacity: 40,
+            maxSize: 40
+        );
 
+        CardPool = new ObjectPool<CardElement>(
+            createFunc: () => Instantiate(cardPrefab),
+            actionOnGet: obj => obj.gameObject.SetActive(true),
+            actionOnRelease: obj => obj.gameObject.SetActive(false),
+            actionOnDestroy: Destroy,
+            defaultCapacity: 20,
+            maxSize: 90
+        );
+
+        SpecialPool = new ObjectPool<SpecialCardElement>(
+            createFunc: () => Instantiate(specialCardPrefab),
+            actionOnGet: obj => obj.gameObject.SetActive(true),
+            actionOnRelease: obj => obj.gameObject.SetActive(false),
+            actionOnDestroy: Destroy,
+            defaultCapacity: 5,
+            maxSize: 5
+        );
+    }
+    
     public void DetectCoinChanges(int[] coinChanges)
     {
-
+        // 자식들 찾아와서 현재 코인 수 만큼 키기
     }
 }

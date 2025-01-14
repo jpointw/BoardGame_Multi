@@ -5442,7 +5442,7 @@ GameObject:
   - component: {fileID: 728978060}
   - component: {fileID: 728978059}
   m_Layer: 5
-  m_Name: PlayerOwnAssets
+  m_Name: LocalPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6770,8 +6770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e73bc5a2066fd4498769c3d893a24ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  specialCardElementPrefab: {fileID: 0}
-  cardElementPrefab: {fileID: 0}
   _FieldSpecialCards: 0000000000000000000000000000000000000000
   _FieldCards: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   _Level1Deck: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -12136,9 +12134,9 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_Spacing: 60
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -14460,7 +14458,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbfbba1c04ebc2f429de39602bef6449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  remoteBoardPlayerPrefab: {fileID: 0}
+  localPlayerPrefab: {fileID: 0}
+  remotePlayerPrefab: {fileID: 0}
 --- !u!4 &1829423301
 Transform:
   m_ObjectHideFlags: 0
