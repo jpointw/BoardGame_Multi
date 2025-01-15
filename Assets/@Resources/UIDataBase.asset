@@ -12,5 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1e64131add68534e894311d08485cf4, type: 3}
   m_Name: UIDataBase
   m_EditorClassIdentifier: 
-  coinSprites: []
-  ownAssetColors: []
+  coinSprites:
+  - {fileID: 21300000, guid: ae6dee186dce8164bb415627cf6043b5, type: 3}
+  - {fileID: 21300000, guid: b86d8c1b74c49f54d816b701b94d5a22, type: 3}
+  - {fileID: 21300000, guid: cde44127624592440902dafd138001e4, type: 3}
+  - {fileID: 21300000, guid: 82958c931ece2be4e8b319c3dd4810b0, type: 3}
+  - {fileID: 21300000, guid: 7a70b7e3fb8f6de4e8754461ba10c691, type: 3}
+  - {fileID: 21300000, guid: 08d4886e6f8c15d4c90d1bae29f7f2ad, type: 3}
+  ownAssetColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.7, g: 0.8069566, b: 1, a: 1}
+  - {r: 1, g: 0.7012578, b: 0.7012578, a: 1}
+  - {r: 0.7167967, g: 1, b: 0.7, a: 1}
+  - {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  - {r: 1, g: 0.8771933, b: 0.7, a: 1}

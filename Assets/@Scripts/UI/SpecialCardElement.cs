@@ -34,7 +34,7 @@ public class SpecialCardElement : MonoBehaviour
         {
             if (SpecialCardInfo.cost[i] > 0)
             {
-                requireCardImages[i].color = UIDataBase.instance.ownAssetColors[i];
+                requireCardImages[i].color = UIDataBase.Instance.ownAssetColors[i];
                 requireCardImages[i].GetComponentInChildren<TMP_Text>().text = SpecialCardInfo.cost[i].ToString();
                 requireCardImages[i].gameObject.SetActive(true);
             }

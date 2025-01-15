@@ -32,7 +32,7 @@ public class CardElement : MonoBehaviour
         CardInfo = cardInfo;
         IsPurchased = false;
         cardPointText.text = cardInfo.points.ToString();
-        cardTypeImage.sprite = UIDataBase.instance.coinSprites[cardInfo.cardType];
+        cardTypeImage.sprite = UIDataBase.Instance.coinSprites[cardInfo.cardType];
         SetRequireCoinUIs();
         ExtraActionGameObject.SetActive(false);
         ThisButton.onClick.AddListener(OnCardElementClicked);

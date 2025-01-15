@@ -119,10 +119,6 @@ public class InGameUI : MonoBehaviour
         );
     }
 
-    private void OnServerInitialized()
-    {
-        throw new NotImplementedException();
-    }
 
     public void DetectCoinChanges(int[] coinChanges)
     {
@@ -145,8 +141,8 @@ public class InGameUI : MonoBehaviour
         }
     }
 
-    public void ShowReservedCardsDetail()
+    public void ShowReservedCardsDetail(CardInfo[] cardInfos)
     {
-        reservedCardDetailUI.Open();
+        reservedCardDetailUI.Open(cardInfos);
     }
 }
