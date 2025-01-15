@@ -48,8 +48,6 @@ public class InGameUI : MonoBehaviour
     
     [Header("MenuSide")]
     public TMP_Text victoryPointsText;
-    
-    public Button endTurnButton;
 
     private void Awake()
     {
@@ -60,7 +58,6 @@ public class InGameUI : MonoBehaviour
 
     public void InitializeUI()
     {
-        endTurnButton.onClick.AddListener(GameSystem.Instance.TurnSystem.EndTurn);
         victoryPointsText.text = GameSystem.Instance.VictoryPoint.ToString();
         GameSystem.Instance.OnCoinChanged += DetectCoinChanges;
     }

@@ -149,7 +149,7 @@ public class GameSystem : NetworkBehaviour
         OnCardChanged?.Invoke(playerRef, card.cardType);
     }
 
-    public void HandleRserveCardRequest(PlayerRef playerRef, CardInfo card)
+    public void HandleReserveCardRequest(PlayerRef playerRef, CardInfo card)
     {
         if (!Object.HasStateAuthority) return;
         

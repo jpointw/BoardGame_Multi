@@ -1,14 +1,21 @@
 using System;
 using Fusion;
+using UnityEngine.UI;
 
 public class LocalBoardPlayer : BasePlayer
 {
-    [Networked,OnChangedRender(nameof(OnCardsChanged))]
-    [Capacity(3)]
-    public NetworkArray<int> ReservedCards { get; } = default;
 
     public bool interactEnabled = false;
     
+    public Button EndTurnButton;
+
+
+    public override void Initialize(PlayerRef playerRef)
+    {
+        base.Initialize(playerRef);
+        EndTurnButton.onClick.AddListener(EndTurn);
+    }
+
     public int CanCardPurchase(CardInfo card)
     {
         int requireSpecialCoins = 0;
@@ -21,12 +28,16 @@ public class LocalBoardPlayer : BasePlayer
         return requireSpecialCoins;
     }
     
-    
-    
-    private void RequestPurchaseCard(int cardId)
+    public void RequestPurchaseCard(CardInfo cardInfo)
     {
         if (!Object.HasInputAuthority) return;
+        GameSystem.Instance.HandlePurchaseRequest(PlayerRef, cardInfo);
+    }
 
+    public void RequestReserveCard(CardInfo cardInfo)
+    {
+        if (!Object.HasInputAuthority) return;
+        GameSystem.Instance.HandleReserveCardRequest(PlayerRef, cardInfo);
     }
 
     private void EndTurn()
@@ -34,6 +45,7 @@ public class LocalBoardPlayer : BasePlayer
         if (!Object.HasInputAuthority) return;
 
         interactEnabled = false;
+        GameSystem.Instance.EndTurn(PlayerRef);
     }
 
     public void HandleInput()

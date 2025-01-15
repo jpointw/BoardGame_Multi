@@ -106,6 +106,7 @@ public class CardSystem : NetworkBehaviour
         
         var cardInfo = GetCardInfo(cardId);
         var targetDeck = GetDecks(cardInfo.cardLevel);
+        var targetCard = targetDeck.Get(cardId);
 
         for (int i = 0; i < FieldCards.Count; i++)
         {

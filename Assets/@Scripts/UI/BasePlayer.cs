@@ -32,7 +32,7 @@ public abstract class BasePlayer : NetworkBehaviour
     
     [SerializeField] protected Image[] playerReservedCardsImages;
     
-    public void Initialize(PlayerRef playerRef)
+    public virtual void Initialize(PlayerRef playerRef)
     {
         PlayerRef = playerRef;
     }
