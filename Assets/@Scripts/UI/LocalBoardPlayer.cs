@@ -28,10 +28,10 @@ public class LocalBoardPlayer : BasePlayer
         return requireSpecialCoins;
     }
     
-    public void RequestPurchaseCard(CardInfo cardInfo)
+    public void RequestPurchaseCard(CardElement cardElement)
     {
         if (!Object.HasInputAuthority) return;
-        GameSystem.Instance.HandlePurchaseRequest(PlayerRef, cardInfo);
+        GameSystem.Instance.HandlePurchaseRequest(PlayerRef, cardElement);
     }
 
     public void RequestReserveCard(CardInfo cardInfo)

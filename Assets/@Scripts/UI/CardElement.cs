@@ -65,7 +65,7 @@ public class CardElement : MonoBehaviour
 
     public void OnPurchaseButtonClicked()
     {
-        _localBoardPlayer.RequestPurchaseCard(CardInfo);
+        _localBoardPlayer.RequestPurchaseCard(this);
     }
 
     public void OnReserveButtonClicked()

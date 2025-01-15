@@ -4,17 +4,31 @@ using UnityEngine.UI;
 
 public class ReservedCardDetailUI : MonoBehaviour
 {
-    public Button closeButton;
-    
-    public Button
+    public Button[] closeButtons;
+
+    /// <summary>
+    /// Max Count 3
+    /// </summary>
+    public Image[] reservedCardImages;
+    public Button[] purchaseButtons;
     void Start()
+    {
+        foreach (var closeButton in closeButtons)
+        {
+            closeButton.onClick.AddListener(() => { this.gameObject.SetActive(false); });
+        }
+    }
+
+    public void Open()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // public void Init()
+    // {
+    //     for (int i = 0; i < 3; i++)
+    //     {
+    //         reservedCardImages
+    //     }
+    // }
 }

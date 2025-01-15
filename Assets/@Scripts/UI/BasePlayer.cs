@@ -78,17 +78,6 @@ public abstract class BasePlayer : NetworkBehaviour
         }
     }
 
-    public virtual void RemoteReservedeCard(int cardId)
-    {
-        for (int i = 0; i < ReservedCards.Length; i++)
-        {
-            if (ReservedCards[i] == cardId)
-            {
-                ReservedCards.Set(i, -1);
-            }
-        }
-    }
-
     public void OnScoreChanged()
     {
         UpdateScoreUI();

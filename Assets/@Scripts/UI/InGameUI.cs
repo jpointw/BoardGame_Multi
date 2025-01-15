@@ -41,6 +41,8 @@ public class InGameUI : MonoBehaviour
     public ObjectPool<SpecialCardElement> SpecialPool;
 
     #endregion
+    
+    public ReservedCardDetailUI reservedCardDetailUI;
 
     [Header("LocalSelectedAsset")]
     public Transform localSelectedCoinHolder;
@@ -59,7 +61,9 @@ public class InGameUI : MonoBehaviour
     public void InitializeUI()
     {
         victoryPointsText.text = GameSystem.Instance.VictoryPoint.ToString();
+        
         GameSystem.Instance.OnCoinChanged += DetectCoinChanges;
+        GameSystem.Instance.OnCoinChanged += UpdateCoinTexts;
     }
 
     private void InitializeTransformContainers()
@@ -69,8 +73,7 @@ public class InGameUI : MonoBehaviour
             Transform[] tempTransforms = {
                 fieldCardTransforms[(i * 4) + i],
                 fieldCardTransforms[(i * 4) + i + 1],
-                fieldCardTransforms[(i * 4) + i + 2],
-                fieldCardTransforms[(i * 4) + i + 3]
+                fieldCardTransforms[(i * 4) + i + 2]
             };
             FieldCardLevelContainer.TryAdd(i, tempTransforms);
         }
@@ -115,9 +118,35 @@ public class InGameUI : MonoBehaviour
             maxSize: 5
         );
     }
-    
+
+    private void OnServerInitialized()
+    {
+        throw new NotImplementedException();
+    }
+
     public void DetectCoinChanges(int[] coinChanges)
     {
-        // 자식들 찾아와서 현재 코인 수 만큼 키기
+        for (int i = 0; i < coinChanges.Length; i++)
+        {
+            var coinImages = CoinsContainer[i].GetComponentsInChildren<Image>();
+
+            for (int j = 0; j < coinImages.Length; j++)
+            {
+                coinImages[j].enabled = j < coinChanges[i];
+            }
+        }
+    }
+
+    public void UpdateCoinTexts(int[] coins)
+    {
+        for (int i = 0; i < coins.Length; i++)
+        {
+            CoinsContainer[i].GetComponentInChildren<TMP_Text>().text = coins[i].ToString();
+        }
+    }
+
+    public void ShowReservedCardsDetail()
+    {
+        reservedCardDetailUI.Open();
     }
 }

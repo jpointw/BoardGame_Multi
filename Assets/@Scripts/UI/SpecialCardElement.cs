@@ -11,8 +11,6 @@ public class SpecialCardElement : MonoBehaviour
     public SpecialCardInfo SpecialCardInfo { get; private set; }
     public bool IsPurchased { get; private set; }
     
-    public Button Button { get; private set; }
-    
     public TMP_Text cardPointText;
     
     public Image[] requireCardImages;

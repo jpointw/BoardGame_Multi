@@ -101,16 +101,13 @@ public class CardSystem : NetworkBehaviour
         }
     }
 
-    public void RemoveCardFromField(int cardId)
+    public void RemoveCardFromField(CardInfo cardInfo)
     {
-        
-        var cardInfo = GetCardInfo(cardId);
-        var targetDeck = GetDecks(cardInfo.cardLevel);
-        var targetCard = targetDeck.Get(cardId);
+        var targetDeck = GetDecks(cardInfo.cardLevel);;
 
         for (int i = 0; i < FieldCards.Count; i++)
         {
-            if (FieldCards[i] == cardId)
+            if (FieldCards[i] == cardInfo.uniqueId)
             {
                 FieldCards.Set(i, targetDeck[0]);
                 targetDeck.Remove(targetDeck[0]);

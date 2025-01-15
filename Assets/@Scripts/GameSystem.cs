@@ -23,11 +23,13 @@ public class GameSystem : NetworkBehaviour
 
     private bool isGameEnding = false;
 
-    public Action OnGameStarted;
-    public Action<PlayerRef> OnTurnEnded;
-    public Action OnGameEnded;
-    public Action<PlayerRef, int> OnCardChanged;
-    public Action<int[]> OnCoinChanged;
+    public event Action OnGameStarted;
+    public event Action<PlayerRef> OnTurnEnded;
+    public event Action OnGameEnded;
+
+    public event Action<int, Transform> OnCardRemoved;
+    public event Action<int, Transform> OnCardAdded;
+    public event Action<int[]> OnCoinChanged;
 
     private void Awake()
     {
@@ -112,41 +114,38 @@ public class GameSystem : NetworkBehaviour
         return requiredSpecialCoins;
     }
 
-    public void HandlePurchaseRequest(PlayerRef playerRef, CardInfo card)
+    public void HandlePurchaseRequest(PlayerRef playerRef, CardElement cardElement)
     {
         if (!Object.HasStateAuthority) return;
 
-        int requiredSpecialCoins = CanPlayerPurchaseCard(playerRef, card);
-        if (requiredSpecialCoins < 0)
-        {
-            Debug.Log($"Player {playerRef.PlayerId} cannot purchase card {card.uniqueId}: Validation failed.");
-            return;
-        }
-
+        var card = cardElement.CardInfo;
+        
+        var requiredSpecialCoins = CanPlayerPurchaseCard(playerRef, card);
+        
         var player = Players.Find(p => p.PlayerRef == playerRef);
         if (player != null)
         {
-            if (requiredSpecialCoins > player.OwnedCoins.Last())
-            {
-                Debug.Log($"Player {playerRef.PlayerId} does not have enough SpecialCoins to purchase card {card.uniqueId}.");
-                return;
-            }
 
             player.AddCard(card.cardType);
             player.ModifyScore(card.points);
 
-            var coinChanges = new int[6];
+            var coinChangesForPlayer = new int[6];
+            var coinChangesForServer = new int[6];
+            
             for (int i = 0; i < card.cost.Length; i++)
             {
-                coinChanges[i] = -card.cost[i];
+                coinChangesForPlayer[i] = -card.cost[i];
+                coinChangesForServer[i] = card.cost[i];
             }
-            coinChanges[5] -= requiredSpecialCoins;
-            player.ModifyCoins(coinChanges);
-            ModifyCentralCoins(coinChanges);
+            coinChangesForPlayer[5] = -requiredSpecialCoins;
+            coinChangesForServer[5] = requiredSpecialCoins;
+            player.ModifyCoins(coinChangesForPlayer);
+            ModifyCentralCoins(coinChangesForServer);
         }
 
+        CardSystem.RemoveCardFromField(card);
+        
         Debug.Log($"Player {playerRef.PlayerId} purchased card {card.uniqueId}.");
-        OnCardChanged?.Invoke(playerRef, card.cardType);
     }
 
     public void HandleReserveCardRequest(PlayerRef playerRef, CardInfo card)
@@ -164,6 +163,8 @@ public class GameSystem : NetworkBehaviour
     {
         CheckForVictory(playerRef);
         TurnSystem.EndTurn();
+        
+        OnTurnEnded?.Invoke(playerRef);
     }
 
     public void CheckForVictory(PlayerRef currentPlayer)
