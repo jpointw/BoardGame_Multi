@@ -93,6 +93,7 @@ public class CardElement : MonoBehaviour
         {
             if (CardInfo.cost[i] > 0)
             {
+                requireCoinImages[i].sprite = UIDataBase.Instance.coinSprites[CardInfo.cost[i]];
                 requireCoinImages[i].GetComponentInChildren<TMP_Text>().text = CardInfo.cost[i].ToString();
                 requireCoinImages[i].gameObject.SetActive(true);
             }
