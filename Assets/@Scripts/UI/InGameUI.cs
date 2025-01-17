@@ -11,7 +11,9 @@ public class InGameUI : MonoBehaviour
 
     #region Transform Holders
 
-    public Transform remotePlayersHolder;
+    //리모트 유저들 UI
+    public Transform remotePlayersHolder; 
+    //로컬 유저 UI
     public Transform localPlayerHolder;
 
     [Header("CardUI")]
@@ -114,8 +116,11 @@ public class InGameUI : MonoBehaviour
             maxSize: 5
         );
     }
-    
-    public void 
+
+    public void DetectCardChanges()
+    {
+        
+    }
 
 
     public void DetectCoinChanges(int[] coinChanges)

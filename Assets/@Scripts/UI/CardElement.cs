@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Doozy.Runtime.UIManager.Components;
 using Fusion;
 using TMPro;
 using UnityEngine;
@@ -12,13 +13,13 @@ public class CardElement : MonoBehaviour
     private LocalBoardPlayer _localBoardPlayer =null;
     public CardInfo CardInfo { get; private set; }
     public bool IsPurchased { get; private set; }
-    
-    public Button ThisButton { get; private set; }
+
+    public UIToggle ThisToggle;
 
     #region ExtraAction Fields
-    public GameObject ExtraActionGameObject { get; private set; }
-    public Button PurchaseButton { get; private set; }
-    public Button ReserveButton { get; private set; }
+
+    public UIButton PurchaseButton;
+    public UIButton ReserveButton;
     #endregion
     
     
@@ -34,11 +35,10 @@ public class CardElement : MonoBehaviour
         cardPointText.text = cardInfo.points.ToString();
         cardTypeImage.sprite = UIDataBase.Instance.coinSprites[cardInfo.cardType];
         SetRequireCoinUIs();
-        ExtraActionGameObject.SetActive(false);
-        ThisButton.onClick.AddListener(OnCardElementClicked);
+        ThisToggle.onClickEvent.AddListener(OnCardElementClicked);
         
-        PurchaseButton.onClick.AddListener(OnPurchaseButtonClicked);
-        ReserveButton.onClick.AddListener(OnReserveButtonClicked);
+        PurchaseButton.onClickEvent.AddListener(OnPurchaseButtonClicked);
+        ReserveButton.onClickEvent.AddListener(OnReserveButtonClicked);
 
         if (_localBoardPlayer == null)
         {
@@ -51,16 +51,8 @@ public class CardElement : MonoBehaviour
 
     public void OnCardElementClicked()
     {
-        if (ExtraActionGameObject.activeSelf)
-        {
-            ExtraActionGameObject.SetActive(false);
-        }
-        else
-        {
             PurchaseButton.interactable = CheckAvailablePurchase();
             ReserveButton.interactable = CheckAvailableReserve();
-            ExtraActionGameObject.SetActive(true);
-        }
     }
 
     public void OnPurchaseButtonClicked()

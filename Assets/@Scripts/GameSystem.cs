@@ -26,9 +26,6 @@ public class GameSystem : NetworkBehaviour
     public event Action OnGameStarted;
     public event Action<PlayerRef> OnTurnEnded;
     public event Action OnGameEnded;
-
-    public event Action<int, Transform> OnCardRemoved;
-    public event Action<int, Transform> OnCardAdded;
     public event Action<int[]> OnCoinChanged;
 
     private void Awake()
