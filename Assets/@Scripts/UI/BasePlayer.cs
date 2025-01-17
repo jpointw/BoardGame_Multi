@@ -119,7 +119,7 @@ public abstract class BasePlayer : NetworkBehaviour
         {
             if (i < OwnedCoins.Length)
             {
-                playerCoinsTexts[i].text = OwnedCoins[i].ToString();
+                playerCoinsTexts[i].text = OwnedCoins[i] > 0 ? OwnedCoins[i].ToString() : "";
                 playerCoinsImages[i].enabled = OwnedCoins[i] > 0;
             }
             else

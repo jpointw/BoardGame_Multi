@@ -87,11 +87,7 @@ public class GameSystem : NetworkBehaviour
 
     public void ModifyCentralCoins(int[] coinChanges)
     {
-        for (int i = 0; i < coinChanges.Length; i++)
-        {
-            int newAmount = Mathf.Max(0, CoinSystem.CentralCoins[i] + coinChanges[i]);
-            CoinSystem.CentralCoins.Set(i, newAmount);
-        }
+        CoinSystem.ModifyCentralCoins(coinChanges);
         OnCoinChanged?.Invoke(coinChanges);
     }
 

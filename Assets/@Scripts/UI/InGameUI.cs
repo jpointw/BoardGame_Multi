@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Doozy.Runtime.UIManager.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -11,6 +12,7 @@ public class InGameUI : MonoBehaviour
     #region Transform Holders
 
     public Transform remotePlayersHolder;
+    public Transform localPlayerHolder;
 
     [Header("CardUI")]
     public Transform[] fieldCardTransforms;
@@ -21,8 +23,7 @@ public class InGameUI : MonoBehaviour
     
     public Transform[] specialCardsContainer;
     [Header("CoinUI")]
-    public Transform[] coinsTransforms;
-    public Dictionary<int, Transform> CoinsContainer = new();
+    public UIButton[] coinButtons;
     
     #endregion
 
@@ -82,11 +83,6 @@ public class InGameUI : MonoBehaviour
         {
             DummyCardLevelContainer.TryAdd(i, dummyCardObjects[i]);
         }
-
-        for (int i = 0; i < 6; i++)
-        {
-            CoinsContainer.TryAdd(i, coinsTransforms[i]);
-        }
     }
     
     private void InitializeObjectPools()
@@ -118,26 +114,20 @@ public class InGameUI : MonoBehaviour
             maxSize: 5
         );
     }
+    
+    public void 
 
 
     public void DetectCoinChanges(int[] coinChanges)
     {
-        for (int i = 0; i < coinChanges.Length; i++)
-        {
-            var coinImages = CoinsContainer[i].GetComponentsInChildren<Image>();
-
-            for (int j = 0; j < coinImages.Length; j++)
-            {
-                coinImages[j].enabled = j < coinChanges[i];
-            }
-        }
+        
     }
 
     public void UpdateCoinTexts(int[] coins)
     {
         for (int i = 0; i < coins.Length; i++)
         {
-            CoinsContainer[i].GetComponentInChildren<TMP_Text>().text = coins[i].ToString();
+            coinButtons[i].GetComponentInChildren<TMP_Text>().text = coins[i].ToString();
         }
     }
 

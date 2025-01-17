@@ -1,4 +1,5 @@
 using System;
+using Doozy.Runtime.UIManager.Components;
 using Fusion;
 using UnityEngine.UI;
 
@@ -7,13 +8,15 @@ public class LocalBoardPlayer : BasePlayer
 
     public bool interactEnabled = false;
     
-    public Button EndTurnButton;
+    public UIButton ReservedCardButton;
+    
+    public UIButton EndTurnButton;
 
 
     public override void Initialize(PlayerRef playerRef)
     {
         base.Initialize(playerRef);
-        EndTurnButton.onClick.AddListener(EndTurn);
+        EndTurnButton.onClickEvent.AddListener(EndTurn);
     }
 
     public int CanCardPurchase(CardInfo card)
@@ -38,6 +41,12 @@ public class LocalBoardPlayer : BasePlayer
     {
         if (!Object.HasInputAuthority) return;
         GameSystem.Instance.HandleReserveCardRequest(PlayerRef, cardInfo);
+    }
+
+    public void OpenReservedCardPanel()
+    {
+        if (!Object.HasInputAuthority) return;
+        
     }
 
     private void EndTurn()
