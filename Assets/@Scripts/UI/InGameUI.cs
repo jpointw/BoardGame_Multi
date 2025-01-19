@@ -20,18 +20,14 @@ public class InGameUI : MonoBehaviour
     public Transform[] fieldCardTransforms;
     public Dictionary<int, Transform[]> FieldCardLevelContainer = new();
     
-    public Dictionary<int, Transform> Level1Slots = new Dictionary<int, Transform>();
-    public Dictionary<int, Transform> Level2Slots = new Dictionary<int, Transform>();
-    public Dictionary<int, Transform> Level3Slots = new Dictionary<int, Transform>();
-    
-    
+    public Dictionary<(int, Transform), CardElement> fieldCardElements = new();
     
     public Transform[] dummyCardObjects;
     public Dictionary<int, Transform> DummyCardLevelContainer = new();
     
     public Transform[] specialCardsContainer;
     [Header("CoinUI")]
-    public UIButton[] coinButtons;
+    public CoinElement[] coinElements;
     
     #endregion
 
@@ -45,24 +41,23 @@ public class InGameUI : MonoBehaviour
 
     #region ObjectPools
 
-    public ObjectPool<CoinElement> CoinPool;
+    public ObjectPool<CoinElement> AnimationCoinPool;
     public ObjectPool<CardElement> CardPool;
     public ObjectPool<SpecialCardElement> SpecialPool;
 
     #endregion
     
     public ReservedCardDetailUI reservedCardDetailUI;
-
-    [Header("LocalSelectedAsset")]
-    public Transform localSelectedCoinHolder;
-    public GameObject[] localSelectedCards;
+    public MenuUI menuUI;
+    public ResultUI resultUI;
     
     [Header("MenuSide")]
     public TMP_Text victoryPointsText;
+    public UIButton menuButton;
 
     private void Awake()
     {
-        InitializeTransformContainers();
+        // InitializeTransformContainers();
 
         InitializeObjectPools();
     }
@@ -70,32 +65,47 @@ public class InGameUI : MonoBehaviour
     public void InitializeUI()
     {
         victoryPointsText.text = GameSystem.Instance.VictoryPoint.ToString();
+
+        var fieldCards = GameSystem.Instance.CardSystem.FieldCards;
+        var cardData = CardModelData.Instance;
         
-        GameSystem.Instance.OnCoinChanged += DetectCoinChanges;
+        for (int i = 0; i < fieldCards.Count; i++)
+        {
+            var cardElement = Instantiate(cardPrefab, fieldCardTransforms[i]);
+            cardElement.GetComponent<CardElement>().InitializeCard(cardData.GetCardInfoById(fieldCards[i]));
+        }
+
+        var fieldSpecialCards = GameSystem.Instance.CardSystem.FieldSpecialCards;
+
+        for (int i = 0; i < fieldSpecialCards; i++)
+        {
+            
+        }
+        
         GameSystem.Instance.OnCoinChanged += UpdateCoinTexts;
     }
 
     private void InitializeTransformContainers()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            Transform[] tempTransforms = {
-                fieldCardTransforms[(i * 4) + i],
-                fieldCardTransforms[(i * 4) + i + 1],
-                fieldCardTransforms[(i * 4) + i + 2]
-            };
-            FieldCardLevelContainer.TryAdd(i, tempTransforms);
-        }
+        // for (int i = 0; i < 3; i++)
+        // {
+        //     Transform[] tempTransforms = {
+        //         fieldCardTransforms[(i * 4) + i],
+        //         fieldCardTransforms[(i * 4) + i + 1],
+        //         fieldCardTransforms[(i * 4) + i + 2]
+        //     };
+        //     FieldCardLevelContainer.TryAdd(i, tempTransforms);
+        // }
 
-        for (int i = 0; i < 3; i++)
-        {
-            DummyCardLevelContainer.TryAdd(i, dummyCardObjects[i]);
-        }
+        // for (int i = 0; i < 3; i++)
+        // {
+        //     DummyCardLevelContainer.TryAdd(i, dummyCardObjects[i]);
+        // }
     }
     
     private void InitializeObjectPools()
     {
-        CoinPool = new ObjectPool<CoinElement>(
+        AnimationCoinPool = new ObjectPool<CoinElement>(
             createFunc: () => Instantiate(coinPrefab),
             actionOnGet: obj =>
             {
@@ -112,20 +122,9 @@ public class InGameUI : MonoBehaviour
 
         CardPool = new ObjectPool<CardElement>(
             createFunc: () => Instantiate(cardPrefab),
-            actionOnGet: obj => obj.gameObject.SetActive(true),
-            actionOnRelease: obj => obj.gameObject.SetActive(false),
             actionOnDestroy: Destroy,
             defaultCapacity: 20,
             maxSize: 90
-        );
-
-        SpecialPool = new ObjectPool<SpecialCardElement>(
-            createFunc: () => Instantiate(specialCardPrefab),
-            actionOnGet: obj => obj.gameObject.SetActive(true),
-            actionOnRelease: obj => obj.gameObject.SetActive(false),
-            actionOnDestroy: Destroy,
-            defaultCapacity: 5,
-            maxSize: 5
         );
     }
 
@@ -135,7 +134,12 @@ public class InGameUI : MonoBehaviour
     }
 
 
-    public void DetectCoinChanges(int[] coinChanges)
+    public void DetectCoinChanges(int[] coinChanges,Transform startTransform)
+    {
+        
+    }
+
+    private void CoinAnimationStart(int coinType, Transform startTransform)
     {
         
     }
@@ -144,12 +148,17 @@ public class InGameUI : MonoBehaviour
     {
         for (int i = 0; i < coins.Length; i++)
         {
-            coinButtons[i].GetComponentInChildren<TMP_Text>().text = coins[i].ToString();
+            coinElements[i].GetComponentInChildren<TMP_Text>().text = coins[i].ToString();
         }
     }
 
     public void ShowReservedCardsDetail(int[] cardInfos)
     {
         reservedCardDetailUI.Open(cardInfos);
+    }
+
+    public void ShowMenuPopup()
+    {
+        menuUI.Open();
     }
 }

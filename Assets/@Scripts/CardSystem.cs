@@ -25,28 +25,27 @@ public class CardSystem : NetworkBehaviour
 
     [Networked][Capacity(20)] public NetworkLinkedList<int> Level3Deck { get; }
         = default;
-
-
-    private int playerAmount;
-
+    
     public void InitializeDecks()
     {
-        InitializeDeck(Level1Deck, 0);
-        InitializeDeck(Level2Deck, 1);
+        FieldCards.Clear();
+        
         InitializeDeck(Level3Deck, 2);
+        InitializeDeck(Level2Deck, 1);
+        InitializeDeck(Level1Deck, 0);
         
         InitializeSpecialCards(FieldSpecialCards);
 
         
-        for (var index = 0; index < CardModelData.instance.specialCardInfos.Length; index++)
+        for (var index = 0; index < CardModelData.Instance.specialCardInfos.Length; index++)
         {
-            var specialCard = CardModelData.instance.specialCardInfos[index];
+            var specialCard = CardModelData.Instance.specialCardInfos[index];
             FieldSpecialCards.Add(specialCard.uniqueId);
         }
 
-        ShuffleDeck(Level1Deck);
-        ShuffleDeck(Level2Deck);
         ShuffleDeck(Level3Deck);
+        ShuffleDeck(Level2Deck);
+        ShuffleDeck(Level1Deck);
 
         InitializeField();
         Debug.Log("Decks initialized and shuffled.");
@@ -56,7 +55,7 @@ public class CardSystem : NetworkBehaviour
     
     private void InitializeDeck(NetworkLinkedList<int> deck, int level)
     {
-        var cards = CardModelData.instance.GetCardsArrayByLevel(level);
+        var cards = CardModelData.Instance.GetCardsArrayByLevel(level);
         for (int index = 0; index < cards.Length; index++)
         {
             deck.Set(index, cards[index].uniqueId);
@@ -65,7 +64,7 @@ public class CardSystem : NetworkBehaviour
 
     private void InitializeSpecialCards(NetworkLinkedList<int> specialCards)
     {
-        var cards = CardModelData.instance.specialCardInfos;
+        var cards = CardModelData.Instance.specialCardInfos;
         for (int index = 0; index < cards.Length; index++)
         {
             specialCards.Set(index, cards[index].uniqueId);
@@ -75,12 +74,9 @@ public class CardSystem : NetworkBehaviour
 
     public void InitializeField()
     {
-        for (int i = 0; i < 4; i++)
-        {
-            AddCardToField(Level1Deck);
-            AddCardToField(Level2Deck);
-            AddCardToField(Level3Deck);
-        }
+        for (int i = 0; i < 4; i++) AddCardToField(Level3Deck);
+        for (int i = 0; i < 4; i++) AddCardToField(Level2Deck);
+        for (int i = 0; i < 4; i++) AddCardToField(Level1Deck);
     }
 
     public void AddCardToField(NetworkLinkedList<int> deck)
@@ -108,7 +104,7 @@ public class CardSystem : NetworkBehaviour
 
     public CardInfo GetCardInfo(int cardId)
     {
-        return CardModelData.instance.GetCardInfoById(cardId);
+        return CardModelData.Instance.GetCardInfoById(cardId);
     }
 
     public NetworkLinkedList<int> GetDecks(int cardLevel)

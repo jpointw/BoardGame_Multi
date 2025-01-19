@@ -10,7 +10,7 @@ using static Define;
 [CreateAssetMenu(fileName = "CardModelData", menuName = "Scriptable Objects/CardModelData")]
 public class CardModelData : ScriptableObject
 {
-    public static CardModelData instance;
+    public static CardModelData Instance;
     
     public CardInfo[] cardInfos;
     public SpecialCardInfo[] specialCardInfos;
@@ -27,9 +27,9 @@ public class CardModelData : ScriptableObject
 
     private void OnEnable()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {

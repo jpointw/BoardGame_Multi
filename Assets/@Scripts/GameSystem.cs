@@ -59,6 +59,8 @@ public class GameSystem : NetworkBehaviour
                 SpawnRemotePlayer(playerRef);
         }
 
+        
+        
         TurnSystem.InitializeTurns(Players);
         CoinSystem.InitializeCentralCoins();
         CardSystem.InitializeDecks();
@@ -213,7 +215,6 @@ public class GameSystem : NetworkBehaviour
             if (player.Score > VictoryPoint || (player.Score == VictoryPoint && player.OwnedCards.Length < minCards))
             {
                 winner = player;
-                VictoryPoint = player.Score;
                 minCards = player.OwnedCards.Length;
             }
         }

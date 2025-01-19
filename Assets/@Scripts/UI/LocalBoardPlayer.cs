@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Doozy.Runtime.UIManager.Components;
 using Fusion;
+using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -12,8 +13,10 @@ public class LocalBoardPlayer : BasePlayer
     public bool interactEnabled = false;
 
     public int[] selectedCoins = new int[]{0,0,0,0,0,0};
+
+    public Transform selectedCoinHolder;
     
-    public UIButton[] SelectedCoinButton;
+    public UIButton[] selectedCoinsButtons;
     
     public UIButton ReservedCardButton;
     

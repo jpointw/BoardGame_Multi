@@ -12,13 +12,10 @@ public class CoinElement : MonoBehaviour
     public int CoinType = 0;
 
     public UIButton ThisButton;
-    public TMP_Text coinAmountText;
-    public Image coinImage;
 
     public void InitializeCoin()
     {
-        coinAmountText.text = "0";
-
+        ThisButton ??= GetComponent<UIButton>();
         ThisButton.onClickEvent.AddListener(OnCoinElementClicked);
 
         if (_localBoardPlayer == null)
