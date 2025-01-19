@@ -26,16 +26,6 @@ public class CardSystem : NetworkBehaviour
     [Networked][Capacity(20)] public NetworkLinkedList<int> Level3Deck { get; }
         = default;
 
-    public override void Spawned()
-    {
-        
-        if (Object.HasStateAuthority)
-        {
-            InitializeDecks();
-            InitializeField();
-        }
-    }
-
 
     private int playerAmount;
 
@@ -58,6 +48,7 @@ public class CardSystem : NetworkBehaviour
         ShuffleDeck(Level2Deck);
         ShuffleDeck(Level3Deck);
 
+        InitializeField();
         Debug.Log("Decks initialized and shuffled.");
     }
 

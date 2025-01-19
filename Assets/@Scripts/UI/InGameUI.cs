@@ -19,7 +19,13 @@ public class InGameUI : MonoBehaviour
     [Header("CardUI")]
     public Transform[] fieldCardTransforms;
     public Dictionary<int, Transform[]> FieldCardLevelContainer = new();
-
+    
+    public Dictionary<int, Transform> Level1Slots = new Dictionary<int, Transform>();
+    public Dictionary<int, Transform> Level2Slots = new Dictionary<int, Transform>();
+    public Dictionary<int, Transform> Level3Slots = new Dictionary<int, Transform>();
+    
+    
+    
     public Transform[] dummyCardObjects;
     public Dictionary<int, Transform> DummyCardLevelContainer = new();
     
@@ -91,8 +97,14 @@ public class InGameUI : MonoBehaviour
     {
         CoinPool = new ObjectPool<CoinElement>(
             createFunc: () => Instantiate(coinPrefab),
-            actionOnGet: obj => obj.gameObject.SetActive(true),
-            actionOnRelease: obj => obj.gameObject.SetActive(false),
+            actionOnGet: obj =>
+            {
+                obj.gameObject.SetActive(true);
+            },
+            actionOnRelease: obj =>
+            {
+                obj.gameObject.SetActive(false);
+            },
             actionOnDestroy: Destroy,
             defaultCapacity: 40,
             maxSize: 40
@@ -136,7 +148,7 @@ public class InGameUI : MonoBehaviour
         }
     }
 
-    public void ShowReservedCardsDetail(CardInfo[] cardInfos)
+    public void ShowReservedCardsDetail(int[] cardInfos)
     {
         reservedCardDetailUI.Open(cardInfos);
     }

@@ -19,7 +19,7 @@ public class ReservedCardDetailUI : MonoBehaviour
         }
     }
 
-    public void Open(CardInfo[] cards)
+    public void Open(int[] cards)
     {
         for (int i = 0; i < cards.Length; i++)
         {

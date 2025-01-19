@@ -61,6 +61,7 @@ public class GameSystem : NetworkBehaviour
 
         TurnSystem.InitializeTurns(Players);
         CoinSystem.InitializeCentralCoins();
+        CardSystem.InitializeDecks();
         InGameUI.InitializeUI();
         OnGameStarted?.Invoke();
         Debug.Log("Game initialized.");
@@ -141,6 +142,28 @@ public class GameSystem : NetworkBehaviour
         Debug.Log($"Player {playerRef.PlayerId} purchased card {card.uniqueId}.");
     }
 
+    public void HandleTakeCoins(PlayerRef playerRef, int[] selectedCoins)
+    {
+        if (!Object.HasStateAuthority) return;
+
+        var player = Players.Find(p => p.PlayerRef == playerRef);
+        if (player == null)
+        {
+            Debug.LogError($"Player {playerRef.PlayerId} not found.");
+            return;
+        }
+
+        int[] coinChanges = new int[6];
+        for (int i = 0; i < selectedCoins.Length; i++)
+        {
+            coinChanges[i] = -selectedCoins[i];
+        }
+
+        ModifyCentralCoins(coinChanges);
+        player.ModifyCoins(selectedCoins);
+
+    }
+    
     public void HandleReserveCardRequest(PlayerRef playerRef, CardInfo card)
     {
         if (!Object.HasStateAuthority) return;

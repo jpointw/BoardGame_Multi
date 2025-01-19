@@ -1,13 +1,37 @@
+using System;
+using Doozy.Runtime.UIManager.Components;
+using Fusion;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CoinElement : MonoBehaviour
 {
-    public int CoinType { get; private set; }
-    public Image CoinImage;
-    
-    public void InitializeCoin(int coinType)
+    private LocalBoardPlayer _localBoardPlayer = null;
+    public int CoinType = 0;
+
+    public UIButton ThisButton;
+    public TMP_Text coinAmountText;
+    public Image coinImage;
+
+    public void InitializeCoin()
     {
-        
+        coinAmountText.text = "0";
+
+        ThisButton.onClickEvent.AddListener(OnCoinElementClicked);
+
+        if (_localBoardPlayer == null)
+        {
+            var localPlayer = GameSystem.Instance.Runner.LocalPlayer;
+            _localBoardPlayer ??=
+                GameSystem.Instance.Players.Find(p => p.PlayerRef == localPlayer)
+                    .GetComponent<LocalBoardPlayer>();
+        }
+    }
+
+    public void OnCoinElementClicked()
+    {
+        _localBoardPlayer.SelectCoin(CoinType);
     }
 }
