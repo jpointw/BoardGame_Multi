@@ -29,6 +29,7 @@ public class CoinElement : MonoBehaviour
 
     public void OnCoinElementClicked()
     {
-        _localBoardPlayer.SelectCoin(CoinType);
+        if (GameSystem.Instance.CoinSystem.CentralCoins[CoinType] <= 0)
+            _localBoardPlayer.SelectCoin(CoinType);
     }
 }

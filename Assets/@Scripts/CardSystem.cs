@@ -29,6 +29,7 @@ public class CardSystem : NetworkBehaviour
     public void InitializeDecks()
     {
         FieldCards.Clear();
+        FieldSpecialCards.Clear();
         
         InitializeDeck(Level3Deck, 2);
         InitializeDeck(Level2Deck, 1);
@@ -41,6 +42,13 @@ public class CardSystem : NetworkBehaviour
         {
             var specialCard = CardModelData.Instance.specialCardInfos[index];
             FieldSpecialCards.Add(specialCard.uniqueId);
+        }
+        
+        ShuffleDeck(FieldSpecialCards);
+
+        for (int i = FieldSpecialCards.Count; i > GameSharedData.PlayerCount + 1; i--)
+        {
+            FieldSpecialCards.Remove(i);
         }
 
         ShuffleDeck(Level3Deck);

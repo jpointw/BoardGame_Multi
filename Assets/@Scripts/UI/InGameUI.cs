@@ -18,7 +18,6 @@ public class InGameUI : MonoBehaviour
 
     [Header("CardUI")]
     public Transform[] fieldCardTransforms;
-    public Dictionary<int, Transform[]> FieldCardLevelContainer = new();
     
     public Dictionary<(int, Transform), CardElement> fieldCardElements = new();
     
@@ -65,6 +64,7 @@ public class InGameUI : MonoBehaviour
     public void InitializeUI()
     {
         victoryPointsText.text = GameSystem.Instance.VictoryPoint.ToString();
+        
 
         var fieldCards = GameSystem.Instance.CardSystem.FieldCards;
         var cardData = CardModelData.Instance;
@@ -77,30 +77,14 @@ public class InGameUI : MonoBehaviour
 
         var fieldSpecialCards = GameSystem.Instance.CardSystem.FieldSpecialCards;
 
-        for (int i = 0; i < fieldSpecialCards; i++)
+        for (int i = 0; i < fieldSpecialCards.Count; i++)
         {
-            
+            var SpecialCardElement = Instantiate(specialCardPrefab, specialCardsContainer[i]);
+            SpecialCardElement.GetComponent<SpecialCardElement>().InitializeCard(
+                cardData.GetSpecialCardInfoById(fieldSpecialCards[i]));
         }
         
         GameSystem.Instance.OnCoinChanged += UpdateCoinTexts;
-    }
-
-    private void InitializeTransformContainers()
-    {
-        // for (int i = 0; i < 3; i++)
-        // {
-        //     Transform[] tempTransforms = {
-        //         fieldCardTransforms[(i * 4) + i],
-        //         fieldCardTransforms[(i * 4) + i + 1],
-        //         fieldCardTransforms[(i * 4) + i + 2]
-        //     };
-        //     FieldCardLevelContainer.TryAdd(i, tempTransforms);
-        // }
-
-        // for (int i = 0; i < 3; i++)
-        // {
-        //     DummyCardLevelContainer.TryAdd(i, dummyCardObjects[i]);
-        // }
     }
     
     private void InitializeObjectPools()

@@ -59,7 +59,7 @@ public class GameSystem : NetworkBehaviour
                 SpawnRemotePlayer(playerRef);
         }
 
-        
+        VictoryPoint = GameSharedData.GameVictoryPoints;
         
         TurnSystem.InitializeTurns(Players);
         CoinSystem.InitializeCentralCoins();
@@ -72,6 +72,7 @@ public class GameSystem : NetworkBehaviour
     private void SpawnLocalPlayer(PlayerRef playerRef)
     {
         var playerObject = Runner.Spawn(localPlayerPrefab, transform.position, Quaternion.identity, playerRef);
+        playerObject.transform.SetParent(InGameUI.localPlayerHolder);
         var player = playerObject.GetComponent<LocalBoardPlayer>();
         player.Initialize(playerRef);
         Players.Add(player);
@@ -80,6 +81,7 @@ public class GameSystem : NetworkBehaviour
     private void SpawnRemotePlayer(PlayerRef playerRef)
     {
         var playerObject = Runner.Spawn(remotePlayerPrefab, transform.position, Quaternion.identity, playerRef);
+        playerObject.transform.SetParent(InGameUI.remotePlayersHolder);
         var player = playerObject.GetComponent<RemoteBoardPlayer>();
         player.Initialize(playerRef);
         Players.Add(player);

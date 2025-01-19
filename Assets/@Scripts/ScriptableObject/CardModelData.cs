@@ -19,6 +19,11 @@ public class CardModelData : ScriptableObject
     {
         return cardInfos.FirstOrDefault(p => p.uniqueId == id);
     }
+    
+    public SpecialCardInfo GetSpecialCardInfoById(int id)
+    {
+        return specialCardInfos.FirstOrDefault(p => p.uniqueId == id);
+    }
 
     public CardInfo[] GetCardsArrayByLevel(int cardLevel)
     {

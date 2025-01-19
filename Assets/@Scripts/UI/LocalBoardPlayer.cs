@@ -16,7 +16,7 @@ public class LocalBoardPlayer : BasePlayer
 
     public Transform selectedCoinHolder;
     
-    public UIButton[] selectedCoinsButtons;
+    public Button[] selectedCoinsButtons;
     
     public UIButton ReservedCardButton;
     
@@ -79,12 +79,63 @@ public class LocalBoardPlayer : BasePlayer
     public void SelectCoin(int coinType)
     {
         if (!Object.HasInputAuthority) return;
+        if (!CanSelectCoin(coinType)) return;
+        if (!CanTakeCoins()) return;
         selectedCoins[coinType]++;
+        UpdateSelectedCoinUI();
+    }
+    
+    private bool CanSelectCoin(int coinType)
+    {
+        int totalSelected = selectedCoins.Sum();
+        int differentCoins = selectedCoins.Count(c => c > 0);
+        if (differentCoins >= 3 && selectedCoins[coinType] == 0) return false;
+
+        if (selectedCoins[coinType] == 1)
+        {
+            int availableCoins = GameSystem.Instance.CoinSystem.CentralCoins[coinType];
+            if (availableCoins < 4) return false;
+        }
+
+        return true;
+    }
+    private bool CanTakeCoins()
+    {
+        int totalCoinsAfterTake = OwnedCoins.Sum() + selectedCoins.Sum();
+        
+        if (totalCoinsAfterTake > 10) return false;
+
+        return true;
     }
 
     public void HandleInput()
     {
         interactEnabled = true;
+    }
+    
+    private void UpdateSelectedCoinUI()
+    {
+        for (int i = 0; i < selectedCoinsButtons.Length; i++)
+        {
+            if (selectedCoins[i] > 0)
+            {
+                selectedCoinsButtons[i].GetComponent<Image>().sprite = UIDataBase.Instance.coinSprites[i];
+                selectedCoinsButtons[i].onClick.RemoveAllListeners();
+
+                int index = i; // 클로저 개같은 거
+                selectedCoinsButtons[i].onClick.AddListener(() =>
+                {
+                    selectedCoins[index]--;
+                    UpdateSelectedCoinUI();
+                });
+
+                selectedCoinsButtons[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                selectedCoinsButtons[i].gameObject.SetActive(false);
+            }
+        }
     }
 
 }
