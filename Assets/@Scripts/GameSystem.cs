@@ -26,7 +26,7 @@ public class GameSystem : NetworkBehaviour
     public event Action OnGameStarted;
     public event Action<PlayerRef> OnTurnEnded;
     public event Action OnGameEnded;
-    public event Action<int[]> OnCoinChanged;
+    public event Action<int[], PlayerRef, bool> OnCoinChanged;
 
     private void Awake()
     {
@@ -90,7 +90,6 @@ public class GameSystem : NetworkBehaviour
     public void ModifyCentralCoins(int[] coinChanges)
     {
         CoinSystem.ModifyCentralCoins(coinChanges);
-        OnCoinChanged?.Invoke(coinChanges);
     }
 
     public int CanPlayerPurchaseCard(PlayerRef playerRef, CardInfo card)
@@ -138,6 +137,7 @@ public class GameSystem : NetworkBehaviour
             coinChangesForPlayer[5] = -requiredSpecialCoins;
             coinChangesForServer[5] = requiredSpecialCoins;
             player.ModifyCoins(coinChangesForPlayer);
+            OnCoinChanged?.Invoke(coinChangesForServer, playerRef, true);
             ModifyCentralCoins(coinChangesForServer);
         }
 
@@ -164,6 +164,7 @@ public class GameSystem : NetworkBehaviour
         }
 
         ModifyCentralCoins(coinChanges);
+        OnCoinChanged?.Invoke(selectedCoins, playerRef, false);
         player.ModifyCoins(selectedCoins);
 
     }

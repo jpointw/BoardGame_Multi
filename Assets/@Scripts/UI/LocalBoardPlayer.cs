@@ -87,7 +87,6 @@ public class LocalBoardPlayer : BasePlayer
     
     private bool CanSelectCoin(int coinType)
     {
-        int totalSelected = selectedCoins.Sum();
         int differentCoins = selectedCoins.Count(c => c > 0);
         if (differentCoins >= 3 && selectedCoins[coinType] == 0) return false;
 

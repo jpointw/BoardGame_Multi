@@ -25,6 +25,9 @@ public class CardSystem : NetworkBehaviour
 
     [Networked][Capacity(20)] public NetworkLinkedList<int> Level3Deck { get; }
         = default;
+
+    public Action<int,int> OnCardAdded;
+    public Action<int,int> OnCardRemoved;
     
     public void InitializeDecks()
     {
@@ -104,7 +107,9 @@ public class CardSystem : NetworkBehaviour
         {
             if (FieldCards[i] == cardInfo.uniqueId)
             {
+                OnCardRemoved?.Invoke(FieldCards[i], i);
                 FieldCards.Set(i, targetDeck[0]);
+                OnCardAdded?.Invoke(targetDeck[0],i);
                 targetDeck.Remove(targetDeck[0]);
             }
         }
