@@ -34,7 +34,7 @@ public class CardModelData : ScriptableObject
     {
         if (Instance == null)
         {
-            Instance = this;
+            Instance = Resources.Load<CardModelData>("CardData");
         }
         else
         {

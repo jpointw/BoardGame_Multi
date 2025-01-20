@@ -13,7 +13,7 @@ public class UIDataBase : ScriptableObject
     {
         if (Instance == null)
         {
-            Instance = this;
+            Instance = Resources.Load<UIDataBase>("UIDataBase");
         }
         else
         {
