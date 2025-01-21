@@ -46,8 +46,8 @@ public class CardModelDataEditor : Editor
                         CardInfo cardInfo = new CardInfo
                         {
                             uniqueId = uniqueId,
-                            cardType = SafeParseInt(values[0], "CardType", i + 1),
-                            cardLevel = SafeParseInt(values[1], "CardLevel", i + 1),
+                            cardType = ParseCardType(values[1], i + 1),
+                            cardLevel = SafeParseInt(values[0], "CardLevel", i + 1),
                             points = SafeParseInt(values[2], "Points", i + 1),
                             cost = ParseCost(values[3], i + 1),
                             illustration = values[4].Trim()
@@ -85,6 +85,21 @@ public class CardModelDataEditor : Editor
 
         Debug.LogError($"Invalid integer value for {fieldName} on line {lineIndex}: '{value}'. Defaulting to 0.");
         return 0;
+    }
+
+    private int ParseCardType(string value, int lineIndex)
+    {
+        value = value.Trim().ToLower();
+
+        return value switch
+        {
+            "white" => 0,
+            "blue" => 1,
+            "red" => 2,
+            "green" => 3,
+            "black" => 4,
+            _ => -1
+        };
     }
 
     private int[] ParseCost(string costString, int lineIndex)
