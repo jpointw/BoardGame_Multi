@@ -554,23 +554,43 @@ MonoBehaviour:
     cost: 0000000000000000070000000300000000000000
     illustration: building (red)
   specialCardInfos:
-  - uniqueId: 0
-    points: 0
-    cost: 
-    illustration: 
   - uniqueId: 1
-    points: 0
-    cost: 
+    points: 3
+    cost: 0000000000000000040000000400000000000000
     illustration: 
-  - uniqueId: 0
-    points: 0
-    cost: 
+  - uniqueId: 2
+    points: 3
+    cost: 0300000000000000030000000000000003000000
     illustration: 
-  - uniqueId: 0
+  - uniqueId: 3
     points: 0
-    cost: 
+    cost: 0400000004000000000000000000000000000000
     illustration: 
-  - uniqueId: 0
-    points: 0
-    cost: 
+  - uniqueId: 4
+    points: 3
+    cost: 0400000000000000000000000000000004000000
+    illustration: 
+  - uniqueId: 5
+    points: 3
+    cost: 0000000004000000000000000400000000000000
+    illustration: 
+  - uniqueId: 6
+    points: 3
+    cost: 0000000003000000030000000300000000000000
+    illustration: 
+  - uniqueId: 7
+    points: 3
+    cost: 0300000003000000000000000300000000000000
+    illustration: 
+  - uniqueId: 8
+    points: 3
+    cost: 0000000000000000040000000000000004000000
+    illustration: 
+  - uniqueId: 9
+    points: 3
+    cost: 0300000003000000000000000000000003000000
+    illustration: 
+  - uniqueId: 10
+    points: 3
+    cost: 0000000000000000030000000300000003000000
     illustration: 
