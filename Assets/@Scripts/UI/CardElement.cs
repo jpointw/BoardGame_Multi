@@ -10,7 +10,7 @@ using static Define;
 
 public class CardElement : MonoBehaviour
 {
-    private LocalBoardPlayer _localBoardPlayer =null;
+    [SerializeField] private LocalBoardPlayer _localBoardPlayer = null;
     public CardInfo CardInfo { get; private set; }
     public bool IsPurchased { get; private set; }
 
@@ -28,8 +28,12 @@ public class CardElement : MonoBehaviour
     
     public Image[] requireCoinImages;
     
-    public void InitializeCard(CardInfo cardInfo)
+    private Transform _parentTransform;
+    
+    public void InitializeCard(CardInfo cardInfo, Transform parentTransform)
     {
+        ThisToggle.AddToToggleGroup(parentTransform.parent.GetComponent<UIToggleGroup>());
+        _parentTransform = parentTransform;
         CardInfo = cardInfo;
         IsPurchased = false;
         cardPointText.text = cardInfo.points.ToString();
@@ -42,27 +46,39 @@ public class CardElement : MonoBehaviour
 
         if (_localBoardPlayer == null)
         {
-            var localPlayer = GameSystem.Instance.Runner.LocalPlayer;
-            _localBoardPlayer ??= 
-                GameSystem.Instance.Players.Find(p => p.PlayerRef == localPlayer)
-                    .GetComponent<LocalBoardPlayer>();
+            _localBoardPlayer = FindFirstObjectByType<LocalBoardPlayer>();
+
+        }
+    }
+
+    public void OnCardToggleChanged(bool isOn)
+    {
+        if (isOn)
+        {
+            RectTransform rectTransform = transform as RectTransform;
+            rectTransform.SetParent(transform.parent.parent);
+            rectTransform.SetAsLastSibling();
+        }
+        else
+        {
+            transform.SetParent(_parentTransform);
         }
     }
 
     public void OnCardElementClicked()
     {
-            PurchaseButton.interactable = CheckAvailablePurchase();
-            ReserveButton.interactable = CheckAvailableReserve();
+        PurchaseButton.interactable = CheckAvailablePurchase();
+        ReserveButton.interactable = CheckAvailableReserve();
     }
 
     public void OnPurchaseButtonClicked()
     {
-        _localBoardPlayer.RequestPurchaseCard(this);
+        _localBoardPlayer.RequestPurchaseCard(CardInfo.uniqueId);
     }
 
     public void OnReserveButtonClicked()
     {
-        _localBoardPlayer.RequestReserveCard(CardInfo);
+        _localBoardPlayer.RequestReserveCard(CardInfo.uniqueId);
     }
 
     private bool CheckAvailablePurchase()
@@ -72,7 +88,7 @@ public class CardElement : MonoBehaviour
 
     private bool CheckAvailableReserve()
     {
-        return _localBoardPlayer.ReservedCards.Length < 3;
+        return _localBoardPlayer.BasePlayerInfo.ReservedCards.Count < 3;
     }
     public void SetRequireCoinUIs()
     {
@@ -85,7 +101,7 @@ public class CardElement : MonoBehaviour
         {
             if (CardInfo.cost[i] > 0)
             {
-                requireCoinImages[i].sprite = UIDataBase.Instance.coinSprites[CardInfo.cost[i]];
+                requireCoinImages[i].sprite = UIDataBase.Instance.coinSprites[i];
                 requireCoinImages[i].GetComponentInChildren<TMP_Text>().text = CardInfo.cost[i].ToString();
                 requireCoinImages[i].gameObject.SetActive(true);
             }
