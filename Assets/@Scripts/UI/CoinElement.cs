@@ -15,21 +15,21 @@ public class CoinElement : MonoBehaviour
 
     public void InitializeCoin()
     {
+        if (CoinType == 5) return;
         ThisButton ??= GetComponent<UIButton>();
         ThisButton.onClickEvent.AddListener(OnCoinElementClicked);
 
         if (_localBoardPlayer == null)
         {
-            var localPlayer = GameSystem.Instance.Runner.LocalPlayer;
-            _localBoardPlayer ??=
-                GameSystem.Instance.Players.Find(p => p.PlayerRef == localPlayer)
-                    .GetComponent<LocalBoardPlayer>();
+            _localBoardPlayer = FindFirstObjectByType<LocalBoardPlayer>();
         }
     }
 
     public void OnCoinElementClicked()
     {
-        if (GameSystem.Instance.CoinSystem.CentralCoins[CoinType] <= 0)
+        if (GameSystem.Instance.CoinSystem.CentralCoins[CoinType] > 0)
+        {
             _localBoardPlayer.SelectCoin(CoinType);
+        }
     }
 }
