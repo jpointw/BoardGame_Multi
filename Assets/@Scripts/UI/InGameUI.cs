@@ -5,11 +5,13 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Doozy.Runtime.UIManager.Components;
 using Fusion;
+using ParrelSync;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UI;
+using Sequence = DG.Tweening.Sequence;
 
 public class InGameUI : MonoBehaviour
 {
@@ -24,7 +26,8 @@ public class InGameUI : MonoBehaviour
     [Header("CardUI")] 
     public UIToggleGroup FieldCardToggleGroup;
     public Transform[] fieldCardTransforms;
-    public List<CardElement> cardElements = new List<CardElement>();
+    // public List<CardElement> cardElements = new List<CardElement>();
+    public Dictionary<int,CardElement> cardElementDictionary = new Dictionary<int,CardElement>();
     // public Dictionary<(int, Transform), CardElement> fieldCardElements = new();
     
     public Transform[] dummyCardObjects;
@@ -34,11 +37,17 @@ public class InGameUI : MonoBehaviour
     public List<SpecialCardElement> specialCardElements = new();
     [Header("CoinUI")]
     public CoinElement[] coinElements;
+    public TMP_Text[] coinTexts;
     
     #endregion
 
     #region Prefabs
 
+    public LocalBoardPlayer localBoardPlayerPrefab;
+    public RemoteBoardPlayer remoteBoardPlayerPrefab;
+
+    private List<BasePlayer2> _playerUIs = new();
+    
     public Image coinPrefab;
     public CardElement cardPrefab;
     public SpecialCardElement specialCardPrefab;
@@ -73,8 +82,18 @@ public class InGameUI : MonoBehaviour
         InitializeObjectPools();
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            InitializeUI();
+        }
+    }
+
     public void InitializeUI()
     {
+        CreatePlayerUI();
+        
         victoryPointsText.text = GameSystem.Instance.VictoryPoint.ToString();
         
 
@@ -83,9 +102,10 @@ public class InGameUI : MonoBehaviour
         
         for (int i = 0; i < fieldCards.Count; i++)
         {
-            var cardElement = Instantiate(cardPrefab, fieldCardTransforms[i]);
-            cardElement.GetComponent<CardElement>().InitializeCard(cardData.GetCardInfoById(fieldCards[i]));
-            cardElements.Add(cardElement);
+            CardElement cardElement = Instantiate(cardPrefab, fieldCardTransforms[i]);
+            cardElement.GetComponent<CardElement>().InitializeCard(cardData.GetCardInfoById(fieldCards[i]),fieldCardTransforms[i]);
+            // cardElements.Add(cardElement);
+            cardElementDictionary.TryAdd(cardElement.CardInfo.uniqueId, cardElement);
         }
 
         var fieldSpecialCards = GameSystem.Instance.CardSystem.FieldSpecialCards;
@@ -98,10 +118,36 @@ public class InGameUI : MonoBehaviour
             specialCardElements.Add(specialCardElement);
         }
 
+        for (int i = 0; i < coinElements.Length; i++)
+        {
+            coinElements[i].InitializeCoin();
+        }
+
         GameSystem.Instance.CardSystem.OnCardAdded += ScheduleCardAddition;
         GameSystem.Instance.CardSystem.OnCardRemoved += ScheduleCardRemoval;
-        GameSystem.Instance.OnCoinChanged += UpdateCoinTexts;
-        GameSystem.Instance.OnCoinChanged += ScheduleCoinAnimation;
+        GameSystem.Instance.CoinSystem.OnCoinChanged += UpdateCoinTexts;
+        // GameSystem.Instance.OnCoinChanged += UpdateCoinTexts;
+        // GameSystem.Instance.OnCoinChanged += ScheduleCoinAnimation;
+    }
+    private void CreatePlayerUI()
+    {
+        foreach (var player in GameSystem.Instance.Players)
+        {
+            if (player.Key == NetworkSystem.Instance.Runner.LocalPlayer)
+            {
+                CreatePlayerUI(localBoardPlayerPrefab, player.Value, localPlayerHolder);
+            }
+            else
+            {
+                CreatePlayerUI(remoteBoardPlayerPrefab, player.Value, remotePlayersHolder);
+            }
+        }
+    }
+    private void CreatePlayerUI(BasePlayer2 prefab, BasePlayerInfo playerInfo, Transform parent)
+    {
+        var playerUI = Instantiate(prefab, parent);
+        _playerUIs.Add(playerUI);
+        playerUI.Init(playerInfo);
     }
     
     private void InitializeObjectPools()
@@ -133,12 +179,19 @@ public class InGameUI : MonoBehaviour
     {
         
     }
-    public void UpdateCoinTexts(int[] coins, PlayerRef playerRef, bool isToCentral)
+    
+    public void UpdateCoinTexts(int[] coins)
     {
         for (int i = 0; i < coins.Length; i++)
         {
-            coinElements[i].GetComponentInChildren<TMP_Text>().text = coins[i].ToString();
+            coinTexts[i].text = coins[i].ToString();
         }
+    }
+
+    public void UpdateTempCoinText(int coinType)
+    {
+        coinTexts[coinType].text = (GameSystem.Instance.CoinSystem.CentralCoins[coinType] - 1).ToString();
+
     }
 
     public void ShowReservedCardsDetail(int[] cardInfos)
@@ -154,7 +207,7 @@ public class InGameUI : MonoBehaviour
     private void ScheduleCoinAnimation(int[] coins, PlayerRef playerRef, bool isToCentral)
     {
         CoinActionQueue.Enqueue(() => OnCoinMoved(coins, playerRef, isToCentral));
-        ProcessCardQueue();
+        ProcessCoinQueue();
     }
     
     private void ScheduleCardRemoval(int cardId, int slotIndex)
@@ -165,6 +218,7 @@ public class InGameUI : MonoBehaviour
 
     private void ScheduleCardAddition(int cardId, int slotIndex)
     {
+        Debug.LogError($"ScheduleCardAddition: CardId: {cardId}, SlotIndex: {slotIndex}");
         CardActionQueue.Enqueue(() => OnCardAdded(cardId, slotIndex));
         ProcessCardQueue();
     }
@@ -175,6 +229,14 @@ public class InGameUI : MonoBehaviour
 
         isProcessingCardQueue = true;
         ExecuteCardQueue().Forget();
+    }
+
+    private void ProcessCoinQueue()
+    {
+        if (isProcessingCoinQueue || CardActionQueue.Count == 0) return;
+        
+        isProcessingCoinQueue = true;
+        ExecuteCoinQueue().Forget();
     }
 
     private async UniTaskVoid ExecuteCardQueue()
@@ -203,7 +265,7 @@ public class InGameUI : MonoBehaviour
     {
         if (playerRef == PlayerRef.Invalid) return;
 
-        var playerUI = GameSystem.Instance.Players.FirstOrDefault(p => p.PlayerRef == playerRef);
+        var playerUI = GameSystem.Instance.Players[playerRef];
         if (playerUI == null) return;
 
         for (int i = 0; i < coins.Length; i++)
@@ -251,17 +313,29 @@ public class InGameUI : MonoBehaviour
     {
         Transform slot = fieldCardTransforms[slotIndex];
 
-        CardElement cardElement = slot.GetComponentInChildren<CardElement>();
-
+        CardElement cardElement = cardElementDictionary[cardId];
+        
         if (cardElement != null)
         {
-            await cardElement.transform
-                .DOScale(Vector3.zero, 0.5f)
-                .SetEase(Ease.InBack)
-                .ToUniTask();
+            CanvasGroup canvasGroup = cardElement.GetComponent<CanvasGroup>();
+            float heightOffset = cardElement.transform.localScale.y / 2;
 
-            Destroy(cardElement.gameObject);
-            cardElements[slotIndex] = null;
+            // 🔹 Sequence 생성
+            Sequence sequence = DOTween.Sequence();
+
+            sequence.Append(canvasGroup.DOFade(0, 0.5f))
+                .Join(cardElement.transform.DOLocalMoveY(cardElement.transform.localPosition.y - heightOffset, 1f)
+                    .SetEase(Ease.InOutQuad))
+                .Append(cardElement.transform.DOScale(Vector3.zero, 0.5f)
+                    .SetEase(Ease.InBack))
+                .OnComplete(() =>
+                {
+                    cardElementDictionary.Remove(cardId);
+                    Destroy(cardElement.gameObject);
+                });
+
+            await sequence.ToUniTask();
+
         }
 
         isProcessingCardQueue = false;
@@ -270,9 +344,9 @@ public class InGameUI : MonoBehaviour
     private async void OnCardAdded(int cardId, int slotIndex)
     {
         Transform slot = fieldCardTransforms[slotIndex];
+        CardElement newCard = Instantiate(cardPrefab, slot);
 
-        var newCard = Instantiate(cardPrefab, slot);
-        newCard.InitializeCard(CardModelData.Instance.GetCardInfoById(cardId));
+        newCard.InitializeCard(CardModelData.Instance.GetCardInfoById(cardId), slot);
 
         newCard.transform.localScale = Vector3.zero;
         await newCard.transform
@@ -280,7 +354,7 @@ public class InGameUI : MonoBehaviour
             .SetEase(Ease.OutBack)
             .ToUniTask();
 
-        cardElements[slotIndex] = newCard;
+        cardElementDictionary.TryAdd(newCard.CardInfo.uniqueId,newCard);
         isProcessingCardQueue = false;
     }
 
