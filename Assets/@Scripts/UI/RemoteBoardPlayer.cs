@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RemoteBoardPlayer : BasePlayer
+public class RemoteBoardPlayer : BasePlayer2
 {
     //Base로 충족
 }
