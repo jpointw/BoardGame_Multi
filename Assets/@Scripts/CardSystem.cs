@@ -11,7 +11,7 @@ public class CardSystem : NetworkBehaviour
 {
 
     [Networked]
-    [Capacity(5)]
+    [Capacity(10)]
     public NetworkLinkedList<int> FieldSpecialCards { get; } 
         = default;
     [Networked][Capacity(12)] public NetworkLinkedList<int> FieldCards { get; }
@@ -34,25 +34,11 @@ public class CardSystem : NetworkBehaviour
         FieldCards.Clear();
         FieldSpecialCards.Clear();
         
-        InitializeDeck(Level3Deck, 2);
-        InitializeDeck(Level2Deck, 1);
-        InitializeDeck(Level1Deck, 0);
-        
-        InitializeSpecialCards(FieldSpecialCards);
+        InitializeDeck(Level3Deck, 3);
+        InitializeDeck(Level2Deck, 2);
+        InitializeDeck(Level1Deck, 1);
 
-        
-        for (var index = 0; index < CardModelData.Instance.specialCardInfos.Length; index++)
-        {
-            var specialCard = CardModelData.Instance.specialCardInfos[index];
-            FieldSpecialCards.Add(specialCard.uniqueId);
-        }
-        
-        ShuffleDeck(FieldSpecialCards);
-
-        for (int i = FieldSpecialCards.Count; i > GameSharedData.PlayerCount + 1; i--)
-        {
-            FieldSpecialCards.Remove(i);
-        }
+        InitializeSpecialCards();
 
         ShuffleDeck(Level3Deck);
         ShuffleDeck(Level2Deck);
@@ -73,14 +59,20 @@ public class CardSystem : NetworkBehaviour
         }
     }
 
-    private void InitializeSpecialCards(NetworkLinkedList<int> specialCards)
+    private void InitializeSpecialCards()
     {
-        var cards = CardModelData.Instance.specialCardInfos;
-        for (int index = 0; index < cards.Length; index++)
+        for (var index = 0; index < CardModelData.Instance.specialCardInfos.Length; index++)
         {
-            specialCards.Set(index, cards[index].uniqueId);
+            var specialCard = CardModelData.Instance.specialCardInfos[index];
+            FieldSpecialCards.Add(specialCard.uniqueId);
         }
-        ShuffleDeck(specialCards);
+        
+        ShuffleDeck(FieldSpecialCards);
+
+        for (int i = FieldSpecialCards.Count; i > GameSystem.Instance.PlayerCount + 1; i--)
+        {
+            FieldSpecialCards.Remove(i);
+        }
     }
 
     public void InitializeField()
@@ -107,14 +99,25 @@ public class CardSystem : NetworkBehaviour
         {
             if (FieldCards[i] == cardInfo.uniqueId)
             {
-                OnCardRemoved?.Invoke(FieldCards[i], i);
+                RPC_OnCardRemoved(FieldCards[i], i);
                 FieldCards.Set(i, targetDeck[0]);
-                OnCardAdded?.Invoke(targetDeck[0],i);
+                RPC_OnCardAdded(targetDeck[0],i);
                 targetDeck.Remove(targetDeck[0]);
             }
         }
     }
 
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnCardAdded(int cardId, int slotIndex)
+    {
+        OnCardAdded?.Invoke(cardId, slotIndex);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnCardRemoved(int cardId, int slotIndex)
+    {
+        OnCardRemoved?.Invoke(cardId, slotIndex);
+    }
     public CardInfo GetCardInfo(int cardId)
     {
         return CardModelData.Instance.GetCardInfoById(cardId);
