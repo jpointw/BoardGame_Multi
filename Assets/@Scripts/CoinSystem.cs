@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class CoinSystem : NetworkBehaviour
 {
-    [Networked][Capacity(6)] public NetworkArray<int> CentralCoins { get; } 
+    [Networked, OnChangedRender(nameof(OnDetectCoinChanged))][Capacity(6)] public NetworkArray<int> CentralCoins { get; }
         = MakeInitializer(new int[6]);
-
+    
+    public Action<int[]> OnCoinChanged;
+    
     public void InitializeCentralCoins(int playerCount = 2)
     {
-        for (int i = 0; i < CentralCoins.Length; i++)
+        var tokenCount = playerCount switch
         {
-            CentralCoins.Set(i, 10); // 초기 코인 설정
+            2 => 4,
+            3 => 5,
+            4 => 7,
+            _ => 0
+        };
+        for (int i = 0; i < CentralCoins.Length - 1; i++)
+        {
+            CentralCoins.Set(i, tokenCount);
         }
+        CentralCoins.Set(5, 5);
         Debug.Log("Central Coins initialized.");
     }
 
@@ -27,5 +37,10 @@ public class CoinSystem : NetworkBehaviour
         }
 
         Debug.Log($"CentralCoins updated: {string.Join(", ", CentralCoins.ToArray())}");
+    }
+
+    public void OnDetectCoinChanged()
+    {
+        OnCoinChanged?.Invoke(CentralCoins.ToArray());
     }
 }
