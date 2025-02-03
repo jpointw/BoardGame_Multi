@@ -1,16 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
 {
-    private NetworkRunner _runner;
+    public NetworkRunner Runner {get; private set; }
+    private bool isHost = false;
+    
+    public GameSystem gameSystem;
 
     public static NetworkSystem Instance { get; private set; }
-    [SerializeField] private string sessionName = "DefaultRoom";
-    [SerializeField] private int maxPlayers = 4;
+    [SerializeField] private string sessionName = "default";
 
     private void Awake()
     {
@@ -25,99 +29,131 @@ public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public void StartMatchmaking()
+    public async void CreateRoom()
     {
-        _runner = gameObject.AddComponent<NetworkRunner>();
-        _runner.ProvideInput = true;
+        Runner ??= gameObject.AddComponent<NetworkRunner>();
+        Runner.ProvideInput = true;
 
-        Debug.Log("Looking for existing sessions...");
-        _runner.StartGame(new StartGameArgs
+        Dictionary<string, SessionProperty> roomProperties = new Dictionary<string, SessionProperty>
         {
-            GameMode = GameMode.Client,
-            PlayerCount = maxPlayers,
-        }).ContinueWith(task =>
-        {
-            if (!task.IsCompletedSuccessfully)
-            {
-                Debug.LogWarning("No sessions found. Creating a new session...");
-                CreateRoom();
-            }
-        });
-    }
+            { "PlayerCount", GameSharedData.PlayerCount },
+            { "VictoryPoints", GameSharedData.GameVictoryPoints },
+            { "TurnTime", GameSharedData.PlayerTurnTime }
+        };
 
-    public void CreateRoom()
-    {
-        _runner.StartGame(new StartGameArgs
+        var startArgs = new StartGameArgs
         {
             GameMode = GameMode.Host,
             SessionName = sessionName,
-            PlayerCount = maxPlayers,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        }).ContinueWith(task =>
-        {
-            if (task.IsCompletedSuccessfully)
-                Debug.Log("New session created.");
-            else
-                Debug.LogError("Failed to create session.");
-        });
-    }
+            PlayerCount = GameSharedData.PlayerCount,
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+            SessionProperties = roomProperties
+        };
 
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
-    {
-        if (sessionList.Count > 0)
+        var result = await Runner.StartGame(startArgs);
+
+        if (result.Ok)
         {
-            Debug.Log($"Found {sessionList.Count} sessions. Joining the first session...");
-            _runner.JoinSessionLobby(SessionLobby.ClientServer).ContinueWith(task =>
-            {
-                if (task.IsCompletedSuccessfully)
-                    Debug.Log("Joined session successfully.");
-                else
-                    Debug.LogError("Failed to join session.");
-            });
+            isHost = true;
+            Debug.Log($"✅ Room created successfully with max players: {GameSharedData.PlayerCount}");
         }
         else
         {
-            Debug.Log("No sessions found. Creating a new session...");
-            CreateRoom();
+            Debug.LogError($"❌ Room creation failed: {result.ErrorMessage}");
         }
     }
 
-    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
+    public async void FindRoom()
     {
-        throw new NotImplementedException();
-    }
+        Runner ??= gameObject.AddComponent<NetworkRunner>();
+        Runner.ProvideInput = true;
 
-    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
-    {
-        throw new NotImplementedException();
+        var startArgs = new StartGameArgs
+        {
+            GameMode = GameMode.Client,
+        };
+
+        var result = await Runner.StartGame(startArgs);
+
+        if (result.Ok)
+        {
+            Debug.Log($"✅ Joined room successfully.");
+        }
+        else
+        {
+            Debug.LogError($"❌ Room join failed: {result.ErrorMessage}");
+        }
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"Player joined with PlayerRef ID: {player.PlayerId}");
-        // GameSystem.Instance?.InitializePlayer(player);
+        Debug.Log($"👤 Player {player.PlayerId} joined.");
+
+        if (isHost)
+        {
+            CheckPlayerCount();
+        }
+        else
+        {
+            SyncGameSettings();
+        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"Player left with PlayerRef ID: {player.PlayerId}");
+        Debug.Log($"🚪 Player {player.PlayerId} left.");
+    }
+
+    private void CheckPlayerCount()
+    {
+        if (isHost && Runner.ActivePlayers.Count() == GameSharedData.PlayerCount)
+        {
+            Debug.Log("🎮 All players are connected, starting the game.");
+            StartGame();
+        }
+    }
+
+    private async void StartGame()
+    {
+        if (Runner.IsSceneAuthority)
+        {
+            Debug.Log("🚀 Loading Game Scene...");
+            await Runner.LoadScene("GameScene", LoadSceneMode.Single);
+            Runner.Spawn(gameSystem);
+        }
+    }
+
+    private void SyncGameSettings()
+    {
+        if (!isHost)
+        {
+            GameSharedData.PlayerCount = Runner.SessionInfo.Properties["PlayerCount"];
+            GameSharedData.GameVictoryPoints = Runner.SessionInfo.Properties["VictoryPoints"];
+            GameSharedData.PlayerTurnTime = Runner.SessionInfo.Properties["TurnTime"];
+
+            Debug.Log($"🔄 Synchronized game settings: Players {GameSharedData.PlayerCount}, Victory {GameSharedData.GameVictoryPoints}, TurnTime {GameSharedData.PlayerTurnTime}");
+        }
     }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-        Debug.Log($"Game shutdown: {shutdownReason}");
+        Debug.Log($"❗ Game ended: {shutdownReason}");
     }
+
+    public void OnConnectedToServer(NetworkRunner runner) { }
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
-    public void OnConnectedToServer(NetworkRunner runner) { }
     public void OnInput(NetworkRunner runner, NetworkInput input) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
-    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     public void OnSceneLoadStart(NetworkRunner runner) { }
     public void OnSceneLoadDone(NetworkRunner runner) { }
+    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
+    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
+    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
 }
