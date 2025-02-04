@@ -15,8 +15,8 @@ MonoBehaviour:
   coinSprites:
   - {fileID: 21300000, guid: 77decf11c6c6966448667a389d9f65ba, type: 3}
   - {fileID: 21300000, guid: b5930ff890df2464aa2cafb718a39658, type: 3}
-  - {fileID: 21300000, guid: cde44127624592440902dafd138001e4, type: 3}
   - {fileID: 21300000, guid: 82958c931ece2be4e8b319c3dd4810b0, type: 3}
+  - {fileID: 21300000, guid: cde44127624592440902dafd138001e4, type: 3}
   - {fileID: 21300000, guid: 7a70b7e3fb8f6de4e8754461ba10c691, type: 3}
   - {fileID: 21300000, guid: 08d4886e6f8c15d4c90d1bae29f7f2ad, type: 3}
   ownAssetColors:
