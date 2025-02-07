@@ -48,11 +48,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbfbba1c04ebc2f429de39602bef6449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  basePlayerInfoPrefab: {fileID: 2238976151331879916, guid: e75a69932170a5c45895e3de91d5861f, type: 3}
   localPlayerPrefab: {fileID: 923444737802915957, guid: 3ed22780cc9180741a5931d8e3dad684, type: 3}
   remotePlayerPrefab: {fileID: 233978614535855903, guid: 50b77b90f61b78d4bbf96746d8b12c6d, type: 3}
   _PlayerCount: 0
   _VictoryPoint: 0
   _PlayerTurnTime: 0
+  playerInfoContainer: {fileID: 0}
 --- !u!114 &8019206044053394223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,11 +70,12 @@ MonoBehaviour:
   SortKey: 3393037751
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 4190223252005050105}
+  - {fileID: 8532491076491954880}
+  - {fileID: 3044114176870508626}
   NetworkedBehaviours:
   - {fileID: 9044147321326785421}
-  - {fileID: 1629607663999413553}
-  - {fileID: 1256616049039179222}
   ForceRemoteRenderTimeframe: 0
 --- !u!1 &2711368847860045246
 GameObject:
@@ -84,6 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9014371372063524983}
   - component: {fileID: 1256616049039179222}
+  - component: {fileID: 8532491076491954880}
   m_Layer: 0
   m_Name: CoinSystem
   m_TagString: Untagged
@@ -119,6 +123,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _CentralCoins: 000000000000000000000000000000000000000000000000
+--- !u!114 &8532491076491954880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711368847860045246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 706503777
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1256616049039179222}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &3494607961016364708
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,6 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8353845592120190888}
   - component: {fileID: 8703086064144586712}
+  - component: {fileID: 3044114176870508626}
   m_Layer: 0
   m_Name: TurnSystem
   m_TagString: Untagged
@@ -163,6 +187,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c92be26d1c3f6549996fe4cfb6ccf3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _players: []
+  _currentPlayerIndex: 0
+--- !u!114 &3044114176870508626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3494607961016364708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 926075775
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 8703086064144586712}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &3725530668270449703
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,6 +218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5942228939500115574}
   - component: {fileID: 1629607663999413553}
+  - component: {fileID: 4190223252005050105}
   m_Layer: 0
   m_Name: CardSystem
   m_TagString: Untagged
@@ -212,3 +258,22 @@ MonoBehaviour:
   _Level1Deck: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   _Level2Deck: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   _Level3Deck: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+--- !u!114 &4190223252005050105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3725530668270449703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 852971491
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1629607663999413553}
+  ForceRemoteRenderTimeframe: 0

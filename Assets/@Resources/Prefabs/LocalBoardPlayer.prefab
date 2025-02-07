@@ -2051,7 +2051,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3743404359302294206}
   - component: {fileID: 923444737802915957}
-  - component: {fileID: 19707522096505401}
   m_Layer: 5
   m_Name: LocalBoardPlayer
   m_TagString: Untagged
@@ -2093,10 +2092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42216b57ed1eaac45aa5784d530c813b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Score: 0
-  _OwnedCoins: 000000000000000000000000000000000000000000000000
-  _OwnedCards: 000000000000000000000000000000000000000000000000
-  _ReservedCards: ffffffffffffffffffffffff
+  BasePlayerInfo: {fileID: 0}
   playerScoreText: {fileID: 1339249416926230670}
   playerCardsImages:
   - {fileID: 8333304535098404730}
@@ -2137,25 +2133,6 @@ MonoBehaviour:
   - {fileID: 7815939481916452545}
   ReservedCardButton: {fileID: 9023486424291259865}
   EndTurnButton: {fileID: 908774408556070824}
---- !u!114 &19707522096505401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5829814825291016790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3322751387
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 923444737802915957}
-  ForceRemoteRenderTimeframe: 0
 --- !u!1 &6256819187944025000
 GameObject:
   m_ObjectHideFlags: 0

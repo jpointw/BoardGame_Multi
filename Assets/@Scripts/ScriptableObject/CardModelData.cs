@@ -35,6 +35,7 @@ public class CardModelData : ScriptableObject
         if (Instance == null)
         {
             Instance = Resources.Load<CardModelData>("CardData");
+            Debug.LogError("Initialized CardModelData");
         }
         else
         {

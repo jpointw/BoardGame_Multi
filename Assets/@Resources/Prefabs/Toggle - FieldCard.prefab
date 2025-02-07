@@ -2690,6 +2690,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: DeselectAfterPress
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
       propertyPath: OnInstantToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -2698,20 +2710,56 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
       propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 2851663069363993556}
     - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 5343262915800360453}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
       propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 2033721413227502240}
+      objectReference: {fileID: 2851663069363993556}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 5343262915800360453}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
       propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnCardToggleChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
       propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: Play
+      value: Reverse
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnCardToggleChanged
       objectReference: {fileID: 0}
     - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
       propertyPath: OnInstantToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -2734,8 +2782,32 @@ PrefabInstance:
       value: Doozy.Runtime.Reactor.Animators.UIAnimator, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: CardElement, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
       propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: Doozy.Runtime.Reactor.Animators.UIAnimator, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: CardElement, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOnCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5204403483739579596, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
+      propertyPath: OnToggleOffCallback.Event.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5204403483739579598, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
       propertyPath: m_Name
@@ -3119,17 +3191,6 @@ PrefabInstance:
       insertIndex: 2
       addedObject: {fileID: 5343262915800360453}
   m_SourcePrefab: {fileID: 100100000, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
---- !u!114 &2033721413227502240 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2808784609768908934, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
-  m_PrefabInstance: {fileID: 4234496772985844262}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e79576425de48d2a7924f45c8f5b315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8284992763318081256 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5204403483739579598, guid: aff57ba4b5109b74db1ad80e1ff55b53, type: 3}
@@ -3147,6 +3208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6a3294d7c049694297b3937acf1b4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _localBoardPlayer: {fileID: 0}
   ThisToggle: {fileID: 8284992763318081258}
   PurchaseButton: {fileID: 4214020761319582222}
   ReserveButton: {fileID: 4654839707268233319}

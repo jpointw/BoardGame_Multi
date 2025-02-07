@@ -1976,7 +1976,6 @@ GameObject:
   - component: {fileID: 6583179387496327603}
   - component: {fileID: 233978614535855903}
   - component: {fileID: 5041376472851832869}
-  - component: {fileID: 7767536733764413831}
   m_Layer: 5
   m_Name: RemotePlayerInfo
   m_TagString: Untagged
@@ -2031,10 +2030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979e5b81db2af840ae32ff7fc07a1a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Score: 0
-  _OwnedCoins: 000000000000000000000000000000000000000000000000
-  _OwnedCards: 000000000000000000000000000000000000000000000000
-  _ReservedCards: ffffffffffffffffffffffff
+  BasePlayerInfo: {fileID: 0}
   playerScoreText: {fileID: 3294683427309045910}
   playerCardsImages:
   - {fileID: 4683464116735708258}
@@ -2096,25 +2092,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7767536733764413831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4898938126617959213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3559601752
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 233978614535855903}
-  ForceRemoteRenderTimeframe: 0
 --- !u!1 &4939019168418658787
 GameObject:
   m_ObjectHideFlags: 0
