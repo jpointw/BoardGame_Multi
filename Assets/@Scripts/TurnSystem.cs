@@ -1,37 +1,43 @@
 using System.Collections.Generic;
+using Fusion;
+using System;
 using UnityEngine;
 
-public class TurnSystem : MonoBehaviour
+public class TurnSystem : NetworkBehaviour
 {
-    private List<BasePlayer> players;
-    private int currentPlayerIndex = 0;
-    private bool isFinalRound = false;
+    [Networked][Capacity(4)] public NetworkLinkedList<PlayerRef> Players => default;
+    [Networked] public int CurrentPlayerIndex { get; private set; }
+    [Networked] public bool IsFinalRound { get; private set; }
+    [Networked] public bool IsGameEnding { get; private set; }
 
-    public void InitializeTurns(List<BasePlayer> gamePlayers)
+    public void InitializeTurns(Dictionary<PlayerRef, BasePlayerInfo> gamePlayers)
     {
-        players = gamePlayers;
-        currentPlayerIndex = 0;
-        Debug.Log("TurnSystem initialized with players.");
-    }
+        Players.Clear();
 
-    public void StartTurn()
-    {
-        if (players == null || players.Count == 0) return;
-
-        var currentPlayer = players[currentPlayerIndex];
-        Debug.Log($"Starting turn for Player {currentPlayer.PlayerRef.PlayerId}");
-
-        if (currentPlayer is LocalBoardPlayer localPlayer)
+        foreach (var gamePlayer in gamePlayers.Keys)
         {
-            localPlayer.HandleInput();
+            Players.Add(gamePlayer);
         }
+
+        CurrentPlayerIndex = 0;
+        IsFinalRound = false;
+        StartTurn();
+        Debug.Log("✅ TurnSystem initialized with players.");
     }
-
-    public void EndTurn()
+    private PlayerRef GetCurrentPlayer()
     {
-        Debug.Log($"Ending turn for Player {players[currentPlayerIndex].PlayerRef.PlayerId}");
+        if (Players.Count == 0) return default;
+        return Players[CurrentPlayerIndex];
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_EndTurn(PlayerRef playerRef)
+    {
+        if (!Object.HasStateAuthority) return;
+        CheckForVictory(playerRef);
+        Debug.Log($"🔹 Player {GetCurrentPlayer().PlayerId}'s turn end!");
 
-        if (isFinalRound && IsFinalRoundComplete())
+        if (IsFinalRound && IsFinalRoundComplete())
         {
             Debug.Log("Final round complete.");
             return;
@@ -39,27 +45,77 @@ public class TurnSystem : MonoBehaviour
 
         NextPlayer();
     }
-
     private void NextPlayer()
     {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+        CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Count;
 
-        if (currentPlayerIndex == 0 && isFinalRound)
-        {
-            Debug.Log("Final round ended.");
-        }
+        if (CurrentPlayerIndex == 0 && IsFinalRound) Debug.Log("Final round ended.");
 
         StartTurn();
     }
+    
+    public void StartTurn()
+    {
+        PlayerRef currentPlayer = GetCurrentPlayer();
+        if (currentPlayer == default) return;
 
+        Debug.Log($"🔹 Player {currentPlayer.PlayerId}'s turn start!");
+        if (Runner.LocalPlayer == currentPlayer)
+        {
+            FindFirstObjectByType<LocalBoardPlayer>().HandleInput();
+        }
+    }
+    
     public void MarkFinalRound()
     {
-        isFinalRound = true;
-        Debug.Log("Final round marked.");
+        IsFinalRound = true;
+        Debug.Log("Final round started.");
     }
 
     public bool IsFinalRoundComplete()
     {
-        return isFinalRound && currentPlayerIndex == 0;
+        return IsFinalRound && CurrentPlayerIndex == 0;
+    }
+    
+    public void CheckForVictory(PlayerRef currentPlayer)
+    {
+        var player = GameSystem.Instance.Players[currentPlayer];
+        if (player == null) return;
+
+        if (player.Score >= GameSystem.Instance.VictoryPoint && !IsGameEnding)
+        {
+            IsGameEnding = true;
+            Debug.Log($"Player {currentPlayer.PlayerId} triggered final round!");
+            MarkFinalRound();
+        }
+
+        if (IsGameEnding && IsFinalRoundComplete())
+        {
+            DetermineWinner();
+        }
+    }
+
+    private void DetermineWinner()
+    {
+        BasePlayerInfo winner = null;
+        int minCards = int.MaxValue;
+
+        foreach (var playerDic in GameSystem.Instance.Players)
+        {
+            var player = playerDic.Value;
+            if (player.Score > GameSystem.Instance.VictoryPoint ||
+                (player.Score == GameSystem.Instance.VictoryPoint &&
+                 player.OwnedCards.Length < minCards))
+            {
+                winner = player;
+                minCards = player.OwnedCards.Length;
+            }
+        }
+
+        if (winner != null)
+        {
+            Debug.Log($"Player {winner.PlayerRef.PlayerId} wins with {GameSystem.Instance.VictoryPoint} points!");
+            GameSystem.Instance.OnGameEnded?.Invoke();
+        }
     }
 }
