@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class BasePlayer2 : MonoBehaviour
 {
     public BasePlayerInfo BasePlayerInfo;
-    
+
+    [SerializeField] protected TMP_Text playerNameText;
     [SerializeField] protected TMP_Text playerScoreText;
     [SerializeField] protected Image[] playerCardsImages;
     [SerializeField] protected TMP_Text[] playerCardsTexts;
@@ -20,8 +21,9 @@ public class BasePlayer2 : MonoBehaviour
     public virtual void Init(BasePlayerInfo playerInfo)
     {
         BasePlayerInfo = playerInfo;
-        
-        BasePlayerInfo.OnPlayerScoreChanged += UpdateCoinsUI;
+
+        BasePlayerInfo.OnPlayerNameChanged += UpdatePlayerNickNameUI;
+        BasePlayerInfo.OnPlayerScoreChanged += UpdateScoreUI;
         BasePlayerInfo.OnPlayerCoinChanged += UpdateCoinsUI;
         BasePlayerInfo.OnPlayerCardChanged += UpdateCardsUI;
         BasePlayerInfo.OnPlayerReservedCardChanged += UpdateReservedCardsUI;
@@ -31,7 +33,7 @@ public class BasePlayer2 : MonoBehaviour
     
     public virtual void UpdateUI()
     {
-        
+        UpdatePlayerNickNameUI();
         UpdateScoreUI();
         UpdateCoinsUI();
         UpdateCardsUI();
@@ -88,5 +90,10 @@ public class BasePlayer2 : MonoBehaviour
                 
             }
         }
+    }
+
+    protected virtual void UpdatePlayerNickNameUI()
+    {
+        playerNameText.text = BasePlayerInfo.name;
     }
 }
