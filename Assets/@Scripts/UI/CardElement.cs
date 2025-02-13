@@ -56,7 +56,7 @@ public class CardElement : MonoBehaviour
         if (isOn)
         {
             RectTransform rectTransform = transform as RectTransform;
-            rectTransform.SetParent(transform.parent.parent);
+            rectTransform.SetParent(_parentTransform.parent);
             rectTransform.SetAsLastSibling();
         }
         else
@@ -67,8 +67,8 @@ public class CardElement : MonoBehaviour
 
     public void OnCardElementClicked()
     {
-        PurchaseButton.interactable = CheckAvailablePurchase();
-        ReserveButton.interactable = CheckAvailableReserve();
+        PurchaseButton.interactable = _localBoardPlayer.interactEnabled && CheckAvailablePurchase();
+        ReserveButton.interactable = _localBoardPlayer.interactEnabled && CheckAvailableReserve();
     }
 
     public void OnPurchaseButtonClicked()

@@ -27,6 +27,7 @@ public class CoinElement : MonoBehaviour
 
     public void OnCoinElementClicked()
     {
+        if (!_localBoardPlayer.interactEnabled) return;
         if (GameSystem.Instance.CoinSystem.CentralCoins[CoinType] > 0)
         {
             _localBoardPlayer.SelectCoin(CoinType);
