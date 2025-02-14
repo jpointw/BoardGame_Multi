@@ -135,6 +135,7 @@ public class InGameUI : MonoBehaviour
         {
             if (player.Key == NetworkSystem.Instance.Runner.LocalPlayer)
             {
+                GameSystem.Instance.RPC_ChangeName(player.Key, GameSharedData.MyNickname);
                 CreatePlayerUI(localBoardPlayerPrefab, player.Value, localPlayerHolder);
             }
             else
@@ -188,9 +189,9 @@ public class InGameUI : MonoBehaviour
         }
     }
 
-    public void UpdateTempCoinText(int coinType)
+    public void UpdateTempCoinText(int coinType, int amount)
     {
-        coinTexts[coinType].text = (GameSystem.Instance.CoinSystem.CentralCoins[coinType] - 1).ToString();
+        coinTexts[coinType].text = (GameSystem.Instance.CoinSystem.CentralCoins[coinType] - amount).ToString();
 
     }
 
