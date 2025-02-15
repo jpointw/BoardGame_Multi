@@ -109,7 +109,7 @@ public class LocalBoardPlayer : BasePlayer2
             return;
         }
         selectedCoins[coinType]++;
-        GameSystem.Instance.InGameUI.UpdateTempCoinText(coinType);
+        GameSystem.Instance.InGameUI.UpdateTempCoinText(coinType,selectedCoins[coinType]);
         UpdateSelectedCoinUI(coinType);
     }
     private bool CanSelectCoin(int coinType)
@@ -125,7 +125,8 @@ public class LocalBoardPlayer : BasePlayer2
                                                                   || selectedTwoCoins > 0));
         
         bool cannotAddSameCoin = (selectedCoins[coinType] == 1 && (availableCoins <= selectedCoins[coinType]
-                                                                   || differentCoinTypes > 1));
+                                                                   || differentCoinTypes > 1
+                                                                   || availableCoins < 4));
         
         bool isCoinLimitExceeded = (selectedCoins[coinType] >= 2);
 
