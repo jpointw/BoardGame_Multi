@@ -20,16 +20,19 @@ public class TitleScene : MonoBehaviour
     public UIButton createRoomButton;
     public UIButton findRoomButton;
 
+    public TMP_InputField InputField;
+    
     private float animationDuration = 0.5f;
 
     private int[] playerAmounts = {2, 3, 4};
     private int[] victoryPoints = {12, 15, 18};
     private int[] turnTimers = {30, 60, 90};
+    
+    public UIDataBase UIDataBase;
+    public CardModelData CardModelData;
 
     private void Start()
     {
-        var A = UIDataBase.Instance;
-        var B = CardModelData.Instance;
         GameSharedData.PlayerCount = 2;
         GameSharedData.GameVictoryPoints = 12;
         GameSharedData.PlayerTurnTime = 30;
@@ -80,11 +83,13 @@ public class TitleScene : MonoBehaviour
 
     private async void CreateRoom()
     {
+        GameSharedData.MyNickname = InputField.text;
         NetworkSystem.Instance.CreateRoom();
     }
 
     private async void FindRoom()
     {
+        GameSharedData.MyNickname = InputField.text;
         NetworkSystem.Instance.FindRoom();
     }
 }
