@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class BasePlayerInfo : NetworkBehaviour
 {
+    public Action OnPlayerNameChanged;
     public Action OnPlayerScoreChanged;
     public Action OnPlayerCoinChanged;
     public Action OnPlayerCardChanged;
@@ -14,6 +15,9 @@ public class BasePlayerInfo : NetworkBehaviour
     
     [Networked]
     public PlayerRef PlayerRef { get; protected set; }
+
+    [Networked, OnChangedRender(nameof(OnNameChanged))]
+    public string Name { get; set; }
 
     [Networked,OnChangedRender(nameof(OnScoreChanged))]
     public int Score { get; protected set; }
@@ -86,6 +90,11 @@ public class BasePlayerInfo : NetworkBehaviour
                 ReservedCards.Remove(i);
             }
         }
+    }
+
+    public void OnNameChanged()
+    {
+        OnPlayerNameChanged?.Invoke();
     }
 
     public void OnScoreChanged()
