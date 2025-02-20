@@ -8,4 +8,6 @@ public static class GameSharedData
     public static int PlayerCount;
     public static int GameVictoryPoints;
     public static int PlayerTurnTime;
+
+    public static string MyNickname;
 }
