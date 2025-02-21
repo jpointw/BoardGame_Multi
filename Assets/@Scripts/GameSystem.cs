@@ -30,7 +30,7 @@ public class GameSystem : NetworkBehaviour
     private bool isGameEnding = false;
 
     public Action OnGameStarted;
-    public Action OnGameEnded;
+    public Action<string> OnGameEnded;
     
     public GameObject playerInfoContainer;
 
@@ -159,6 +159,13 @@ public class GameSystem : NetworkBehaviour
         }
         
         Debug.Log($"Player {playerRef.PlayerId} purchased card {card.uniqueId}.");
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_ChangeName(PlayerRef playerRef, string name)
+    {
+        if (!Object.HasStateAuthority) return;
+        Players[playerRef].Name = name;
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
