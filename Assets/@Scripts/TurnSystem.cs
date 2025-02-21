@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Fusion;
 using System;
+using Doozy.Runtime.Common.Extensions;
 using UnityEngine;
 
 public class TurnSystem : NetworkBehaviour
@@ -34,7 +35,6 @@ public class TurnSystem : NetworkBehaviour
     public void RPC_EndTurn(PlayerRef playerRef)
     {
         if (!Object.HasStateAuthority) return;
-        CheckForVictory(playerRef);
         Debug.Log($"🔹 Player {GetCurrentPlayer().PlayerId}'s turn end!");
 
         if (IsFinalRound && IsFinalRoundComplete())
@@ -56,16 +56,24 @@ public class TurnSystem : NetworkBehaviour
     
     public void StartTurn()
     {
+
         PlayerRef currentPlayer = GetCurrentPlayer();
+        CheckForVictory(currentPlayer);
         if (currentPlayer == default) return;
 
         Debug.Log($"🔹 Player {currentPlayer.PlayerId}'s turn start!");
-        if (Runner.LocalPlayer == currentPlayer)
+        RPC_SetPlayerInteractive(currentPlayer);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_SetPlayerInteractive(PlayerRef playerRef)
+    {
+        if (Runner.LocalPlayer == playerRef)
         {
             FindFirstObjectByType<LocalBoardPlayer>().HandleInput();
         }
     }
-    
+
     public void MarkFinalRound()
     {
         IsFinalRound = true;
@@ -115,7 +123,14 @@ public class TurnSystem : NetworkBehaviour
         if (winner != null)
         {
             Debug.Log($"Player {winner.PlayerRef.PlayerId} wins with {GameSystem.Instance.VictoryPoint} points!");
-            GameSystem.Instance.OnGameEnded?.Invoke();
+            RPC_OnGameEnded(winner.name);
         }
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnGameEnded(string winnerName)
+    {
+        GameSystem.Instance.OnGameEnded?.Invoke(winnerName);
+
     }
 }
