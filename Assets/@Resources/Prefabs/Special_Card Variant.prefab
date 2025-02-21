@@ -1551,6 +1551,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8951816937028323916, guid: f2c297a2197cbb84fa8fd39bdd4422f9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1037118829277087505}
+    - targetCorrespondingSourceObject: {fileID: 8951816937028323916, guid: f2c297a2197cbb84fa8fd39bdd4422f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3086534012321092952}
     - targetCorrespondingSourceObject: {fileID: 803535035988075751, guid: f2c297a2197cbb84fa8fd39bdd4422f9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8556118616178902217}
@@ -1602,6 +1605,18 @@ MonoBehaviour:
   - {fileID: 1024892143971737779}
   - {fileID: 8901919062978697784}
   - {fileID: 3510979850900000534}
+--- !u!225 &3086534012321092952
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5205085055029066675}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &9002015831241703034 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5254160215549349765, guid: f2c297a2197cbb84fa8fd39bdd4422f9, type: 3}

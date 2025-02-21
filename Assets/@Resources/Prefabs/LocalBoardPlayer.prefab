@@ -2134,6 +2134,7 @@ MonoBehaviour:
   - {fileID: 7815939481916452545}
   ReservedCardButton: {fileID: 9023486424291259865}
   EndTurnButton: {fileID: 908774408556070824}
+  allCoinText: {fileID: 6571143373552670488}
 --- !u!1 &6256819187944025000
 GameObject:
   m_ObjectHideFlags: 0
