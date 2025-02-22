@@ -94,6 +94,6 @@ public class BasePlayer2 : MonoBehaviour
 
     protected virtual void UpdatePlayerNickNameUI()
     {
-        playerNameText.text = BasePlayerInfo.name;
+        playerNameText.text = BasePlayerInfo.Name;
     }
 }
