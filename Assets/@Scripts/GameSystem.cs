@@ -4,6 +4,7 @@ using System.Linq;
 using Fusion;
 using Fusion.LagCompensation;
 using ParrelSync;
+using UnityEditor.Searcher;
 using UnityEngine;
 using UnityEngine.tvOS;
 
@@ -158,6 +159,8 @@ public class GameSystem : NetworkBehaviour
             CardSystem.RemoveCardFromField(card);
         }
         
+        TryGetSpecialCard(playerRef);
+        
         Debug.Log($"Player {playerRef.PlayerId} purchased card {card.uniqueId}.");
     }
 
@@ -226,5 +229,34 @@ public class GameSystem : NetworkBehaviour
     public void EndTurn(PlayerRef playerRef)
     {
         TurnSystem.RPC_EndTurn(playerRef);
+    }
+
+    public void TryGetSpecialCard(PlayerRef playerRef)
+    {
+        var playerOwnedCards = Players[playerRef].OwnedCards.ToArray();
+
+        for (int i = 0; i < CardSystem.FieldSpecialCards.Count; i++)
+        {
+            SpecialCardInfo specialCardInfo =
+                CardModelData.Instance.GetSpecialCardInfoById(CardSystem.FieldSpecialCards[i]);
+
+            bool isEligible = true;
+
+            for (int j = 0; j < Mathf.Min(playerOwnedCards.Length, specialCardInfo.cost.Length); j++)
+            {
+                if (playerOwnedCards[j] < specialCardInfo.cost[j])
+                {
+                    isEligible = false;
+                    break;
+                }
+            }
+
+            if (isEligible)
+            {
+                Players[playerRef].ModifyScore(specialCardInfo.points);
+                CardSystem.RemoveSpecialCardFromField(specialCardInfo);
+                break;
+            }
+        }
     }
 }
