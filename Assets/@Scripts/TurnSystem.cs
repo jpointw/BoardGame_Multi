@@ -34,7 +34,6 @@ public class TurnSystem : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_EndTurn(PlayerRef playerRef)
     {
-        if (!Object.HasStateAuthority) return;
         Debug.Log($"🔹 Player {GetCurrentPlayer().PlayerId}'s turn end!");
 
         if (IsFinalRound && IsFinalRoundComplete())
@@ -123,7 +122,7 @@ public class TurnSystem : NetworkBehaviour
         if (winner != null)
         {
             Debug.Log($"Player {winner.PlayerRef.PlayerId} wins with {GameSystem.Instance.VictoryPoint} points!");
-            RPC_OnGameEnded(winner.name);
+            RPC_OnGameEnded(winner.Name);
         }
     }
 
