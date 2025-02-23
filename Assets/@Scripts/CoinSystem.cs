@@ -24,6 +24,7 @@ public class CoinSystem : NetworkBehaviour
         }
         CentralCoins.Set(5, 5);
         Debug.Log("Central Coins initialized.");
+        OnDetectCoinChanged();
     }
 
     public void ModifyCentralCoins(int[] coinChanges)
