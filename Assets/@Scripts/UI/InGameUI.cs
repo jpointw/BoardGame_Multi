@@ -100,12 +100,16 @@ public class InGameUI : MonoBehaviour
         var fieldCards = GameSystem.Instance.CardSystem.FieldCards;
         var cardData = CardModelData.Instance;
         
+        // for (int i = 0; i < fieldCards.Count; i++)
+        // {
+        //     CardElement cardElement = Instantiate(cardPrefab, fieldCardTransforms[i]);
+        //     cardElement.GetComponent<CardElement>().InitializeCard(cardData.GetCardInfoById(fieldCards[i]),fieldCardTransforms[i]);
+        //     cardElementDictionary.TryAdd(cardElement.CardInfo.uniqueId, cardElement);
+        // }
+
         for (int i = 0; i < fieldCards.Count; i++)
         {
-            CardElement cardElement = Instantiate(cardPrefab, fieldCardTransforms[i]);
-            cardElement.GetComponent<CardElement>().InitializeCard(cardData.GetCardInfoById(fieldCards[i]),fieldCardTransforms[i]);
-            // cardElements.Add(cardElement);
-            cardElementDictionary.TryAdd(cardElement.CardInfo.uniqueId, cardElement);
+            ScheduleCardAddition(fieldCards[i], i);
         }
 
         var fieldSpecialCards = GameSystem.Instance.CardSystem.FieldSpecialCards;
@@ -126,6 +130,8 @@ public class InGameUI : MonoBehaviour
         GameSystem.Instance.CardSystem.OnCardAdded += ScheduleCardAddition;
         GameSystem.Instance.CardSystem.OnCardRemoved += ScheduleCardRemoval;
         GameSystem.Instance.CoinSystem.OnCoinChanged += UpdateCoinTexts;
+        GameSystem.Instance.OnGameEnded += ShowResultUI;
+        GameSystem.Instance.CardSystem.OnSpecialCardRemoved += OnSpecialCardRemoved;
         // GameSystem.Instance.OnCoinChanged += UpdateCoinTexts;
         // GameSystem.Instance.OnCoinChanged += ScheduleCoinAnimation;
     }
@@ -175,11 +181,6 @@ public class InGameUI : MonoBehaviour
             maxSize: 90
         );
     }
-
-    public void DetectCardChanges()
-    {
-        
-    }
     
     public void UpdateCoinTexts(int[] coins)
     {
@@ -198,6 +199,11 @@ public class InGameUI : MonoBehaviour
     public void ShowReservedCardsDetail(int[] cardInfos)
     {
         reservedCardDetailUI.Open(cardInfos);
+    }
+
+    public void ShowResultUI(string winner)
+    {
+        resultUI.Open(winner);
     }
 
     public void ShowMenuPopup()
@@ -359,4 +365,28 @@ public class InGameUI : MonoBehaviour
         isProcessingCardQueue = false;
     }
 
+    private void OnSpecialCardRemoved(int specialCardId)
+    {
+
+        SpecialCardElement specialCardElement =
+            specialCardElements.Find(s => s.SpecialCardInfo.uniqueId == specialCardId);
+        
+        if (specialCardElement != null)
+        {
+            CanvasGroup canvasGroup = specialCardElement.GetComponent<CanvasGroup>();
+            float heightOffset = specialCardElement.transform.localScale.y / 2;
+            Sequence sequence = DOTween.Sequence();
+
+            sequence.Append(canvasGroup.DOFade(0, 0.5f))
+                .Join(specialCardElement.transform.DOLocalMoveY(specialCardElement.transform.localPosition.y - heightOffset, 1f)
+                    .SetEase(Ease.InOutQuad))
+                .Append(specialCardElement.transform.DOScale(Vector3.zero, 0.5f)
+                    .SetEase(Ease.InBack))
+                .OnComplete(() =>
+                {
+                    specialCardElements.Remove(specialCardElement);
+                    Destroy(specialCardElement.gameObject);
+                });
+        }
+    }
 }
