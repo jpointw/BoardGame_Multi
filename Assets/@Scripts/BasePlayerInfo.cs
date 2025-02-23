@@ -72,13 +72,6 @@ public class BasePlayerInfo : NetworkBehaviour
     public virtual void AddReservedCard(int cardId)
     {
         ReservedCards.Add(cardId);
-        // for (int i = 0; i < ReservedCards.Count; i++)
-        // {
-        //     if (ReservedCards[i] == -1)
-        //     {
-        //         ReservedCards.Set(i, cardId);
-        //     }
-        // }
     }
 
     public virtual void RemoveReservedCard(int cardId)

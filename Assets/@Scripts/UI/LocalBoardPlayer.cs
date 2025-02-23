@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Doozy.Runtime.UIManager.Components;
 using Fusion;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -22,6 +23,8 @@ public class LocalBoardPlayer : BasePlayer2
     public UIButton ReservedCardButton;
     
     public UIButton EndTurnButton;
+
+    public TMP_Text allCoinText;
 
 
     public override void Init(BasePlayerInfo basePlayerInfo)
@@ -51,6 +54,9 @@ public class LocalBoardPlayer : BasePlayer2
     {
         if (!interactEnabled) return;
         GameSystem.Instance.RPC_HandlePurchaseRequest(BasePlayerInfo.PlayerRef, cardId);
+        GameSystem.Instance.EndTurn(BasePlayerInfo.PlayerRef);
+        ResetSelectedCoins();
+        GameSystem.Instance.EndTurn(BasePlayerInfo.PlayerRef);
     }
 
     public void RequestPurchaseReservedCard(int cardId)
@@ -58,6 +64,8 @@ public class LocalBoardPlayer : BasePlayer2
         if (!interactEnabled) return;
         GameSystem.Instance.RPC_HandlePurchaseRequest(BasePlayerInfo.PlayerRef, cardId, true);
         GameSystem.Instance.InGameUI.reservedCardDetailUI.Close();
+        ResetSelectedCoins();
+        GameSystem.Instance.EndTurn(BasePlayerInfo.PlayerRef);
     }
 
     public void RequestReserveCard(int cardId)
@@ -65,11 +73,18 @@ public class LocalBoardPlayer : BasePlayer2
         if (!interactEnabled) return;
         GameSystem.Instance.RPC_HandleReserveCardRequest(BasePlayerInfo.PlayerRef, cardId);
         GameSystem.Instance.RPC_HandleTakeCoins(BasePlayerInfo.PlayerRef, new []{0,0,0,0,0,1});
+        ResetSelectedCoins();
+        GameSystem.Instance.EndTurn(BasePlayerInfo.PlayerRef);
     }
 
     public void TakeSelectedCoins()
     {
         GameSystem.Instance.RPC_HandleTakeCoins(BasePlayerInfo.PlayerRef, selectedCoins);
+        ResetSelectedCoins();
+    }
+
+    public void ResetSelectedCoins()
+    {
         for (int i = 0; i < selectedCoins.Length; i++)
         {
             selectedCoins[i] = 0;
@@ -149,11 +164,13 @@ public class LocalBoardPlayer : BasePlayer2
     private void UpdateSelectedCoinUI(int coinType)
     {
         var button = GetCoinButton();
+        allCoinText.text = (BasePlayerInfo.OwnedCoins.Sum() + selectedCoins.Sum()).ToString();
         button.GetComponent<Image>().sprite = UIDataBase.Instance.coinSprites[coinType];
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() =>
         {
             selectedCoins[coinType]--;
+            allCoinText.text = (BasePlayerInfo.OwnedCoins.Sum() + selectedCoins.Sum()).ToString();
             button.gameObject.SetActive(false);
         });
         button.gameObject.SetActive(true);
