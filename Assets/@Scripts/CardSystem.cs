@@ -28,6 +28,10 @@ public class CardSystem : NetworkBehaviour
 
     public Action<int,int> OnCardAdded;
     public Action<int,int> OnCardRemoved;
+
+    public Action<int> OnSpecialCardAdded;
+    public Action<int> OnSpecialCardRemoved;
+    
     
     public void InitializeDecks()
     {
@@ -107,6 +111,18 @@ public class CardSystem : NetworkBehaviour
         }
     }
 
+    public void RemoveSpecialCardFromField(SpecialCardInfo specialCardInfo)
+    {
+        for (int i = 0; i < FieldSpecialCards.Count; i++)
+        {
+            if (FieldSpecialCards[i] == specialCardInfo.uniqueId)
+            {
+                RPC_OnSpecialCardRemoved(specialCardInfo.uniqueId);
+                FieldSpecialCards.Remove(i);
+            }
+        }
+    }
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_OnCardAdded(int cardId, int slotIndex)
     {
@@ -117,6 +133,12 @@ public class CardSystem : NetworkBehaviour
     public void RPC_OnCardRemoved(int cardId, int slotIndex)
     {
         OnCardRemoved?.Invoke(cardId, slotIndex);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OnSpecialCardRemoved(int cardId)
+    {
+        OnSpecialCardRemoved?.Invoke(cardId);
     }
     public CardInfo GetCardInfo(int cardId)
     {
