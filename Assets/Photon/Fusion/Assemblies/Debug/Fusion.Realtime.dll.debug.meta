@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 59565dd8cb7f7c84f915bf1987735816
+guid: 8ae4c0a03478cb445a392b9621cec527
 DefaultImporter:
   externalObjects: {}
   userData: 
@@ -9,6 +9,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 267958
   packageName: Photon Fusion
-  packageVersion: 2.0.4
-  assetPath: Assets/Photon/FusionMenu/Photon-Fusion-Menu-2.0.4-Stable-884.unitypackage
-  uploadId: 718271
+  packageVersion: 2.0.5
+  assetPath: Assets/Photon/Fusion/Assemblies/Debug/Fusion.Realtime.dll.debug
+  uploadId: 735720
