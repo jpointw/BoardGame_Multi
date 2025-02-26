@@ -18,541 +18,541 @@ MonoBehaviour:
     cardLevel: 1
     points: 0
     cost: 0100000001000000010000000100000000000000
-    illustration: mine (black)
+    illustration: Level1_Backpack
   - uniqueId: 2
     cardType: 4
     cardLevel: 1
     points: 0
     cost: 0100000002000000010000000100000000000000
-    illustration: 
+    illustration: Level1_Backpack
   - uniqueId: 3
     cardType: 4
     cardLevel: 1
     points: 0
     cost: 0200000002000000000000000100000000000000
-    illustration: 
+    illustration: Level1_Backpack
   - uniqueId: 4
     cardType: 4
     cardLevel: 1
     points: 0
     cost: 0000000000000000010000000300000001000000
-    illustration: 
+    illustration: Level1_Backpack
   - uniqueId: 5
     cardType: 4
     cardLevel: 1
     points: 0
     cost: 0000000000000000020000000100000000000000
-    illustration: 
+    illustration: Level1_Backpack
   - uniqueId: 6
     cardType: 4
     cardLevel: 1
     points: 0
     cost: 0200000000000000020000000000000000000000
-    illustration: 
+    illustration: Level1_Backpack
   - uniqueId: 7
     cardType: 4
     cardLevel: 1
     points: 0
     cost: 0000000000000000030000000000000000000000
-    illustration: 
+    illustration: Level1_Backpack
   - uniqueId: 8
     cardType: 4
     cardLevel: 1
     points: 1
     cost: 0000000004000000000000000000000000000000
-    illustration: 
+    illustration: Level1_Backpack
   - uniqueId: 9
     cardType: 1
     cardLevel: 1
     points: 0
     cost: 0100000000000000010000000100000001000000
-    illustration: mine (blue)
+    illustration: Level1_Boots
   - uniqueId: 10
     cardType: 1
     cardLevel: 1
     points: 0
     cost: 0100000000000000010000000200000001000000
-    illustration: 
+    illustration: Level1_Boots
   - uniqueId: 11
     cardType: 1
     cardLevel: 1
     points: 0
     cost: 0100000000000000020000000200000000000000
-    illustration: 
+    illustration: Level1_Boots
   - uniqueId: 12
     cardType: 1
     cardLevel: 1
     points: 0
     cost: 0000000001000000030000000100000000000000
-    illustration: 
+    illustration: Level1_Boots
   - uniqueId: 13
     cardType: 1
     cardLevel: 1
     points: 0
     cost: 0100000000000000000000000000000002000000
-    illustration: 
+    illustration: Level1_Boots
   - uniqueId: 14
     cardType: 1
     cardLevel: 1
     points: 0
     cost: 0000000000000000020000000000000002000000
-    illustration: 
+    illustration: Level1_Boots
   - uniqueId: 15
     cardType: 1
     cardLevel: 1
     points: 0
     cost: 0000000000000000000000000000000003000000
-    illustration: 
+    illustration: Level1_Boots
   - uniqueId: 16
     cardType: 0
     cardLevel: 1
     points: 1
     cost: 0000000000000000000000000400000000000000
-    illustration: 
+    illustration: Level1_Boots
   - uniqueId: 17
     cardType: 0
     cardLevel: 1
     points: 0
     cost: 0000000001000000010000000100000001000000
-    illustration: mine (white)
+    illustration: Level1_Gloves
   - uniqueId: 18
     cardType: 0
     cardLevel: 1
     points: 0
     cost: 0000000001000000020000000100000001000000
-    illustration: 
+    illustration: Level1_Gloves
   - uniqueId: 19
     cardType: 0
     cardLevel: 1
     points: 0
     cost: 0000000002000000020000000000000001000000
-    illustration: 
+    illustration: Level1_Gloves
   - uniqueId: 20
     cardType: 0
     cardLevel: 1
     points: 0
     cost: 0300000001000000000000000000000001000000
-    illustration: 
+    illustration: Level1_Gloves
   - uniqueId: 21
     cardType: 0
     cardLevel: 1
     points: 0
     cost: 0000000000000000000000000200000001000000
-    illustration: 
+    illustration: Level1_Gloves
   - uniqueId: 22
     cardType: 0
     cardLevel: 1
     points: 0
     cost: 0000000002000000000000000000000002000000
-    illustration: 
+    illustration: Level1_Gloves
   - uniqueId: 23
     cardType: 0
     cardLevel: 1
     points: 0
     cost: 0000000003000000000000000000000000000000
-    illustration: 
+    illustration: Level1_Gloves
   - uniqueId: 24
     cardType: 0
     cardLevel: 1
     points: 1
     cost: 0000000000000000040000000000000000000000
-    illustration: 
+    illustration: Level1_Gloves
   - uniqueId: 25
     cardType: 3
     cardLevel: 1
     points: 0
     cost: 0100000001000000000000000100000001000000
-    illustration: mine (green)
+    illustration: Level1_Helmet
   - uniqueId: 26
     cardType: 3
     cardLevel: 1
     points: 0
     cost: 0100000001000000000000000100000002000000
-    illustration: 
+    illustration: Level1_Helmet
   - uniqueId: 27
     cardType: 3
     cardLevel: 1
     points: 0
     cost: 0000000001000000000000000200000002000000
-    illustration: 
+    illustration: Level1_Helmet
   - uniqueId: 28
     cardType: 3
     cardLevel: 1
     points: 0
     cost: 0100000003000000010000000000000000000000
-    illustration: 
+    illustration: Level1_Helmet
   - uniqueId: 29
     cardType: 3
     cardLevel: 1
     points: 0
     cost: 0200000001000000000000000000000000000000
-    illustration: 
+    illustration: Level1_Helmet
   - uniqueId: 30
     cardType: 3
     cardLevel: 1
     points: 0
     cost: 0000000002000000000000000200000000000000
-    illustration: 
+    illustration: Level1_Helmet
   - uniqueId: 31
     cardType: 3
     cardLevel: 1
     points: 0
     cost: 0000000000000000000000000300000000000000
-    illustration: 
+    illustration: Level1_Helmet
   - uniqueId: 32
     cardType: 3
     cardLevel: 1
     points: 1
     cost: 0000000000000000000000000000000004000000
-    illustration: 
+    illustration: Level1_Helmet
   - uniqueId: 33
     cardType: 2
     cardLevel: 1
     points: 0
     cost: 0100000001000000010000000000000001000000
-    illustration: mine (red)
+    illustration: Level1_Suit
   - uniqueId: 34
     cardType: 2
     cardLevel: 1
     points: 0
     cost: 0200000001000000010000000000000001000000
-    illustration: 
+    illustration: Level1_Suit
   - uniqueId: 35
     cardType: 2
     cardLevel: 1
     points: 0
     cost: 0200000000000000010000000000000002000000
-    illustration: 
+    illustration: Level1_Suit
   - uniqueId: 36
     cardType: 2
     cardLevel: 1
     points: 0
     cost: 0100000000000000000000000100000003000000
-    illustration: 
+    illustration: Level1_Suit
   - uniqueId: 37
     cardType: 2
     cardLevel: 1
     points: 0
     cost: 0000000002000000010000000000000000000000
-    illustration: 
+    illustration: Level1_Suit
   - uniqueId: 38
     cardType: 2
     cardLevel: 1
     points: 0
     cost: 0200000000000000000000000200000000000000
-    illustration: 
+    illustration: Level1_Suit
   - uniqueId: 39
     cardType: 2
     cardLevel: 1
     points: 0
     cost: 0300000000000000000000000000000000000000
-    illustration: 
+    illustration: Level1_Suit
   - uniqueId: 40
     cardType: 2
     cardLevel: 1
     points: 1
     cost: 0400000000000000000000000000000000000000
-    illustration: 
+    illustration: Level1_Suit
   - uniqueId: 41
     cardType: 4
     cardLevel: 2
     points: 1
     cost: 0300000002000000020000000000000000000000
-    illustration: camels
+    illustration: Level2_SoildFuel
   - uniqueId: 42
     cardType: 4
     cardLevel: 2
     points: 1
     cost: 0300000000000000030000000000000002000000
-    illustration: 
+    illustration: Level2_SoildFuel
   - uniqueId: 43
     cardType: 4
     cardLevel: 2
     points: 2
     cost: 0000000001000000040000000200000000000000
-    illustration: 
+    illustration: Level2_SoildFuel
   - uniqueId: 44
     cardType: 4
     cardLevel: 2
     points: 2
     cost: 0000000000000000050000000300000000000000
-    illustration: lapidary (black)
+    illustration: Level2_SoildFuel
   - uniqueId: 45
     cardType: 4
     cardLevel: 2
     points: 2
     cost: 0500000000000000000000000000000000000000
-    illustration: 
+    illustration: Level2_SoildFuel
   - uniqueId: 46
     cardType: 4
     cardLevel: 2
     points: 3
     cost: 0000000000000000000000000000000006000000
-    illustration: 
+    illustration: Level2_SoildFuel
   - uniqueId: 47
     cardType: 1
     cardLevel: 2
     points: 1
     cost: 0000000002000000020000000300000000000000
-    illustration: elephants
+    illustration: Level2_Drone
   - uniqueId: 48
     cardType: 1
     cardLevel: 2
     points: 1
     cost: 0000000002000000030000000000000003000000
-    illustration: 
+    illustration: Level2_Drone
   - uniqueId: 49
     cardType: 1
     cardLevel: 2
     points: 2
     cost: 0500000003000000000000000000000000000000
-    illustration: 
+    illustration: Level2_Drone
   - uniqueId: 50
     cardType: 1
     cardLevel: 2
     points: 2
     cost: 0200000000000000000000000100000004000000
-    illustration: lapidary (blue)
+    illustration: Level2_Drone
   - uniqueId: 51
     cardType: 1
     cardLevel: 2
     points: 2
     cost: 0000000005000000000000000000000000000000
-    illustration: 
+    illustration: Level2_Drone
   - uniqueId: 52
     cardType: 1
     cardLevel: 2
     points: 3
     cost: 0000000006000000000000000000000000000000
-    illustration: 
+    illustration: Level2_Drone
   - uniqueId: 53
     cardType: 0
     cardLevel: 2
     points: 1
     cost: 0000000000000000030000000200000002000000
-    illustration: people in snow
+    illustration: Level2_Navigation
   - uniqueId: 54
     cardType: 0
     cardLevel: 2
     points: 1
     cost: 0200000003000000000000000300000000000000
-    illustration: 
+    illustration: Level2_Navigation
   - uniqueId: 55
     cardType: 0
     cardLevel: 2
     points: 2
     cost: 0000000000000000010000000400000002000000
-    illustration: 
+    illustration: Level2_Navigation
   - uniqueId: 56
     cardType: 0
     cardLevel: 2
     points: 2
     cost: 0000000000000000000000000500000003000000
-    illustration: lapidary (white)
+    illustration: Level2_Navigation
   - uniqueId: 57
     cardType: 0
     cardLevel: 2
     points: 2
     cost: 0000000000000000000000000500000000000000
-    illustration: 
+    illustration: Level2_Navigation
   - uniqueId: 58
     cardType: 0
     cardLevel: 2
     points: 3
     cost: 0600000000000000000000000000000000000000
-    illustration: 
+    illustration: Level2_Navigation
   - uniqueId: 59
     cardType: 3
     cardLevel: 2
     points: 1
     cost: 0300000000000000020000000300000000000000
-    illustration: guy (green)
+    illustration: Level2_Oxygen
   - uniqueId: 60
     cardType: 3
     cardLevel: 2
     points: 1
     cost: 0200000003000000000000000000000002000000
-    illustration: 
+    illustration: Level2_Oxygen
   - uniqueId: 61
     cardType: 3
     cardLevel: 2
     points: 2
     cost: 0400000002000000000000000000000001000000
-    illustration: 
+    illustration: Level2_Oxygen
   - uniqueId: 62
     cardType: 3
     cardLevel: 2
     points: 2
     cost: 0000000005000000030000000000000000000000
-    illustration: carrack
+    illustration: Level2_Oxygen
   - uniqueId: 63
     cardType: 3
     cardLevel: 2
     points: 2
     cost: 0000000000000000050000000000000000000000
-    illustration: 
+    illustration: Level2_Oxygen
   - uniqueId: 64
     cardType: 3
     cardLevel: 2
     points: 3
     cost: 0000000000000000060000000000000000000000
-    illustration: 
+    illustration: Level2_Oxygen
   - uniqueId: 65
     cardType: 2
     cardLevel: 2
     points: 1
     cost: 0200000000000000000000000200000003000000
-    illustration: felucca
+    illustration: Level2_Rover
   - uniqueId: 66
     cardType: 2
     cardLevel: 2
     points: 1
     cost: 0000000003000000000000000200000003000000
-    illustration: 
+    illustration: Level2_Rover
   - uniqueId: 67
     cardType: 2
     cardLevel: 2
     points: 2
     cost: 0100000004000000020000000000000000000000
-    illustration: 
+    illustration: Level2_Rover
   - uniqueId: 68
     cardType: 2
     cardLevel: 2
     points: 2
     cost: 0300000000000000000000000000000005000000
-    illustration: lapidary (red)
+    illustration: Level2_Rover
   - uniqueId: 69
     cardType: 2
     cardLevel: 2
     points: 2
     cost: 0000000000000000000000000000000005000000
-    illustration: 
+    illustration: Level2_Rover
   - uniqueId: 70
     cardType: 2
     cardLevel: 2
     points: 3
     cost: 0000000000000000000000000600000000000000
-    illustration: 
+    illustration: Level2_Rover
   - uniqueId: 71
     cardType: 4
     cardLevel: 3
     points: 3
     cost: 0300000003000000050000000300000000000000
-    illustration: street1
+    illustration: Level3_AlienConnecter
   - uniqueId: 72
     cardType: 4
     cardLevel: 3
     points: 4
     cost: 0000000000000000000000000700000000000000
-    illustration: street2
+    illustration: 
   - uniqueId: 73
     cardType: 4
     cardLevel: 3
     points: 4
     cost: 0000000000000000030000000600000003000000
-    illustration: street2
+    illustration: Level3_AlienConnecter
   - uniqueId: 74
     cardType: 4
     cardLevel: 3
     points: 5
     cost: 0000000000000000000000000700000003000000
-    illustration: street1
+    illustration: 
   - uniqueId: 75
     cardType: 1
     cardLevel: 3
     points: 3
     cost: 0300000000000000030000000300000005000000
-    illustration: Venice
+    illustration: Level3_Mine
   - uniqueId: 76
     cardType: 1
     cardLevel: 3
     points: 4
     cost: 0700000000000000000000000000000000000000
-    illustration: Venice
+    illustration: Level3_Mine
   - uniqueId: 77
     cardType: 1
     cardLevel: 3
     points: 4
     cost: 0600000003000000000000000000000003000000
-    illustration: diamant shop
+    illustration: 
   - uniqueId: 78
     cardType: 1
     cardLevel: 3
     points: 5
     cost: 0700000003000000000000000000000000000000
-    illustration: diamant shop
+    illustration: 
   - uniqueId: 79
     cardType: 0
     cardLevel: 3
     points: 3
     cost: 0000000003000000030000000500000003000000
-    illustration: building (white)
+    illustration: Level3_Scope
   - uniqueId: 80
     cardType: 0
     cardLevel: 3
     points: 4
     cost: 0000000000000000000000000000000007000000
-    illustration: '"""Gioielleria"""'
+    illustration: 
   - uniqueId: 81
     cardType: 0
     cardLevel: 3
     points: 4
     cost: 0300000000000000000000000300000006000000
-    illustration: '"""Gioielleria"""'
+    illustration: 
   - uniqueId: 82
     cardType: 0
     cardLevel: 3
     points: 5
     cost: 0300000000000000000000000000000007000000
-    illustration: building (white)
+    illustration: Level3_Scope
   - uniqueId: 83
     cardType: 3
     cardLevel: 3
     points: 3
     cost: 0500000003000000000000000300000003000000
-    illustration: timbered house
+    illustration: Level3_ShipBase
   - uniqueId: 84
     cardType: 3
     cardLevel: 3
     points: 4
     cost: 0000000007000000000000000000000000000000
-    illustration: bridge
+    illustration: 
   - uniqueId: 85
     cardType: 3
     cardLevel: 3
     points: 4
     cost: 0300000006000000030000000000000000000000
-    illustration: bridge
+    illustration: 
   - uniqueId: 86
     cardType: 3
     cardLevel: 3
     points: 5
     cost: 0000000007000000030000000000000000000000
-    illustration: timbered house
+    illustration: Level3_ShipBase
   - uniqueId: 87
     cardType: 2
     cardLevel: 3
     points: 3
     cost: 0300000005000000030000000000000003000000
-    illustration: equestrian statue
+    illustration: 
   - uniqueId: 88
     cardType: 2
     cardLevel: 3
     points: 4
     cost: 0000000000000000070000000000000000000000
-    illustration: equestrian statue
+    illustration: 
   - uniqueId: 89
     cardType: 2
     cardLevel: 3
     points: 4
     cost: 0000000003000000060000000300000000000000
-    illustration: building (red)
+    illustration: 
   - uniqueId: 90
     cardType: 2
     cardLevel: 3
     points: 5
     cost: 0000000000000000070000000300000000000000
-    illustration: building (red)
+    illustration: 
   specialCardInfos:
   - uniqueId: 1
     points: 3
