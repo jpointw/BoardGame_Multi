@@ -225,7 +225,6 @@ public class InGameUI : MonoBehaviour
 
     private void ScheduleCardAddition(int cardId, int slotIndex)
     {
-        Debug.LogError($"ScheduleCardAddition: CardId: {cardId}, SlotIndex: {slotIndex}");
         CardActionQueue.Enqueue(() => OnCardAdded(cardId, slotIndex));
         ProcessCardQueue();
     }

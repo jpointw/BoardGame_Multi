@@ -25,6 +25,7 @@ public class CardElement : MonoBehaviour
     
     public TMP_Text cardPointText;
     public Image cardTypeImage;
+    public Image cardImage;
     
     public Image[] requireCoinImages;
     
@@ -38,6 +39,7 @@ public class CardElement : MonoBehaviour
         IsPurchased = false;
         cardPointText.text = cardInfo.points.ToString();
         cardTypeImage.sprite = UIDataBase.Instance.coinSprites[cardInfo.cardType];
+        cardImage.sprite = UIDataBase.Instance.GetSprite(cardInfo.illustration);
         SetRequireCoinUIs();
         ThisToggle.onClickEvent.AddListener(OnCardElementClicked);
         

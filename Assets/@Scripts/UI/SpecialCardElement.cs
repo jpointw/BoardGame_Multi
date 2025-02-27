@@ -14,12 +14,15 @@ public class SpecialCardElement : MonoBehaviour
     public TMP_Text cardPointText;
     
     public Image[] requireCardImages;
+
+    public Image cardImage;
     
     public void InitializeCard(SpecialCardInfo cardInfo)
     {
         SpecialCardInfo = cardInfo;
         IsPurchased = false;
         cardPointText.text = cardInfo.points.ToString();
+        cardImage.sprite = UIDataBase.Instance.GetSprite(cardInfo.illustration);
         SetRequireCoinUIs();
     }
 
