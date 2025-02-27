@@ -444,7 +444,7 @@ MonoBehaviour:
     cardLevel: 3
     points: 4
     cost: 0000000000000000000000000700000000000000
-    illustration: 
+    illustration: Level3_Turret
   - uniqueId: 73
     cardType: 4
     cardLevel: 3
@@ -456,7 +456,7 @@ MonoBehaviour:
     cardLevel: 3
     points: 5
     cost: 0000000000000000000000000700000003000000
-    illustration: 
+    illustration: Level3_Terraform
   - uniqueId: 75
     cardType: 1
     cardLevel: 3
@@ -474,13 +474,13 @@ MonoBehaviour:
     cardLevel: 3
     points: 4
     cost: 0600000003000000000000000000000003000000
-    illustration: 
+    illustration: Level3_SupplyBase
   - uniqueId: 78
     cardType: 1
     cardLevel: 3
     points: 5
     cost: 0700000003000000000000000000000000000000
-    illustration: 
+    illustration: Level3_SupplyBase
   - uniqueId: 79
     cardType: 0
     cardLevel: 3
@@ -492,13 +492,13 @@ MonoBehaviour:
     cardLevel: 3
     points: 4
     cost: 0000000000000000000000000000000007000000
-    illustration: 
+    illustration: Level3_SolarCollector
   - uniqueId: 81
     cardType: 0
     cardLevel: 3
     points: 4
     cost: 0300000000000000000000000300000006000000
-    illustration: 
+    illustration: Level3_SolarCollector
   - uniqueId: 82
     cardType: 0
     cardLevel: 3
@@ -516,13 +516,13 @@ MonoBehaviour:
     cardLevel: 3
     points: 4
     cost: 0000000007000000000000000000000000000000
-    illustration: 
+    illustration: Level3_Scope
   - uniqueId: 85
     cardType: 3
     cardLevel: 3
     points: 4
     cost: 0300000006000000030000000000000000000000
-    illustration: 
+    illustration: Level3_Scope
   - uniqueId: 86
     cardType: 3
     cardLevel: 3
@@ -534,63 +534,63 @@ MonoBehaviour:
     cardLevel: 3
     points: 3
     cost: 0300000005000000030000000000000003000000
-    illustration: 
+    illustration: Level3_FixDrone
   - uniqueId: 88
     cardType: 2
     cardLevel: 3
     points: 4
     cost: 0000000000000000070000000000000000000000
-    illustration: 
+    illustration: Level3_Gravity
   - uniqueId: 89
     cardType: 2
     cardLevel: 3
     points: 4
     cost: 0000000003000000060000000300000000000000
-    illustration: 
+    illustration: Level3_Gravity
   - uniqueId: 90
     cardType: 2
     cardLevel: 3
     points: 5
     cost: 0000000000000000070000000300000000000000
-    illustration: 
+    illustration: Level3_Satellite
   specialCardInfos:
   - uniqueId: 1
     points: 3
     cost: 0000000000000000040000000400000000000000
-    illustration: 
+    illustration: Special_1
   - uniqueId: 2
     points: 3
     cost: 0300000000000000030000000000000003000000
-    illustration: 
+    illustration: Special_2
   - uniqueId: 3
     points: 0
     cost: 0400000004000000000000000000000000000000
-    illustration: 
+    illustration: Special_3
   - uniqueId: 4
     points: 3
     cost: 0400000000000000000000000000000004000000
-    illustration: 
+    illustration: Special_4
   - uniqueId: 5
     points: 3
     cost: 0000000004000000000000000400000000000000
-    illustration: 
+    illustration: Special_5
   - uniqueId: 6
     points: 3
     cost: 0000000003000000030000000300000000000000
-    illustration: 
+    illustration: Special_6
   - uniqueId: 7
     points: 3
     cost: 0300000003000000000000000300000000000000
-    illustration: 
+    illustration: Special_7
   - uniqueId: 8
     points: 3
     cost: 0000000000000000040000000000000004000000
-    illustration: 
+    illustration: Special_8
   - uniqueId: 9
     points: 3
     cost: 0300000003000000000000000000000003000000
-    illustration: 
+    illustration: Special_9
   - uniqueId: 10
     points: 3
     cost: 0000000000000000030000000300000003000000
-    illustration: 
+    illustration: Special_10
