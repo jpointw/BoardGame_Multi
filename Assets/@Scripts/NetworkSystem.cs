@@ -31,8 +31,12 @@ public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void CreateRoom()
     {
-        Runner ??= gameObject.AddComponent<NetworkRunner>();
+        GameObject runnerObject = new GameObject("NetworkRunner");
+        Runner = runnerObject.AddComponent<NetworkRunner>();
+        DontDestroyOnLoad(runnerObject);
         Runner.ProvideInput = true;
+        
+        Runner.AddCallbacks(this);
 
         Dictionary<string, SessionProperty> roomProperties = new Dictionary<string, SessionProperty>
         {
@@ -65,8 +69,13 @@ public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void FindRoom()
     {
-        Runner ??= gameObject.AddComponent<NetworkRunner>();
+        GameObject runnerObject = new GameObject("NetworkRunner");
+        Runner = runnerObject.AddComponent<NetworkRunner>();
+        DontDestroyOnLoad(runnerObject);
         Runner.ProvideInput = true;
+        
+        Runner.AddCallbacks(this);
+
 
         var startArgs = new StartGameArgs
         {
@@ -85,6 +94,14 @@ public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
+    public async void CancelRoom()
+    {
+        if (Runner != null && Runner.IsRunning)
+        {
+            Runner.Shutdown(false);
+        }
+    }
+
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log($"👤 Player {player.PlayerId} joined.");
@@ -92,6 +109,8 @@ public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
         if (isHost)
         {
             CheckPlayerCount();
+            TitleScene titleScene = FindFirstObjectByType<TitleScene>();
+            titleScene.ChangePlayersImages(runner.ActivePlayers.Count());
         }
         else
         {
@@ -121,6 +140,12 @@ public class NetworkSystem : MonoBehaviour, INetworkRunnerCallbacks
             await Runner.LoadScene("GameScene", LoadSceneMode.Single);
             Runner.Spawn(gameSystem);
         }
+    }
+
+    public async void EndGame()
+    {
+        Runner.Shutdown();
+        SceneManager.LoadScene("TitleScene");
     }
 
     private void SyncGameSettings()
