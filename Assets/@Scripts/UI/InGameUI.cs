@@ -134,6 +134,8 @@ public class InGameUI : MonoBehaviour
         GameSystem.Instance.CardSystem.OnSpecialCardRemoved += OnSpecialCardRemoved;
         // GameSystem.Instance.OnCoinChanged += UpdateCoinTexts;
         // GameSystem.Instance.OnCoinChanged += ScheduleCoinAnimation;
+        
+        resultUI.Init();
     }
     private void CreatePlayerUI()
     {

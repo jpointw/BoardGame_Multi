@@ -17,6 +17,11 @@ public class ResultUI : MonoBehaviour
         thisCanvas.enabled = false;
     }
 
+    public void Init()
+    {
+        exitButton.onClickEvent.AddListener(() => NetworkSystem.Instance.EndGame());
+    }
+
     public void Open(string winnerName)
     {
         winnerText.text = winnerName;

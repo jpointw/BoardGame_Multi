@@ -57,6 +57,7 @@ public class LocalBoardPlayer : BasePlayer2
         GameSystem.Instance.EndTurn(BasePlayerInfo.PlayerRef);
         ResetSelectedCoins();
         GameSystem.Instance.EndTurn(BasePlayerInfo.PlayerRef);
+        interactEnabled = false;
     }
 
     public void RequestPurchaseReservedCard(int cardId)
@@ -66,6 +67,7 @@ public class LocalBoardPlayer : BasePlayer2
         GameSystem.Instance.InGameUI.reservedCardDetailUI.Close();
         ResetSelectedCoins();
         GameSystem.Instance.EndTurn(BasePlayerInfo.PlayerRef);
+        interactEnabled = false;
     }
 
     public void RequestReserveCard(int cardId)
@@ -75,6 +77,7 @@ public class LocalBoardPlayer : BasePlayer2
         GameSystem.Instance.RPC_HandleTakeCoins(BasePlayerInfo.PlayerRef, new []{0,0,0,0,0,1});
         ResetSelectedCoins();
         GameSystem.Instance.EndTurn(BasePlayerInfo.PlayerRef);
+        interactEnabled = false;
     }
 
     public void TakeSelectedCoins()

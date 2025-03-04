@@ -21,8 +21,6 @@ public class UIDataBase : ScriptableObject
             foreach (var sprite in cardSprites)
             {
                 CardSpriteDictionary.TryAdd(sprite.name, sprite);
-                Debug.LogError(sprite.name);
-                
             }
         }
         else

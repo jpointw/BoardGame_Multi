@@ -19,7 +19,11 @@ public class TitleScene : MonoBehaviour
     public UIButton createRoomCanvasBackButton;
     
     public Canvas playerWaitingCanvas;
+    public Image[] players;
     public UIButton playerWaitingBackButton;
+    
+    public Canvas findWaitingCanvas;
+    public UIButton findWaitingBackButton;
 
     public TMP_InputField InputField;
     
@@ -36,6 +40,7 @@ public class TitleScene : MonoBehaviour
     {
         createRoomCanvas.enabled = false;
         playerWaitingCanvas.enabled = false;
+        findWaitingCanvas.enabled = false;
         
         GameSharedData.PlayerCount = 2;
         GameSharedData.GameVictoryPoints = 12;
@@ -49,7 +54,7 @@ public class TitleScene : MonoBehaviour
         titleButtons[1].onClickEvent.AddListener(ChangeVictoryPoints);
         titleButtons[2].onClickEvent.AddListener(ChangeTurnTimer);
         
-        createRoomPanelButton.onClickEvent.AddListener(ShowCreateRoomPanel);
+        createRoomPanelButton.onClickEvent.AddListener(OpenCreateRoomPanel);
         findRoomButton.onClickEvent.AddListener(FindRoom);
         
         createRoomButton.onClickEvent.AddListener(CreateRoom);
@@ -58,7 +63,10 @@ public class TitleScene : MonoBehaviour
         
         createRoomCanvasBackButton.onClickEvent.AddListener(() => createRoomCanvas.enabled = false);
         
-
+        playerWaitingBackButton.onClickEvent.AddListener(StopCreateRoom);
+        
+        findWaitingBackButton.onClickEvent.AddListener(StopFindRoom);
+        
         CheckInputFieldChanged(null);
     }
 
@@ -108,20 +116,63 @@ public class TitleScene : MonoBehaviour
             .SetEase(Ease.InOutQuad);
     }
 
-    private void ShowCreateRoomPanel()
+    private void OpenCreateRoomPanel()
     {
         createRoomCanvas.enabled = true;
     }
 
+    private void OpenWaitingPanel()
+    {
+        ChangePlayersImages(1);
+        playerWaitingCanvas.enabled = true;
+    }
+
+    private void OpenFindRoomPanel()
+    {
+        findWaitingCanvas.enabled = true;
+    }
+
     private async void CreateRoom()
     {
+        OpenWaitingPanel();
         GameSharedData.MyNickname = InputField.text;
         NetworkSystem.Instance.CreateRoom();
     }
 
     private async void FindRoom()
     {
+        OpenFindRoomPanel();
         GameSharedData.MyNickname = InputField.text;
         NetworkSystem.Instance.FindRoom();
+    }
+
+    private async void StopCreateRoom()
+    {
+        NetworkSystem.Instance.CancelRoom();
+        playerWaitingCanvas.enabled = false;
+    }
+    private async void StopFindRoom()
+    {
+        NetworkSystem.Instance.CancelRoom();
+        findWaitingCanvas.enabled = false;
+    }
+
+    public void ChangePlayersImages(int playerAmounts)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].gameObject.SetActive(false);
+            players[i].color = Color.gray;
+        }
+
+        for (int i = 0; i < GameSharedData.PlayerCount; i++)
+        {
+            players[i].gameObject.SetActive(true);
+        }
+
+        for (int i = 0; i < playerAmounts; i++)
+        {
+            players[i].color = Color.white;
+        }
     }
 }
