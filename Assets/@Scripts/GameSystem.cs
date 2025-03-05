@@ -1,12 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Fusion;
-using Fusion.LagCompensation;
-using ParrelSync;
-using UnityEditor.Searcher;
 using UnityEngine;
-using UnityEngine.tvOS;
 
 public class GameSystem : NetworkBehaviour
 {
@@ -164,12 +159,6 @@ public class GameSystem : NetworkBehaviour
         Debug.Log($"Player {playerRef.PlayerId} purchased card {card.uniqueId}.");
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_ChangeName(PlayerRef playerRef, string name)
-    {
-        if (!Object.HasStateAuthority) return;
-        Players[playerRef].Name = name;
-    }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_HandlePurchaseRequest(PlayerRef playerRef, int cardId, bool isReserved = false)
@@ -178,6 +167,13 @@ public class GameSystem : NetworkBehaviour
         var card = CardModelData.Instance.GetCardInfoById(cardId);
         HandlePurchaseRequest(playerRef, card, isReserved);
 
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_ChangeName(PlayerRef playerRef, string name)
+    {
+        if (!Object.HasStateAuthority) return;
+        Players[playerRef].Name = name;
     }
     
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

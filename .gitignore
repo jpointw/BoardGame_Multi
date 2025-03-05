@@ -72,3 +72,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 .idea
 Assets/Doozy
+.utmp
+FeelerStudio.keystore
+BoardGame_Multi_BurstDebugInformation_DoNotShip
